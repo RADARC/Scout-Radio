@@ -12002,7 +12002,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 259.08 101.6 0)
 			(effects
 				(font
@@ -12011,7 +12011,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 259.08 101.6 0)
 			(effects
 				(font
@@ -12107,7 +12107,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 196.85 151.13 0)
 			(effects
 				(font
@@ -12116,7 +12116,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 196.85 151.13 0)
 			(effects
 				(font
@@ -12212,7 +12212,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 137.16 96.52 0)
 			(effects
 				(font
@@ -12221,7 +12221,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 137.16 96.52 0)
 			(effects
 				(font
@@ -12317,7 +12317,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 279.4 27.94 0)
 			(effects
 				(font
@@ -12326,7 +12326,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 279.4 27.94 0)
 			(effects
 				(font
@@ -12426,7 +12426,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 156.21 185.42 0)
 			(effects
 				(font
@@ -12435,7 +12435,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 156.21 185.42 0)
 			(effects
 				(font
@@ -12862,7 +12862,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 261.62 86.36 0)
 			(effects
 				(font
@@ -12871,7 +12871,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 261.62 86.36 0)
 			(effects
 				(font
@@ -12967,7 +12967,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 91.44 31.75 0)
 			(effects
 				(font
@@ -12976,7 +12976,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 91.44 31.75 0)
 			(effects
 				(font
@@ -13084,7 +13084,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TC-6610-5-260G"
+		(property "Value" "B3FS"
 			(at 36.703 181.5521 90)
 			(effects
 				(font
@@ -13094,7 +13094,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm"
+		(property "Footprint" "Scout:SW_Push_1P1T_NO_6x6mm_H9.5mm"
 			(at 38.1 180.34 0)
 			(effects
 				(font
@@ -13139,7 +13139,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 33.02 180.34 0)
 			(effects
 				(font
@@ -13148,7 +13148,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 33.02 180.34 0)
 			(effects
 				(font
@@ -13585,7 +13585,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TC-6610-5-260G"
+		(property "Value" "B3FS"
 			(at 51.943 181.5521 90)
 			(effects
 				(font
@@ -13595,7 +13595,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm"
+		(property "Footprint" "Scout:SW_Push_1P1T_NO_6x6mm_H9.5mm"
 			(at 53.34 180.34 0)
 			(effects
 				(font
@@ -13640,7 +13640,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 48.26 180.34 0)
 			(effects
 				(font
@@ -13649,7 +13649,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 48.26 180.34 0)
 			(effects
 				(font
@@ -13810,7 +13810,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 262.89 127 0)
 			(effects
 				(font
@@ -13819,7 +13819,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 262.89 127 0)
 			(effects
 				(font
@@ -13919,7 +13919,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 168.91 46.99 0)
 			(effects
 				(font
@@ -13928,7 +13928,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 168.91 46.99 0)
 			(effects
 				(font
@@ -14025,7 +14025,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 250.19 115.57 0)
 			(effects
 				(font
@@ -14034,7 +14034,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 250.19 115.57 0)
 			(effects
 				(font
@@ -14130,7 +14130,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 68.58 139.7 0)
 			(effects
 				(font
@@ -14139,7 +14139,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 68.58 139.7 0)
 			(effects
 				(font
@@ -14233,7 +14233,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 261.62 93.98 0)
 			(effects
 				(font
@@ -14242,7 +14242,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 261.62 93.98 0)
 			(effects
 				(font
@@ -14338,7 +14338,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 100.33 31.75 0)
 			(effects
 				(font
@@ -14347,7 +14347,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 100.33 31.75 0)
 			(effects
 				(font
@@ -14442,7 +14442,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 226.06 24.13 0)
 			(effects
 				(font
@@ -14451,7 +14451,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 226.06 24.13 0)
 			(effects
 				(font
@@ -14678,7 +14678,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 100.33 104.14 0)
 			(effects
 				(font
@@ -14687,7 +14687,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 100.33 104.14 0)
 			(effects
 				(font
@@ -14856,7 +14856,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 153.67 107.95 0)
 			(effects
 				(font
@@ -14865,7 +14865,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 153.67 107.95 0)
 			(effects
 				(font
@@ -14979,7 +14979,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 27.94 137.16 0)
 			(effects
 				(font
@@ -14988,7 +14988,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 27.94 137.16 0)
 			(effects
 				(font
@@ -15084,7 +15084,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 247.65 104.14 0)
 			(effects
 				(font
@@ -15093,7 +15093,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 247.65 104.14 0)
 			(effects
 				(font
@@ -15172,7 +15172,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 275.59 106.68 0)
 			(effects
 				(font
@@ -15181,7 +15181,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 275.59 106.68 0)
 			(effects
 				(font
@@ -15280,7 +15280,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 190.5 82.55 0)
 			(effects
 				(font
@@ -15289,7 +15289,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 190.5 82.55 0)
 			(effects
 				(font
@@ -15386,7 +15386,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 256.54 134.62 0)
 			(effects
 				(font
@@ -15395,7 +15395,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 256.54 134.62 0)
 			(effects
 				(font
@@ -15687,7 +15687,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 146.05 33.02 0)
 			(effects
 				(font
@@ -15696,7 +15696,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 146.05 33.02 0)
 			(effects
 				(font
@@ -15793,7 +15793,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 158.75 172.72 0)
 			(effects
 				(font
@@ -15802,7 +15802,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 158.75 172.72 0)
 			(effects
 				(font
@@ -15973,6 +15973,15 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Enable" ""
+			(at 93.98 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5e575e9e-ca42-44de-8b58-eb44075976b3")
 		)
@@ -16060,7 +16069,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 76.2 124.46 0)
 			(effects
 				(font
@@ -16069,7 +16078,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 76.2 124.46 0)
 			(effects
 				(font
@@ -16295,7 +16304,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 148.59 73.66 0)
 			(effects
 				(font
@@ -16304,7 +16313,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 148.59 73.66 0)
 			(effects
 				(font
@@ -16400,7 +16409,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 68.58 124.46 0)
 			(effects
 				(font
@@ -16409,7 +16418,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 68.58 124.46 0)
 			(effects
 				(font
@@ -16505,7 +16514,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 74.93 139.7 0)
 			(effects
 				(font
@@ -16514,7 +16523,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 74.93 139.7 0)
 			(effects
 				(font
@@ -16610,7 +16619,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 123.19 50.8 0)
 			(effects
 				(font
@@ -16619,7 +16628,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 123.19 50.8 0)
 			(effects
 				(font
@@ -16716,7 +16725,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 115.57 50.8 0)
 			(effects
 				(font
@@ -16725,7 +16734,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 115.57 50.8 0)
 			(effects
 				(font
@@ -16888,7 +16897,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 154.94 148.59 0)
 			(effects
 				(font
@@ -16897,7 +16906,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 154.94 148.59 0)
 			(effects
 				(font
@@ -16993,7 +17002,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 162.56 78.74 0)
 			(effects
 				(font
@@ -17002,7 +17011,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 162.56 78.74 0)
 			(effects
 				(font
@@ -17164,7 +17173,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 83.82 139.7 0)
 			(effects
 				(font
@@ -17173,7 +17182,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 83.82 139.7 0)
 			(effects
 				(font
@@ -17269,7 +17278,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 262.89 109.22 0)
 			(effects
 				(font
@@ -17278,7 +17287,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 262.89 109.22 0)
 			(effects
 				(font
@@ -17374,7 +17383,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 162.56 41.91 0)
 			(effects
 				(font
@@ -17383,7 +17392,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 162.56 41.91 0)
 			(effects
 				(font
@@ -17480,7 +17489,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 201.93 33.02 0)
 			(effects
 				(font
@@ -17489,7 +17498,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 201.93 33.02 0)
 			(effects
 				(font
@@ -17578,7 +17587,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 133.35 73.66 0)
 			(effects
 				(font
@@ -17587,7 +17596,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 133.35 73.66 0)
 			(effects
 				(font
@@ -17890,7 +17899,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 133.35 60.96 0)
 			(effects
 				(font
@@ -17899,7 +17908,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 133.35 60.96 0)
 			(effects
 				(font
@@ -17997,7 +18006,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 163.83 130.81 0)
 			(effects
 				(font
@@ -18006,7 +18015,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 163.83 130.81 0)
 			(effects
 				(font
@@ -18301,7 +18310,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 146.05 49.53 0)
 			(effects
 				(font
@@ -18310,7 +18319,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 146.05 49.53 0)
 			(effects
 				(font
@@ -18406,7 +18415,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 227.33 151.13 0)
 			(effects
 				(font
@@ -18415,7 +18424,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 227.33 151.13 0)
 			(effects
 				(font
@@ -18522,7 +18531,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TC-6610-5-260G"
+		(property "Value" "B3FS"
 			(at 41.783 181.5521 90)
 			(effects
 				(font
@@ -18532,7 +18541,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm"
+		(property "Footprint" "Scout:SW_Push_1P1T_NO_6x6mm_H9.5mm"
 			(at 43.18 180.34 0)
 			(effects
 				(font
@@ -18577,7 +18586,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 38.1 180.34 0)
 			(effects
 				(font
@@ -18586,7 +18595,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 38.1 180.34 0)
 			(effects
 				(font
@@ -18748,7 +18757,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 220.98 95.25 0)
 			(effects
 				(font
@@ -18757,7 +18766,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 220.98 95.25 0)
 			(effects
 				(font
@@ -18896,7 +18905,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 168.91 29.21 0)
 			(effects
 				(font
@@ -18905,7 +18914,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 168.91 29.21 0)
 			(effects
 				(font
@@ -19002,6 +19011,15 @@
 			)
 		)
 		(property "LCSC" ""
+			(at 87.63 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Enable" ""
 			(at 87.63 48.26 0)
 			(effects
 				(font
@@ -19294,7 +19312,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 251.46 93.98 0)
 			(effects
 				(font
@@ -19303,7 +19321,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 251.46 93.98 0)
 			(effects
 				(font
@@ -19400,7 +19418,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 53.34 64.77 0)
 			(effects
 				(font
@@ -19409,7 +19427,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 53.34 64.77 0)
 			(effects
 				(font
@@ -19684,7 +19702,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 105.41 144.78 0)
 			(effects
 				(font
@@ -19693,7 +19711,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 105.41 144.78 0)
 			(effects
 				(font
@@ -19876,7 +19894,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 251.46 86.36 0)
 			(effects
 				(font
@@ -19885,7 +19903,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 251.46 86.36 0)
 			(effects
 				(font
@@ -20180,7 +20198,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 240.03 36.83 0)
 			(effects
 				(font
@@ -20189,7 +20207,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 240.03 36.83 0)
 			(effects
 				(font
@@ -20367,7 +20385,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 241.3 29.21 0)
 			(effects
 				(font
@@ -20376,7 +20394,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 241.3 29.21 0)
 			(effects
 				(font
@@ -20472,7 +20490,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 269.24 27.94 0)
 			(effects
 				(font
@@ -20481,7 +20499,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 269.24 27.94 0)
 			(effects
 				(font
@@ -20642,7 +20660,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 185.42 44.45 0)
 			(effects
 				(font
@@ -20651,7 +20669,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 185.42 44.45 0)
 			(effects
 				(font
@@ -20747,7 +20765,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 137.16 139.7 0)
 			(effects
 				(font
@@ -20756,7 +20774,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 137.16 139.7 0)
 			(effects
 				(font
@@ -20918,7 +20936,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 194.31 107.95 0)
 			(effects
 				(font
@@ -20927,7 +20945,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 194.31 107.95 0)
 			(effects
 				(font
@@ -21022,7 +21040,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 226.06 39.37 0)
 			(effects
 				(font
@@ -21031,7 +21049,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 226.06 39.37 0)
 			(effects
 				(font
@@ -21191,7 +21209,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 95.25 140.97 0)
 			(effects
 				(font
@@ -21200,7 +21218,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 95.25 140.97 0)
 			(effects
 				(font
@@ -21297,7 +21315,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 105.41 67.31 0)
 			(effects
 				(font
@@ -21306,7 +21324,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 105.41 67.31 0)
 			(effects
 				(font
@@ -21451,7 +21469,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 275.59 140.97 0)
 			(effects
 				(font
@@ -21460,7 +21478,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 275.59 140.97 0)
 			(effects
 				(font
@@ -21556,7 +21574,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 157.48 78.74 0)
 			(effects
 				(font
@@ -21565,7 +21583,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 157.48 78.74 0)
 			(effects
 				(font
@@ -21659,7 +21677,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 187.96 101.6 0)
 			(effects
 				(font
@@ -21668,7 +21686,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 187.96 101.6 0)
 			(effects
 				(font
@@ -21764,7 +21782,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 162.56 24.13 0)
 			(effects
 				(font
@@ -21773,7 +21791,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 162.56 24.13 0)
 			(effects
 				(font
@@ -21870,7 +21888,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 158.75 162.56 0)
 			(effects
 				(font
@@ -21879,7 +21897,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 158.75 162.56 0)
 			(effects
 				(font
@@ -22041,7 +22059,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 181.61 107.95 0)
 			(effects
 				(font
@@ -22050,7 +22068,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 181.61 107.95 0)
 			(effects
 				(font
@@ -22278,7 +22296,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 143.51 139.7 0)
 			(effects
 				(font
@@ -22287,7 +22305,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 143.51 139.7 0)
 			(effects
 				(font
@@ -22385,7 +22403,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 52.07 125.73 0)
 			(effects
 				(font
@@ -22394,7 +22412,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 52.07 125.73 0)
 			(effects
 				(font
@@ -22569,7 +22587,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 213.36 147.32 0)
 			(effects
 				(font
@@ -22578,7 +22596,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 213.36 147.32 0)
 			(effects
 				(font
@@ -22817,7 +22835,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 109.22 34.29 0)
 			(effects
 				(font
@@ -22826,7 +22844,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 109.22 34.29 0)
 			(effects
 				(font
@@ -23139,7 +23157,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 115.57 33.02 0)
 			(effects
 				(font
@@ -23148,7 +23166,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 115.57 33.02 0)
 			(effects
 				(font
@@ -23190,7 +23208,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TC-6610-5-260G"
+		(property "Value" "B3FS"
 			(at 31.623 181.5521 90)
 			(effects
 				(font
@@ -23200,7 +23218,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm"
+		(property "Footprint" "Scout:SW_Push_1P1T_NO_6x6mm_H9.5mm"
 			(at 33.02 180.34 0)
 			(effects
 				(font
@@ -23245,7 +23263,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 27.94 180.34 0)
 			(effects
 				(font
@@ -23254,7 +23272,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 27.94 180.34 0)
 			(effects
 				(font
@@ -23349,7 +23367,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 146.05 41.91 0)
 			(effects
 				(font
@@ -23358,7 +23376,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 146.05 41.91 0)
 			(effects
 				(font
@@ -23418,7 +23436,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TC-6610-5-260G"
+		(property "Value" "B3FS"
 			(at 46.863 181.5521 90)
 			(effects
 				(font
@@ -23428,7 +23446,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm"
+		(property "Footprint" "Scout:SW_Push_1P1T_NO_6x6mm_H9.5mm"
 			(at 48.26 180.34 0)
 			(effects
 				(font
@@ -23473,7 +23491,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 43.18 180.34 0)
 			(effects
 				(font
@@ -23482,7 +23500,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 43.18 180.34 0)
 			(effects
 				(font
@@ -23710,7 +23728,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 241.3 113.03 0)
 			(effects
 				(font
@@ -23719,7 +23737,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 241.3 113.03 0)
 			(effects
 				(font
@@ -23816,7 +23834,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 105.41 85.09 0)
 			(effects
 				(font
@@ -23825,7 +23843,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 105.41 85.09 0)
 			(effects
 				(font
@@ -23922,7 +23940,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 264.16 114.3 0)
 			(effects
 				(font
@@ -23931,7 +23949,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 264.16 114.3 0)
 			(effects
 				(font
@@ -24158,7 +24176,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 182.88 82.55 0)
 			(effects
 				(font
@@ -24167,7 +24185,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 182.88 82.55 0)
 			(effects
 				(font
@@ -24262,7 +24280,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 115.57 180.34 0)
 			(effects
 				(font
@@ -24271,7 +24289,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 115.57 180.34 0)
 			(effects
 				(font
@@ -24559,7 +24577,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 124.46 148.59 0)
 			(effects
 				(font
@@ -24568,7 +24586,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 124.46 148.59 0)
 			(effects
 				(font
@@ -24664,7 +24682,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 170.18 73.66 0)
 			(effects
 				(font
@@ -24673,7 +24691,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 170.18 73.66 0)
 			(effects
 				(font
@@ -25031,7 +25049,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 185.42 50.8 0)
 			(effects
 				(font
@@ -25040,7 +25058,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 185.42 50.8 0)
 			(effects
 				(font
@@ -25119,7 +25137,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 247.65 140.97 0)
 			(effects
 				(font
@@ -25128,7 +25146,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 247.65 140.97 0)
 			(effects
 				(font
@@ -25227,7 +25245,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 123.19 97.79 0)
 			(effects
 				(font
@@ -25236,7 +25254,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 123.19 97.79 0)
 			(effects
 				(font
@@ -25332,7 +25350,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 227.33 59.69 0)
 			(effects
 				(font
@@ -25341,7 +25359,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 227.33 59.69 0)
 			(effects
 				(font
@@ -25436,7 +25454,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 146.05 24.13 0)
 			(effects
 				(font
@@ -25445,7 +25463,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 146.05 24.13 0)
 			(effects
 				(font
@@ -25702,7 +25720,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TC-6610-5-260G"
+		(property "Value" "B3FS"
 			(at 25.273 181.5521 90)
 			(effects
 				(font
@@ -25712,7 +25730,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm"
+		(property "Footprint" "Scout:SW_Push_1P1T_NO_6x6mm_H9.5mm"
 			(at 26.67 180.34 0)
 			(effects
 				(font
@@ -25757,7 +25775,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 21.59 180.34 0)
 			(effects
 				(font
@@ -25766,7 +25784,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 21.59 180.34 0)
 			(effects
 				(font
@@ -25927,7 +25945,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 82.55 173.99 0)
 			(effects
 				(font
@@ -25936,7 +25954,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 82.55 173.99 0)
 			(effects
 				(font
@@ -26040,7 +26058,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 181.61 133.35 0)
 			(effects
 				(font
@@ -26049,7 +26067,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 181.61 133.35 0)
 			(effects
 				(font
@@ -26280,7 +26298,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 143.51 96.52 0)
 			(effects
 				(font
@@ -26289,7 +26307,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 143.51 96.52 0)
 			(effects
 				(font
@@ -26647,7 +26665,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 88.9 118.11 0)
 			(effects
 				(font
@@ -26656,7 +26674,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 88.9 118.11 0)
 			(effects
 				(font
@@ -26816,7 +26834,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 95.25 146.05 0)
 			(effects
 				(font
@@ -26825,7 +26843,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 95.25 146.05 0)
 			(effects
 				(font
@@ -26922,7 +26940,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" ""
 			(at 274.32 44.45 0)
 			(effects
 				(font
@@ -26931,7 +26949,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
+		(property "Sim.Enable" ""
 			(at 274.32 44.45 0)
 			(effects
 				(font
@@ -27093,7 +27111,7 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Enable" ""
+		(property "LCSC" "C14663 "
 			(at 215.9 39.37 0)
 			(effects
 				(font
@@ -27102,7 +27120,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663 "
+		(property "Sim.Enable" ""
 			(at 215.9 39.37 0)
 			(effects
 				(font
