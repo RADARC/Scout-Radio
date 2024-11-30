@@ -1,0 +1,324 @@
+(footprint "240LCD"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "33b902ec-7812-49d1-b3b0-e484fa46de53")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "240LCD"
+		(at 0 1 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "796c8b87-5e40-49f4-9515-b10c5d5ea415")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4e5c959f-7be9-429d-87a5-c27ffa0f5904")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5f9e9fa6-0ca0-49b1-89c0-ac5590051292")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ce699155-a7fe-4fa5-9990-c95717981fdf")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -15 -20)
+		(end -15 -15)
+		(stroke
+			(width 0.2)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "abc61d4b-7c60-404b-8b98-4c45a3a6e186")
+	)
+	(fp_line
+		(start -15 18)
+		(end -15 20)
+		(stroke
+			(width 0.2)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "4a3fd185-f921-4b57-bf9c-e28d32ee7d2d")
+	)
+	(fp_line
+		(start -15 20)
+		(end 15 20)
+		(stroke
+			(width 0.2)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "1ab5c5bb-6ecb-4e40-a60e-1bde17103525")
+	)
+	(fp_line
+		(start 15 -20)
+		(end -15 -20)
+		(stroke
+			(width 0.2)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "f24690e9-b530-46c7-a121-6e0d20f0ed67")
+	)
+	(fp_line
+		(start 15 20)
+		(end 15 18)
+		(stroke
+			(width 0.2)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "448ec56c-180b-42af-ac72-64a03b4c3536")
+	)
+	(fp_line
+		(start 15.0114 -15.113)
+		(end 15 -20)
+		(stroke
+			(width 0.2)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "2e75de50-78c9-49df-984f-354083730380")
+	)
+	(fp_line
+		(start -9 -20)
+		(end 9 -20)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "86bccb82-7428-4549-9bb5-a84545321c34")
+	)
+	(fp_line
+		(start -9 -16)
+		(end -9 -20)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "579f7c15-860f-440d-8e99-90ba021597bb")
+	)
+	(fp_line
+		(start 9 -20)
+		(end 9 -16)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "de4087b9-0cb4-4b21-b12b-f24c1226ec61")
+	)
+	(fp_line
+		(start 9 -16)
+		(end -9 -16)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "7f562d9d-455e-43cd-a18b-b5527c7e326b")
+	)
+	(fp_text user "1.3 inch TFT Display"
+		(at -7.112 -9.3472 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "04126939-41cd-486e-bb1c-1546724cae04")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "240 * 240 pixels"
+		(at -5.7912 -6.9088 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "f67fead0-ea33-4b86-bd99-9b31cd55d22d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at -11.39 -17.11)
+		(size 3.5 3.5)
+		(drill 2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "36371bb7-7e62-4976-8da9-ae24d1dc8ae3")
+	)
+	(pad "1" thru_hole circle
+		(at -11.39 17.11)
+		(size 3.5 3.5)
+		(drill 2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "409d49e3-f15d-4300-bf33-108bb5d3e299")
+	)
+	(pad "1" thru_hole rect
+		(at -7.62 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "313f8082-f52c-425d-bddb-1387ffeca20a")
+	)
+	(pad "1" thru_hole circle
+		(at 11.39 -17.11)
+		(size 3.5 3.5)
+		(drill 2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "219f5a69-9cd7-4c5d-a62d-2fa51284c3eb")
+	)
+	(pad "1" thru_hole circle
+		(at 11.39 17.11)
+		(size 3.5 3.5)
+		(drill 2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "0ccec81e-6c9f-4fa7-bc26-25dbe3a44dde")
+	)
+	(pad "2" thru_hole oval
+		(at -5.08 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "0f440a50-58c7-4971-8fd3-d62d8f13b1a9")
+	)
+	(pad "3" thru_hole oval
+		(at -2.54 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "63f68931-2759-4edf-8319-01191c2720be")
+	)
+	(pad "4" thru_hole oval
+		(at 0 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "3d73a352-3e97-425d-bbd5-276f405fa839")
+	)
+	(pad "5" thru_hole oval
+		(at 2.54 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "09692076-eadc-4d80-b22e-9d7b4980144b")
+	)
+	(pad "6" thru_hole oval
+		(at 5.08 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "e5fe8fdf-cb1d-477e-8fe1-1cb58236dad4")
+	)
+	(pad "7" thru_hole oval
+		(at 7.62 -18.11)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(thermal_bridge_angle 45)
+		(uuid "731c82a2-d97a-4c9f-a05d-b9e0c53ce4a5")
+	)
+	(model "${KIPRJMOD}/3D_Models/1.3 TFT IPS.stp"
+		(offset
+			(xyz 0 0 9.5)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+	(model "${KICAD8_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x07_P2.54mm_Vertical.wrl"
+		(offset
+			(xyz -7.5 18 9.5)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 180 0 90)
+		)
+	)
+	(model "${KICAD8_3DMODEL_DIR}/Connector_PinSocket_2.54mm.3dshapes/PinSocket_1x07_P2.54mm_Vertical.wrl"
+		(offset
+			(xyz 7.5 18 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 90)
+		)
+	)
+)

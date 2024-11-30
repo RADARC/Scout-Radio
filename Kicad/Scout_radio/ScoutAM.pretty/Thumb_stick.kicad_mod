@@ -1,0 +1,208 @@
+(footprint "Thumb_stick"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "1434f0ae-f010-48a6-9de5-5119244b6e9d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "Thumb_stick"
+		(at 0 1 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "a0c5d279-95d7-4b7b-897c-e7332cc7ee49")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "728a7a29-590a-4bb0-b208-6ed01c7b5959")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "964a200d-a559-496a-93b8-950a7ddc2ea9")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "8f3bbdef-bb82-4fad-9201-ce46d551ff6e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -9.2 -7.75)
+		(end 9.2 -7.75)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "4602de33-5bb1-4ea8-b42d-b186c3047bd6")
+	)
+	(fp_line
+		(start -9.2 9.25)
+		(end -9.2 -7.75)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "1486a909-03a3-4890-ad30-a0dec9a154f2")
+	)
+	(fp_line
+		(start -9.1 -7.75)
+		(end -9.1 -9.45)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "f3859f49-b13f-4d92-a37c-d841c13976a9")
+	)
+	(fp_line
+		(start -5.3 -9.45)
+		(end -5.3 -7.75)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "bc5e75c9-ee93-44a3-85a1-3e157c43c5e6")
+	)
+	(fp_line
+		(start 9.2 -7.75)
+		(end 9.2 9.25)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "a24d5b85-6ddd-48c6-a683-f1a2fe5e5fc6")
+	)
+	(fp_line
+		(start 9.2 5.05)
+		(end 10.9 5.05)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "b0a39e0e-a606-4175-9f1c-fdaeef01bfe2")
+	)
+	(fp_line
+		(start 9.2 9.25)
+		(end -9.2 9.25)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "b7b6214d-23f3-4110-9325-117e428a9856")
+	)
+	(fp_line
+		(start 9.2084 9.017)
+		(end 10.9084 9.017)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "902643de-c6a7-4f21-95bb-774449d57b82")
+	)
+	(fp_arc
+		(start -9.1 -9.45)
+		(mid -7.213592 -11.3352)
+		(end -5.3272 -9.449983)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "bf6eadb0-2442-48ec-bb4f-0c7cb3c8d75b")
+	)
+	(fp_arc
+		(start 10.9 5.05)
+		(mid 12.884999 7.035)
+		(end 10.9 9.02)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "025f9124-331c-4655-b434-b779ab29d342")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 7.5 0)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(fill none)
+		(layer "F.SilkS")
+		(uuid "f101ab2d-3890-455d-aca6-d22f6c77aefa")
+	)
+	(pad "" np_thru_hole circle
+		(at -7.2 -9.45)
+		(size 2.286 2.286)
+		(drill 1.6)
+		(layers "F&B.Cu" "*.Mask")
+		(uuid "c522a194-2de6-425e-ad36-7f8907536ee7")
+	)
+	(pad "" np_thru_hole circle
+		(at 10.9 7.05)
+		(size 2.286 2.286)
+		(drill 1.6)
+		(layers "F&B.Cu" "*.Mask")
+		(uuid "eef4b16d-239d-40cf-8801-b5218354ff20")
+	)
+	(model "${KIPRJMOD}/3D_Models/Switch JoyCon joystick v2.step"
+		(offset
+			(xyz -101.5 -46.5 3.5)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 90 90 0)
+		)
+	)
+)
