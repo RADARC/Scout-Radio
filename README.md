@@ -76,7 +76,7 @@ A side operated rotary encoder is installed on the prototype, but we might look 
 ### Audio Output
 The stereo audio audio output from the radio chip is amplified to provide an output to headphones of external speakers. This is then further amplified to drive an on board loudspeaker.
 The output from the radio chip is also fed to the ADC inputs on the Pi Pico to enable the Pi Pico to provide USB or Bluetooth feed to an external program such as WSJT-X. The Pi Pico may be able to decode locally digital protocols such as FT8 and display locally.
-The Pi Pico also provides a PWM audio output for beeps and music for simple games.
+The Pi Pico also provides a PWM audio output for beeps, morse code, and music for simple games.
 
 
 ### 1.3 inch IPS Colour LCD Display
@@ -85,9 +85,21 @@ The Pi Pico also provides a PWM audio output for beeps and music for simple game
 A colour LCD display was chosen for the device. Limited space allows for a [240 by 240 pixel 1.3 inch IPS display](https://www.smart-prototyping.com/1_3-inch-TFT-IPS-Display-Module-ST7789-SPI-240-240).
 The module is based on the ST7789 display IC and is supported by both Micropython and CircuitPython grahics libraries.
 
+### Torch
 
+A high intensity white LED is provided under processor control to be used as a torch or for visual signalling.
 
-##   Estimated Costs
+### Compass Option
+![Compass Image](./images/Compass_Image.jpg)
+
+An optional compass module based on the LSM303 magnetometer, Compass and accelerometer device can be fitted.
+
+### GPS Option
+![GPS Image](./images/GPS_Image.jpg)
+
+An optional GPS module based on the ATGM336H GPS receiver can be fitted 
+
+## Estimated Costs
 
 ## PCB Files
 
