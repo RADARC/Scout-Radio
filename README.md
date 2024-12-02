@@ -99,7 +99,40 @@ An optional compass module based on the LSM303 magnetometer, Compass and acceler
 
 An optional GPS module based on the ATGM336H GPS receiver can be fitted 
 
-## Estimated Costs
+## Costs
+The following costs are based on the JLCPCB prototype build of five units.
+All costs are in UK pounds and include shipping and taxes
+
+### Component Costs
+| Item      | Cost £      |
+|-----------|-----------|
+|Placed components| 8.68| 
+|Unplaced components| 8.44|
+||--------|
+|Total £| 17.12|
+
+The above component cost includes PCB, SMT components, Pi Pico, display and all switches and connectors. I does not include a case.
+The placed components were placed by JLCPCB. This cost is dominated by the radio chip and rotary encoder, better sourcing could easily get the component cost under £15.
+
+### Optional Components
+| Item       | Cost £    |
+|---|---|
+|LiPo Battery | 2.1|
+|SMA antenna| 2.59|
+|Compass module| 2.75|
+|GPS Module|  2.92      |
+
+### Build Costs
+The build costs are again based on the five off prototype, so maybe not very representative of a larger batch. I excluded from the build the through hole components to save cost, also a couple of components that they did not have in stock.
+Build costs are driven by a mix of fixed costs per order, setup, solder stencil, etc. Also Costs per board and joint.There are then costs related to what components are used. Common components are already mounted on the pick and place machine and have low cost per component ( fraction of cent). Less common components are often low cost, but we pay $3 per component type to load the component spool to the pick and place, this cost often dominates the assembly costs.
+Assembly of through hole components and components and edge mounted components is possible but would attract increased cost.
+
+For the five prototypes:
+
+![Assembly Pricing](./images/Scout_Radio_Assembly_Costs.jpg)
+
+The placed component costs can be excluded, so $44.32 for five. With tax and shipping this is £11.08 per board. Rather expensive at prototype level, but for for a decent board volume (25) when I run through the pricing calculator I get £2.20 per board.
+
 
 ## PCB Files
 
