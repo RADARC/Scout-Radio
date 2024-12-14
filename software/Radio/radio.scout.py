@@ -20,9 +20,9 @@ from analogio import AnalogIn
 bands = [ "160m band", " 80m band", " 40m band", " 20m band",
           " 10m band", "  6m band" ]
 
-pin_pwm = DigitalInOut(board.GP20)
-pin_pwm.direction = Direction.OUTPUT
-pin_pwm.value = False
+#pin_pwm = DigitalInOut(board.GP20)
+#pin_pwm.direction = Direction.OUTPUT
+#pin_pwm.value = False
 
 
 switch1 = DigitalInOut(board.GP2)

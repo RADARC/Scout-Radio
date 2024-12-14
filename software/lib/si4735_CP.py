@@ -572,7 +572,7 @@ class SI4735:
     
     def downloadPatch(self):
       
-        with open('patch.csg', mode="rt") as f:
+        with open('./Radio/patch.csg', mode="rt") as f:
             line = f.readline()
             while line:
                 if not line.startswith("#"):
