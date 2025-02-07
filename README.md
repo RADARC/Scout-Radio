@@ -145,12 +145,4 @@ In priority order:
 * Design and implement standalone POST/BIST for target hardware (M)
 * Document possible use cases (M)
 * Design and implement production test software. Possibly involves use of
-  laptop. Scouts need to know if what they have built works :-)
-
-
-
-
-
-
-
-
+  laptop. Scouts need to know if what they have built works :-) (M)
