@@ -140,7 +140,7 @@ class TestBoardCP(TestBoard):
         assert self.m_mountpoint
 
         for targetfile in self.m_files:
-            target_fullpath = os.path.join(self.m_mountpoint, targetfile)
+            target_fullpath = os.path.join(self.m_mountpoint, os.path.basename(targetfile))
             shutil.copyfile(targetfile, target_fullpath)
 
     def copy_files_from_target(self):
