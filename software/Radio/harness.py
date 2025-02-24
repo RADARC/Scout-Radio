@@ -15,14 +15,14 @@ if circuitpython():
 elif micropython():
     from machine import Pin, I2C
 
-g_radio = None
+G_RADIO = None
 
 # grab a singleton radio
 def getradio():
     """ return a singleton si4735 device """
-    global g_radio
+    global G_RADIO
 
-    if not g_radio:
+    if not G_RADIO:
         if circuitpython():
             reset_pin = DigitalInOut(board.GP17)
             reset_pin.direction = Direction.OUTPUT
@@ -44,9 +44,9 @@ def getradio():
             i2c = I2C(0, scl=Pin(5), sda=Pin(4))
             i2c_address = 0x11
 
-        g_radio = si4735.SI4735(i2c, reset_pin, i2c_address)
+        G_RADIO = si4735.SI4735(i2c, i2c_address, reset_pin)
 
-    return g_radio
+    return G_RADIO
 
 def testfm(radio, freq):
 #    radio.reset()
@@ -129,4 +129,3 @@ def reportfirmware(radio):
 # radio.setRDSConfig(1,3,3,3,3)
 # test(radio, freq)
 # contrssi(getradio())
-
