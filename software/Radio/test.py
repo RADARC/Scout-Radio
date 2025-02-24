@@ -11,7 +11,7 @@ import testboard
 # hack - should be able to run unit tests in any order eventually
 #unittest.TestLoader.sortTestMethodsUsing = None
 
-TARGETFILES = ["radarcplatform.py", "harness.py", "si4735_CP.py"]
+TARGETFILES = ["../lib/radarcplatform.py", "harness.py", "../lib/si4735_CP.py"]
 
 SERIALPORT = "/dev/ttyACM0"
 
