@@ -244,10 +244,16 @@ while True:
     last_position = position
     
     if switch1.value is False:
-            
-            radio.setFrequency(radio.getFrequency()+1)
-           
-            displayFrequency()
+            #Bandwidth
+            if radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
+                oldBW = radio.getSSBbandwidth()
+                
+                if (oldBW == 5):
+                    radio.setSSBAudioBandwidth(0)
+                else:
+                    radio.setSSBAudioBandwidth(oldBW+1)
+                
+             
             
     
     if switch5.value is False:
@@ -269,6 +275,8 @@ while True:
             radio.setFrequency(9703)
             
         displayFrequency()
+        
+   
    
     if time.time()-t > 1:
         

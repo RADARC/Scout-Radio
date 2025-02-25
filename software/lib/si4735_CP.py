@@ -401,6 +401,9 @@ class SI4735:
     def getMode(self):
         return self.currentMode
 
+    def getSSBbandwidth(self):
+        return self.ssbMode.audio_bandwidth
+
 
     def reset(self):
         print("Reset")
