@@ -389,6 +389,19 @@ class SI4735:
 
         self.rdsLastABFlag = 0
 
+        self.frequency = 0.0 #current frequency
+        self.volume = 30 #current volume
+
+    def getFrequency(self):
+        return self.frequency
+
+    def getVolume(self):
+        return self.volume
+
+    def getMode(self):
+        return self.currentMode
+
+
     def reset(self):
         print("Reset")
         pin_level_delay = 0.010
@@ -467,6 +480,8 @@ class SI4735:
             freeze = 1
         else:
             freeze = 0
+
+        self.frequency = frequency
 
         #ba = bytearray(struct.pack("h", frequency))
         freq = frequency.to_bytes(2,'little')
@@ -738,6 +753,8 @@ class SI4735:
         print("Set RDS Config")
 
     def setVolume(self, level):
+
+        self.volume = level
         Property = Si47xProperty()
         Property.set_value(RX_VOLUME)
         Param = Si47xProperty()

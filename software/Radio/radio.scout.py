@@ -94,6 +94,18 @@ text_area = label.Label(terminalio.FONT, text=text, color=0xFFFF00)
 text_group.append(text_area)  # Subgroup for text scaling
 splash.append(text_group)
 
+text_group = displayio.Group(scale=2, x=48, y=160)
+text = ""
+text_station = label.Label(terminalio.FONT, text=text, color=0xFFFF00)
+text_group.append(text_station)  # Subgroup for text scaling
+splash.append(text_group)
+
+text_group = displayio.Group(scale=2, x=48, y=160)
+text = ""
+text_signalstrength = label.Label(terminalio.FONT, text=text, color=0xFFFF00)
+text_group.append(text_signalstrength)  # Subgroup for text scaling
+splash.append(text_group)
+
 
 
 i2c = busio.I2C( board.GP19, board.GP18)
@@ -103,6 +115,15 @@ i2c = busio.I2C( board.GP19, board.GP18)
 si4735_reset_pin = DigitalInOut(board.GP17)
 si4735_reset_pin.direction = Direction.OUTPUT
 radio = si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin)
+
+def displayFrequency():
+    if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
+        text_area.text = "FM " + str(radio.getFrequency()/100)
+                
+    elif radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
+        text_area.text = "SSB " + str(radio.getFrequency()/1000)
+
+
    
 #def set_txrx(txrx_no):
     #if(txrx_no < 2):
@@ -119,53 +140,44 @@ radio = si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin)
 #set_txrx(1)
 #set_band(0)
 
-freq = 9420
+
 radio.reset()
 addr = radio.get_device_i2c_address()
 if addr == 0:
     sys.exit()
     
 print("Address is ",hex(addr))
+radio.setFM()
+radio.setRDSConfig(1,3,3,3,3)
+radio.setFrequency(9703)
+displayFrequency()
 
-radio.patchPowerUp()
-#radio.getFirmware()
-#radio.setI2CFastMode()
-radio.downloadPatch()
-#radio.setI2CStandardMode()
-#radio.getFirmware()
-# 
-radio.setSSB(2)
-radio.setFrequency(14000)
 
-radio.setSSBConfig(1, 0, 0, 1, 0, 1)
+# time.sleep(2)
+# radio.setSSBAudioBandwidth(2)
+# print("bandwidth 2")
+# time.sleep(2)
 
-time.sleep(2)
-radio.setSSBAudioBandwidth(2)
-print("bandwidth 2")
-time.sleep(2)
-radio.setSSBAudioBandwidth(3)
-print("bandwidth 3")
-time.sleep(2)
-radio.setSSBAudioBandwidth(4)
-print("bandwidth 4")
-time.sleep(2)
-radio.setSSBAudioBandwidth(1)
-print("bandwidth 1")
-time.sleep(2)
-radio.setAM()
-radio.setFrequency(198)
-time.sleep(2)
+# print("bandwidth 3")
+# time.sleep(2)
+# radio.setSSBAudioBandwidth(4)
+# print("bandwidth 4")
+# time.sleep(2)
+# radio.setSSBAudioBandwidth(1)
+# print("bandwidth 1")
+# time.sleep(2)
+# radio.setAM()
+# radio.setFrequency(198)
+# time.sleep(2)
 
 #radio.getFirmware()
 #radio.setFrequency(freq)
 
-radio.setFM()
-radio.getFirmware()
+
+#radio.getFirmware()
 
 
-radio.setRDSConfig(1,3,3,3,3)
-radio.setFrequency(9703)
-val=9703
+
 oldvol=32 #int((1 - (pot0.value / 65535)) * 63)
 radio.setVolume(oldvol)
 
@@ -204,52 +216,51 @@ while True:
         oldvol=newvol
         radio.setVolume(newvol)
         print(newvol)
-        
-    #val_new = r.value()
-
-   # if val_old != val_new:
-     #   val_old = val_new
-     #   print("freq =", val_new)
-        #set_band(val_new)
-      #  display.fill_rect(0, 8, 72, 8,0) 
-      #  display.text(str(val_new), 0, 8,1)
-      #  display.show()
-      #  radio.setFrequency(val_new)
-       
-       
-   # button_new = pin_button()
-    
-  #  if button_old != button_new:
-   #     button_old = button_new
-   #     print("txrx =", button_new)
-   #     if button_new == 1:
-  #          set_txrx(1)
-  #          display.fill_rect(82, 8, 20, 8,1)
- #           display.text('Rx', 84, 8, 0)
-  #          display.show()
-  #      else:
-  #          set_txrx(0)
-   #         display.fill_rect(82, 8, 20, 8,1)
-   #         display.text('Tx', 84, 8, 0)
-  #          display.show()
+ 
 
     time.sleep(0.050)
     
     if switch1.value is False:
-            val = val + 1
-            radio.setFrequency(val)
-            print(val)
+            
+            radio.setFrequency(radio.getFrequency()+1)
+           
+            displayFrequency()
+            
+    
+    if switch2.value is False:
+        if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
+            #Go to SSB Mode
+            text_area.text = "Please wait..."
+            radio.powerDown()
+            radio.patchPowerUp()
+            radio.downloadPatch()
+
+            radio.setSSB(2)
+            radio.setFrequency(14000)
+
+            radio.setSSBConfig(1, 0, 0, 1, 0, 1)
+            
+        elif radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
+            radio.setFM()
+            radio.setRDSConfig(1,3,3,3,3)
+            radio.setFrequency(9703)
+            
+        displayFrequency()
    
     if time.time()-t > 1:
         
        
             
         print(radio.getCurrentReceivedSignalQuality(0)["rssi"])
-      
-        radio.getRDSStatus(0,0,0)
-        print(radio.station_name)
-        print(radio.station_text)
         
-        text_area.text = radio.station_name
+        text_signalstrength.text = "rssi :" + str(radio.getCurrentReceivedSignalQuality(0)["rssi"])
+      
+        if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
+            radio.getRDSStatus(0,0,0)
+            print(radio.station_name)
+            print(radio.station_text)
+        
+            text_station.text = radio.station_name
         
         t= time.time()
+        
