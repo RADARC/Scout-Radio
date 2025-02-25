@@ -9,6 +9,7 @@ import busio
 import sys
 import displayio
 import terminalio
+import rotaryio
 from digitalio import DigitalInOut, Direction, Pull
 from fourwire import FourWire
 from adafruit_st7789 import ST7789
@@ -54,6 +55,10 @@ torch.value = False
 
 switch_Enc.direction = Direction.INPUT
 switch_Enc.pull = Pull.UP
+
+encoder = rotaryio.IncrementalEncoder(board.GP14, board.GP15)
+last_position = 0
+
 displayio.release_displays()
 
 #tft_cs = board.GP9
@@ -220,6 +225,24 @@ while True:
 
     time.sleep(0.050)
     
+    position = encoder.position
+    if last_position is None or position != last_position:
+        
+        if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
+            increment=10
+        elif radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
+            increment=1
+            
+        if position > last_position:
+            radio.setFrequency(radio.getFrequency()+increment)
+           
+        elif position < last_position:
+            radio.setFrequency(radio.getFrequency()-increment)
+           
+        displayFrequency()
+            
+    last_position = position
+    
     if switch1.value is False:
             
             radio.setFrequency(radio.getFrequency()+1)
@@ -227,7 +250,7 @@ while True:
             displayFrequency()
             
     
-    if switch2.value is False:
+    if switch5.value is False:
         if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
             #Go to SSB Mode
             text_area.text = "Please wait..."
