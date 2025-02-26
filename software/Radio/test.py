@@ -158,6 +158,39 @@ class Si4735test(unittest.TestCase):
     def test12(self):
         self.test09()
 
+    def test13(self):
+        # Test SSB Sideband switching
+        text = board.sendrepl('radio.reset()')
+        formatoutput(text)
+
+        text = board.sendrepl('radio.patchPowerUp()')
+        formatoutput(text)
+
+        text = board.sendrepl('radio.downloadPatch()')
+        formatoutput(text)
+
+        # Set LSB
+        text = board.sendrepl('radio.setSSB(1)')
+        formatoutput(text)
+
+        text = board.sendrepl('radio.setFrequency(14000)')
+        formatoutput(text)
+
+        time.sleep(10)
+
+         # Set USB
+        text = board.sendrepl('radio.setSSB(2)')
+        formatoutput(text)
+
+        text = board.sendrepl('radio.setFrequency(14000)')
+        formatoutput(text)
+
+        time.sleep(10)
+
+
+
+
+
 if __name__=="__main__":
     unittest.main(failfast=True)
 
