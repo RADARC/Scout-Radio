@@ -525,10 +525,11 @@ class SI4735:
             print("FM")
 
 
-        #print(barray)
+        print(barray)
         self.si4735_i2c.writeto(barray)
         time.sleep(MAX_DELAY_AFTER_SET_FREQUENCY)
         print("setFrequencyEnd")
+        #print(struct.unpack("b",barray))
         print(self.currentTune)
 
 
