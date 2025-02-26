@@ -38,6 +38,9 @@ AM_CURRENT_MODE = const(1)
 SSB_CURRENT_MODE = const(2)
 NBFM_CURRENT_MODE = const(3)
 
+SSB_SIDEBAND_LSB = 1
+SSB_SIDEBAND_USB = 2
+
 DEFAULT_CURRENT_AVC_AM_MAX_GAIN = const(36)
 
 AM_AUTOMATIC_VOLUME_CONTROL_MAX_GAIN = const(0x3103)
@@ -403,6 +406,9 @@ class SI4735:
 
     def getSSBbandwidth(self):
         return self.ssbMode.audio_bandwidth
+
+    def getSSBsideband(self):
+        return self.currentSsbStatus
 
 
     def reset(self):
