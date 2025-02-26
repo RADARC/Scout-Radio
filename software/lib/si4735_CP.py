@@ -119,15 +119,26 @@ class Si47xSetFrequency:
         self.tune_frequency_low_byte = tune_frequency_low_byte
         self.antenna_tuning_capacitor_high_byte = antenna_tuning_capacitor_high_byte
         self.antenna_tuning_capacitor_low_byte = antenna_tuning_capacitor_low_byte
+
     def get_raw(self):
         """ Convert the structured data to raw byte representation """
-        return bytearray([
-            (self.fast_tuning << 7) | (self.freeze << 6) | (self.dummy1 << 2) | self.usblsb_selection,
-            self.tune_frequency_high_byte,
-            self.tune_frequency_low_byte,
-            self.antenna_tuning_capacitor_high_byte,
-            self.antenna_tuning_capacitor_low_byte
-        ])
+        if self.usblsb_selection > 0:
+             return bytearray([
+                (self.usblsb_selection << 6)|0|0|0|0,
+                self.tune_frequency_high_byte,
+                self.tune_frequency_low_byte,
+                self.antenna_tuning_capacitor_high_byte,
+                self.antenna_tuning_capacitor_low_byte
+            ])
+
+        else:
+            return bytearray([
+                (self.fast_tuning << 7) | (self.freeze << 6) | (self.dummy1 << 2) | self.usblsb_selection,
+                self.tune_frequency_high_byte,
+                self.tune_frequency_low_byte,
+                self.antenna_tuning_capacitor_high_byte,
+                self.antenna_tuning_capacitor_low_byte
+            ])
 
 
 class Si47xFirmwareInformation:
@@ -409,6 +420,10 @@ class SI4735:
 
     def getSSBsideband(self):
         return self.currentSsbStatus
+
+    def setSSBsideband(self,usblsb):
+        self.currentSsbStatus = usblsb
+        self.setFrequency(self.frequency)
 
 
     def reset(self):
