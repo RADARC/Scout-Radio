@@ -1,3 +1,4 @@
+import sys
 import os
 components = ['Display', 'GPS', 'images', 'lib', 'LSM303', 'Morse', 'Radio']
 
@@ -6,9 +7,13 @@ def installcomponent(component):
 
     if os.path.exists(os.path.join(component, installfile)):
         print(f"installing {component}")
-        os.system(f"cd {component}; python3 {installfile}")
-        #os.chdir(os.path.dirname(installfile))
-        #exec(open(os.path.basename(installfile)).read())
+        rc = os.system(f"cd {component}; python3 {installfile}")
+
+        #
+        # propagate failure up
+        #
+        if rc != 0:
+            sys.exit(f"Install failed on component {component}")
 
 for component in components:
     installcomponent(component)
