@@ -76,7 +76,7 @@ class TestBoard:
                 source_fullpath = src #os.path.join(self.m_homedir, src)
                 target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
-                self.ensuredir(target_homedir)
+                self.m_fileops.ensuredir(target_homedir)
 
                 if dst[0] != '/':
                     target_fullpath = os.path.join(target_homedir, dst)
@@ -84,17 +84,17 @@ class TestBoard:
                     target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
 
                 if not os.path.isdir(source_fullpath):
-                    self.ensuredir(os.path.dirname(target_fullpath))
+                    self.m_fileops.ensuredir(os.path.dirname(target_fullpath))
 
                 # possibly be more friendly
                 assert(os.path.exists(source_fullpath))
 
                 if os.path.isdir(source_fullpath):
-                    self.deltree(target_fullpath)
+                    self.m_fileops.deltree(target_fullpath)
 
-                    self.copytree(source_fullpath, target_fullpath)
+                    self.m_fileops.copytree(source_fullpath, target_fullpath)
                 else:
-                    self.copyfile(source_fullpath, target_fullpath)
+                    self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
     def copy_files_from_target(self):
         """ stub method intentionally not implemented in base class """
@@ -129,6 +129,24 @@ class TestBoard:
         """ stub method intentionally not implemented in base class """
         not_implemented()
 
+class FileOPsCP:
+    """ file/directory operations collection for Circuit Python """
+
+    def ensuredir(self, dirpath):
+        """ mkdir -p equivalent """
+        if not os.path.exists(dirpath):
+            os.makedirs(dirpath)
+
+    def deltree(self, dirpath):
+        if os.path.exists(dirpath):
+            shutil.rmtree(dirpath)
+
+    def copytree(self, src, dst):
+        shutil.copytree(src, dst)
+
+    def copyfile(self, src, dst):
+        shutil.copyfile(src, dst)
+
 
 class TestBoardCP(TestBoard):
     """ A CircuitPython scout radio test board """
@@ -139,6 +157,7 @@ class TestBoardCP(TestBoard):
         self.m_ser.baudrate = 115200
         self.m_ser.port = serialport
         self.m_mountpoint = None
+        self.m_fileops = FileOPsCP()
 
         #
         # work out where the circuit python filesystem is mounted
@@ -173,21 +192,6 @@ class TestBoardCP(TestBoard):
         #
         return super().sendrepl(cmd + "\r\n")
 
-    def ensuredir(self, dirpath):
-        """ mkdir -p equivalent """
-        if not os.path.exists(dirpath):
-            os.makedirs(dirpath)
-
-    def deltree(self, dirpath):
-        if os.path.exists(target_fullpath):
-            shutil.rmtree(target_fullpath)
-
-    def copytree(self, src, dst):
-        shutil.copytree(src, dst)
-
-    def copyfile(self, src, dst):
-        shutil.copyfile(src, dst)
-
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
 
@@ -206,6 +210,29 @@ class TestBoardCP(TestBoard):
         #
         self.sendrepl("")
 
+class FileOPsMP:
+    """ file/directory operations collection for MicroPython """
+
+    def __init__(self, board):
+        self.m_board = board
+        self.m_rshell_fileop_timeout = 30
+
+    def ensuredir(self, dirpath):
+        """ mkdir -p equivalent """
+        response = self.m_board.sendrshellcmd(f"ls {dirpath}")
+
+        if "Cannot access" in response:
+            self.m_board.sendrshellcmd(f"mkdir {dirpath}")
+
+    def deltree(self, dst):
+        self.m_board.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
+
+    def copytree(self, src, dst):
+        self.m_board.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
+
+    def copyfile(self, src, dst):
+        self.m_board.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
+
 
 class TestBoardMP(TestBoard):
     """ A MicroPython scout radio test board """
@@ -214,7 +241,7 @@ class TestBoardMP(TestBoard):
         """ Create a MicroPython scout radio test board """
 
         self.m_mountpoint = "/pyboard"
-        self.m_rshell_fileop_timeout = 30
+        self.m_fileops = FileOPsMP(self)
 
         super().__init__()
 
@@ -235,22 +262,6 @@ class TestBoardMP(TestBoard):
         self.m_child.expect("> ", timeout)
 
         return self.m_child.before.decode()
-
-    def ensuredir(self, dirpath):
-        """ mkdir -p equivalent """
-        response = self.sendrshellcmd(f"ls {dirpath}")
-
-        if "Cannot access" in response:
-            self.sendrshellcmd(f"mkdir {dirpath}")
-
-    def deltree(self, dst):
-        self.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
-
-    def copytree(self, src, dst):
-        self.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
-
-    def copyfile(self, src, dst):
-        self.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
 
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
