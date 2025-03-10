@@ -61,8 +61,40 @@ class TestBoard:
         return self.m_child.before
 
     def copy_files_to_target(self):
-        """ stub method intentionally not implemented in base class """
-        not_implemented()
+        """ copy files specified in 'setfiles' method from host to target """
+
+        assert self.m_mountpoint
+
+        if self.m_files:
+            for item in self.m_files:
+                if isinstance(item, str):
+                    src = item
+                    dst = item
+                else:
+                    (src, dst) = item
+
+                source_fullpath = src #os.path.join(self.m_homedir, src)
+                target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
+                self.ensuredir(target_homedir)
+
+                if dst[0] != '/':
+                    target_fullpath = os.path.join(target_homedir, dst)
+                else:
+                    target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
+
+                if not os.path.isdir(source_fullpath):
+                    self.ensuredir(os.path.dirname(target_fullpath))
+
+                # possibly be more friendly
+                assert(os.path.exists(source_fullpath))
+
+                if os.path.isdir(source_fullpath):
+                    self.deltree(target_fullpath)
+
+                    self.copytree(source_fullpath, target_fullpath)
+                else:
+                    self.copyfile(source_fullpath, target_fullpath)
 
     def copy_files_from_target(self):
         """ stub method intentionally not implemented in base class """
@@ -146,43 +178,15 @@ class TestBoardCP(TestBoard):
         if not os.path.exists(dirpath):
             os.makedirs(dirpath)
 
-    def copy_files_to_target(self):
-        """ copy files specified in 'setfiles' method from host to target """
+    def deltree(self, dirpath):
+        if os.path.exists(target_fullpath):
+            shutil.rmtree(target_fullpath)
 
-        assert self.m_mountpoint
+    def copytree(self, src, dst):
+        shutil.copytree(src, dst)
 
-        if self.m_files:
-            for item in self.m_files:
-                if isinstance(item, str):
-                    src = item
-                    dst = item
-                else:
-                    (src, dst) = item
-
-                source_fullpath = src #os.path.join(self.m_homedir, src)
-                target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
-
-                self.ensuredir(target_homedir)
-
-                if dst[0] != '/':
-                    target_fullpath = os.path.join(target_homedir, dst)
-                else:
-                    target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
-
-                if not os.path.isdir(source_fullpath):
-                    self.ensuredir(os.path.dirname(target_fullpath))
-
-                # possibly be more friendly
-                assert(os.path.exists(source_fullpath))
-
-                if os.path.isdir(source_fullpath):
-                    if os.path.exists(target_fullpath):
-                        shutil.rmtree(target_fullpath)
-
-                    shutil.copytree(source_fullpath, target_fullpath)
-                else:
-                    shutil.copyfile(source_fullpath, target_fullpath)
-
+    def copyfile(self, src, dst):
+        shutil.copyfile(src, dst)
 
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
@@ -208,6 +212,10 @@ class TestBoardMP(TestBoard):
 
     def __init__(self):
         """ Create a MicroPython scout radio test board """
+
+        self.m_mountpoint = "/pyboard"
+        self.m_rshell_fileop_timeout = 30
+
         super().__init__()
 
     def create_pexepect_child(self):
@@ -235,43 +243,14 @@ class TestBoardMP(TestBoard):
         if "Cannot access" in response:
             self.sendrshellcmd(f"mkdir {dirpath}")
 
-    def copy_files_to_target(self):
-        """ copy files specified in 'setfiles' method from host to target """
+    def deltree(self, dst):
+        self.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
 
-        # TODO avoid duplication with circuit python
-        if self.m_files:
-            for item in self.m_files:
-                if isinstance(item, str):
-                    src = item
-                    dst = item
-                else:
-                    (src, dst) = item
+    def copytree(self, src, dst):
+        self.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
 
-                source_fullpath = src #os.path.join(self.m_homedir, src)
-                target_homedir = os.path.join("/pyboard", os.path.basename(self.m_homedir))
-
-                self.ensuredir(target_homedir)
-
-                targetdir = os.path.dirname(dst)
-
-                if dst[0] != '/':
-                    target_fullpath = os.path.join(target_homedir, dst)
-                else:
-                    target_fullpath = os.path.join("/pyboard", dst[1:])
-
-                if not os.path.isdir(source_fullpath):
-                    self.ensuredir(os.path.dirname(target_fullpath))
-
-                # possibly be more friendly
-                #print(source_fullpath)
-                assert(os.path.exists(source_fullpath))
-
-                timeout = 30
-                if os.path.isdir(source_fullpath):
-                    self.sendrshellcmd(f"rm -r {target_fullpath}", timeout = timeout)
-                    self.sendrshellcmd(f"cp -r {src} {target_fullpath}", timeout = timeout)
-                else:
-                    self.sendrshellcmd(f"cp {src} {target_fullpath}", timeout = timeout)
+    def copyfile(self, src, dst):
+        self.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
 
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
