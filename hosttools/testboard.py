@@ -3,6 +3,10 @@ get a python command line on USB serial port and synchronise files
 for MicroPython and CircuitPython devices
 """
 
+#
+# TODO add source/target filenames & locations in copyfiles.
+# consider using a dict. keywords source/target or something.
+#
 import sys
 import os
 import subprocess
@@ -28,8 +32,9 @@ class TestBoard:
         """ stub method intentionally not implemented in base class """
         not_implemented()
 
-    def setfiles(self, targetfiles):
+    def setfiles(self, homedir, targetfiles):
         """ configure the list of host python files to be run on target """
+        self.m_homedir = homedir
         self.m_files = targetfiles
 
     def sendrepl(self, cmd):
@@ -84,7 +89,9 @@ class TestBoard:
         self.create_pexepect_child()
         self.copy_files_to_target()
         self.create_repl()
-        self.identify()
+        self.sendrepl("import os")
+        target_homedir = os.path.basename(self.m_homedir)
+        self.sendrepl(f"os.chdir(\"{target_homedir}\")")
 
     def create_repl(self):
         """ stub method intentionally not implemented in base class """
@@ -134,14 +141,48 @@ class TestBoardCP(TestBoard):
         #
         return super().sendrepl(cmd + "\r\n")
 
+    def ensuredir(self, dirpath):
+        """ mkdir -p equivalent """
+        if not os.path.exists(dirpath):
+            os.makedirs(dirpath)
+
     def copy_files_to_target(self):
         """ copy files specified in 'setfiles' method from host to target """
 
         assert self.m_mountpoint
 
-        for targetfile in self.m_files:
-            target_fullpath = os.path.join(self.m_mountpoint, os.path.basename(targetfile))
-            shutil.copyfile(targetfile, target_fullpath)
+        if self.m_files:
+            for item in self.m_files:
+                if isinstance(item, str):
+                    src = item
+                    dst = item
+                else:
+                    (src, dst) = item
+
+                source_fullpath = src #os.path.join(self.m_homedir, src)
+                target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
+                self.ensuredir(target_homedir)
+
+                if dst[0] != '/':
+                    target_fullpath = os.path.join(target_homedir, dst)
+                else:
+                    target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
+
+                if not os.path.isdir(source_fullpath):
+                    self.ensuredir(os.path.dirname(target_fullpath))
+
+                # possibly be more friendly
+                assert(os.path.exists(source_fullpath))
+
+                if os.path.isdir(source_fullpath):
+                    if os.path.exists(target_fullpath):
+                        shutil.rmtree(target_fullpath)
+
+                    shutil.copytree(source_fullpath, target_fullpath)
+                else:
+                    shutil.copyfile(source_fullpath, target_fullpath)
+
 
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
@@ -176,21 +217,61 @@ class TestBoardMP(TestBoard):
         if "No MicroPython boards connected" in self.m_child.before.decode():
             sys.exit("Error: rshell: No MicroPython boards connected")
 
-    def sendrshellcmd(self, cmd):
+    def sendrshellcmd(self, cmd, timeout = 10):
         """ send a command to rshell """
 
+        print(f"sending {cmd}")
         self.m_child.sendline(cmd)
 
         # can take a while to copy files in rshell
-        self.m_child.expect("> ", timeout = 10)
+        self.m_child.expect("> ", timeout)
+
+        return self.m_child.before.decode()
+
+    def ensuredir(self, dirpath):
+        """ mkdir -p equivalent """
+        response = self.sendrshellcmd(f"ls {dirpath}")
+
+        if "Cannot access" in response:
+            self.sendrshellcmd(f"mkdir {dirpath}")
 
     def copy_files_to_target(self):
         """ copy files specified in 'setfiles' method from host to target """
 
-        workingdir = os.getcwd()
+        # TODO avoid duplication with circuit python
+        if self.m_files:
+            for item in self.m_files:
+                if isinstance(item, str):
+                    src = item
+                    dst = item
+                else:
+                    (src, dst) = item
 
-        for targetfile in self.m_files:
-            self.sendrshellcmd(f"cp {workingdir}/{targetfile} /pyboard/")
+                source_fullpath = src #os.path.join(self.m_homedir, src)
+                target_homedir = os.path.join("/pyboard", os.path.basename(self.m_homedir))
+
+                self.ensuredir(target_homedir)
+
+                targetdir = os.path.dirname(dst)
+
+                if dst[0] != '/':
+                    target_fullpath = os.path.join(target_homedir, dst)
+                else:
+                    target_fullpath = os.path.join("/pyboard", dst[1:])
+
+                if not os.path.isdir(source_fullpath):
+                    self.ensuredir(os.path.dirname(target_fullpath))
+
+                # possibly be more friendly
+                #print(source_fullpath)
+                assert(os.path.exists(source_fullpath))
+
+                timeout = 30
+                if os.path.isdir(source_fullpath):
+                    self.sendrshellcmd(f"rm -r {target_fullpath}", timeout = timeout)
+                    self.sendrshellcmd(f"cp -r {src} {target_fullpath}", timeout = timeout)
+                else:
+                    self.sendrshellcmd(f"cp {src} {target_fullpath}", timeout = timeout)
 
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
@@ -259,7 +340,7 @@ def circuitpython():
 # capitals keeps pylint happy
 G_BOARD = None
 
-def getboard(serialport):
+def getboard( serialport="/dev/ttyACM0" ):
     """ return a singleton test board, instantiating it if required """
     global G_BOARD
 

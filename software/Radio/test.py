@@ -7,11 +7,10 @@
 import unittest
 import time
 import testboard
+import install
 
 # hack - should be able to run unit tests in any order eventually
 #unittest.TestLoader.sortTestMethodsUsing = None
-
-TARGETFILES = ["../lib/radarcplatform.py", "harness.py", "../lib/si4735_CP.py"]
 
 SERIALPORT = "/dev/ttyACM0"
 
@@ -48,7 +47,7 @@ class Si4735test(unittest.TestCase):
             # must get one
             assert board
 
-            board.setfiles(TARGETFILES)
+            board.setfiles(install.homedir(), install.files() + install.supportfiles())
 
             board.initialise()
 
