@@ -1,7 +1,7 @@
+""" Micro and Circuit Python file operations collections """
+
 import os
 import shutil
-
-""" Micro and Circuit Python file operations collections """
 
 # Use duck typing for FileOPsCP and FileOPsMP
 class FileOPsCP:
@@ -86,4 +86,3 @@ class FileOPsMP:
         """ cp equivalent for single file for Micro Python """
 
         self.m_board.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
-
