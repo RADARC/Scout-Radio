@@ -7,6 +7,7 @@ import time
 import board
 import busio
 import sys
+import os
 import displayio
 import terminalio
 import rotaryio
@@ -16,6 +17,7 @@ from adafruit_st7789 import ST7789
 from adafruit_display_text import label
 from analogio import AnalogIn
 
+os.chdir("/Radio")
 
 switch1 = DigitalInOut(board.GP2)
 switch2 = DigitalInOut(board.GP3)
@@ -267,4 +269,3 @@ while True:
             text_station_text.text = radio.station_text
         
         t= time.time()
-        
