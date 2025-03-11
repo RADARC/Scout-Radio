@@ -5,11 +5,11 @@ for MicroPython and CircuitPython devices
 
 import sys
 import os
-import subprocess
 import serial
 import pexpect
 import pexpect.fdpexpect
 import fileops
+import boarddetect
 
 VERBOSE = True
 
@@ -35,12 +35,12 @@ def get_src_dst_from_item(item):
 
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
-    def __init__(self, target_mountpoint, fileops):
+    def __init__(self, target_mountpoint, file_operations):
         self.m_files = []
         self.m_child = None
         self.m_ostype = None
         self.m_mountpoint = target_mountpoint
-        self.m_fileops = fileops
+        self.m_fileops = file_operations
         self.m_homedir = None
 
         # set up by setfiles invocation
@@ -358,49 +358,6 @@ class TestBoardMP(TestBoard):
         self.m_child.expect(">>> ")
 
 
-def boarddetect_circuitpython_serial(serialport):
-    """ Detect via USB serial port if a board is running circuit python """
-    ser = serial.Serial()
-    ser.baudrate = 115200
-    ser.port = serialport
-
-    try:
-        ser.open()
-
-    except serial.SerialException as excep:
-        print(f"{excep}")
-        return False
-
-    try:
-        child = pexpect.fdpexpect.fdspawn(ser, timeout=0.5)
-        child.sendline("import sys\r\n")
-        child.expect(">>>")
-        child.sendline("print(sys.implementation.name)\r\n")
-        child.expect(">>>")
-
-    except pexpect.exceptions.TIMEOUT:
-        return False
-
-    return "circuitpython" in child.before.decode()
-
-
-def boarddetect_circuitpython_usb():
-    """ Detect via lsusb command if a board is running circuit python """
-
-    # lighter weight than boarddetect_circuitpython_serial
-    proc = subprocess.run(["lsusb"], shell = True, check = True, stdout=subprocess.PIPE)
-
-    #
-    # may not be too robust
-    #
-    return "Adafruit" in proc.stdout.decode()
-
-def circuitpython():
-    """ returns True if running on circuit python """
-
-    return boarddetect_circuitpython_usb()
-
-
 # capitals keeps pylint happy
 G_BOARD = None
 
@@ -410,7 +367,7 @@ def getboard( serialport="/dev/ttyACM0" ):
 
     if os.path.exists(serialport):
         if not G_BOARD:
-            if circuitpython():
+            if boarddetect.circuitpython():
                 #
                 # Create a CircuitPython board
                 #
