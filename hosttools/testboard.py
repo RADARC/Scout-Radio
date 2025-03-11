@@ -42,6 +42,9 @@ class TestBoard:
         self.m_homedir = None
         self.m_verbose = True
 
+        # set up by setfiles invocation
+        self.m_target_homedir = ""
+
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
 
@@ -53,6 +56,7 @@ class TestBoard:
         """ configure the list of host python files to be run on target """
         self.m_homedir = homedir
         self.m_files = targetfiles
+        self.m_target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
     def sendrepl(self, cmd, expect_repl=True):
         """ send a command to MicroPython or CircuitPython repl """
@@ -84,8 +88,7 @@ class TestBoard:
         """ copy files specified in 'setfiles' method from host to target """
 
         assert self.m_mountpoint
-
-        target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+        assert self.m_target_homedir
 
         for installitem in self.m_files:
 
@@ -100,7 +103,7 @@ class TestBoard:
             if dst[0] == '/':
                 target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
             else:
-                target_fullpath = os.path.join(target_homedir, dst)
+                target_fullpath = os.path.join(self.m_target_homedir, dst)
 
             #
             # works if target_fullpath is either a file or directory
@@ -126,15 +129,14 @@ class TestBoard:
                 #
                 self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
-            if self.m_verbose:
-                print()
+        if self.m_verbose:
+            print()
 
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
 
         assert self.m_mountpoint
-
-        target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+        assert self.m_target_homedir
 
         for installitem in self.m_files:
 
@@ -146,7 +148,7 @@ class TestBoard:
             if dst[0] == '/':
                 target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
             else:
-                target_fullpath = os.path.join(target_homedir, dst)
+                target_fullpath = os.path.join(self.m_target_homedir, dst)
 
             if self.m_verbose:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
@@ -193,8 +195,8 @@ class TestBoard:
 
         self.create_repl()
         self.sendrepl("import os")
-        target_homedir = os.path.basename(self.m_homedir)
-        self.sendrepl(f"os.chdir(\"{target_homedir}\")")
+        target_homedirname = os.path.basename(self.m_homedir)
+        self.sendrepl(f"os.chdir(\"{target_homedirname}\")")
 
     def revsync(self):
         """ pull files from target board back to host """
