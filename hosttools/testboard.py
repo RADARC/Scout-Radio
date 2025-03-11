@@ -99,10 +99,9 @@ class TestBoard:
     def copy_files_to_target(self):
         """ copy files specified in 'setfiles' method from host to target """
 
-        assert self.m_mountpoint
-        assert self.m_target_homedir
-
         for installitem in self.m_files:
+            assert self.m_mountpoint
+            assert self.m_target_homedir
 
             (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
@@ -135,7 +134,7 @@ class TestBoard:
                 #
                 self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
-        if self.m_verbose:
+        if self.m_files and self.m_verbose:
             print()
 
     def copy_files_from_target(self):
@@ -194,9 +193,10 @@ class TestBoard:
             return
 
         self.create_repl()
-        self.sendrepl("import os")
-        target_homedirname = os.path.basename(self.m_homedir)
-        self.sendrepl(f"os.chdir(\"{target_homedirname}\")")
+        if self.m_homedir:
+            self.sendrepl("import os")
+            target_homedirname = os.path.basename(self.m_homedir)
+            self.sendrepl(f"os.chdir(\"{target_homedirname}\")")
 
     def revsync(self):
         """ pull files from target board back to host """
