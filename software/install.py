@@ -9,7 +9,7 @@ def files_norepl():
       ]
 
 def homedir():
-    """ we are at the top level so empty string """
+    """ source directory: we are at the top level so empty string """
     return ""
 
 if __name__=="__main__":
