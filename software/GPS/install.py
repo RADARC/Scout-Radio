@@ -10,7 +10,7 @@ def files():
         # Can't have file named serial.py on host as this conflicts
         # with host python implementation.
         ("gps-serial.py", "serial.py"),
-        "gps_satellitefix.py" 
+        "gps_satellitefix.py"
       ]
 
 def homedir():
