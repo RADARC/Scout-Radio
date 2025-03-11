@@ -147,6 +147,8 @@ class TestBoard:
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
 
+        # this method is used by install.py --revsync option
+
         assert self.m_mountpoint
         assert self.m_target_homedir
 
