@@ -12,7 +12,7 @@ def installcomponent(component):
     installfile = "install.py"
 
     if os.path.exists(os.path.join(component, installfile)):
-        print(f"installing {component}")
+        print(f"Installing {component}")
         if component:
             rc = os.system(f"cd {component}; python3 {installfile}")
         else:
@@ -34,7 +34,7 @@ for sr_component in sr_components:
 # install top level if required
 #
 if TOPLEVEL:
-    print("installing top level")
+    print("Installing top level")
 
     top_level_rc = os.system("python3 install.py")
 
