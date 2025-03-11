@@ -100,7 +100,7 @@ i2c = busio.I2C( board.GP19, board.GP18)
 
 #display = ssd1306.SSD1306_I2C(128, 64, i2c)
 #mcp = mcp23017.MCP23017(i2c, 0x27)
-radio = si4735_CP.SI4735(i2c,0x63)
+
    
 #def set_txrx(txrx_no):
     #if(txrx_no < 2):
@@ -119,13 +119,12 @@ radio = si4735_CP.SI4735(i2c,0x63)
 
 freq = 9420
 #radio.reset()
-addr = radio.get_device_i2c_address(board.GP17)
-print(addr)
-if addr == 0:
-    sys.exit()
-    
-print("Address is ",addr)
 
+si4735_reset_pin = DigitalInOut(board.GP17)
+si4735_reset_pin.direction = Direction.OUTPUT
+radio = si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin)
+
+radio.reset()
 radio.patchPowerUp()
 #radio.getFirmware()
 #radio.setI2CFastMode()
