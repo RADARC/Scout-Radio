@@ -11,6 +11,8 @@ import serial
 import pexpect
 import pexpect.fdpexpect
 
+VERBOSE = True
+
 def not_implemented():
     """ exit with error status indicating functionality not implemented """
     sys.exit("not implemented")
@@ -40,7 +42,6 @@ class TestBoard:
         self.m_mountpoint = target_mountpoint
         self.m_fileops = fileops
         self.m_homedir = None
-        self.m_verbose = True
 
         # set up by setfiles invocation
         self.m_target_homedir = ""
@@ -115,7 +116,7 @@ class TestBoard:
             #
             self.m_fileops.ensuredirs(os.path.dirname(target_fullpath))
 
-            if self.m_verbose:
+            if VERBOSE:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
 
                 print(f"{ftype}: {source_fullpath} -> {target_fullpath}")
@@ -134,7 +135,7 @@ class TestBoard:
                 #
                 self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
-        if self.m_files and self.m_verbose:
+        if self.m_files and VERBOSE:
             print()
 
     def copy_files_from_target(self):
@@ -149,7 +150,7 @@ class TestBoard:
 
             target_fullpath = self.get_target_fullpath(dst)
 
-            if self.m_verbose:
+            if VERBOSE:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
 
                 print(f"{ftype}: {target_fullpath} -> {source_fullpath}")
