@@ -107,6 +107,10 @@ class TestBoard:
         """ copy files specified in 'setfiles' method from host to target """
 
         for installitem in self.m_files:
+            #
+            # We may have no files to copy, legitimately.
+            # Only assert if we are going to install some.
+            #
             assert self.m_mountpoint
             assert self.m_target_homedir
 
