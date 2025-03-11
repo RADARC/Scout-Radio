@@ -54,10 +54,13 @@ class TestBoard:
         self.m_homedir = homedir
         self.m_files = targetfiles
 
-    def sendrepl(self, cmd):
+    def sendrepl(self, cmd, expect_repl=True):
         """ send a command to MicroPython or CircuitPython repl """
 
         self.m_child.sendline(cmd)
+
+        if not expect_repl:
+            return b""
 
         # timeout long enough for download patch etc.
         self.m_child.expect(">>> ", timeout = 8)
@@ -175,11 +178,16 @@ class TestBoard:
         """
         return self.m_ostype
 
-    def initialise(self):
+    def initialise(self, expect_repl=True):
         """ get the test board ready for use using the python repl
             on the (USB) serial port """
         self.create_pexepect_child()
         self.copy_files_to_target()
+
+        # odd case for code.py
+        if not expect_repl:
+            return
+
         self.create_repl()
         self.sendrepl("import os")
         target_homedir = os.path.basename(self.m_homedir)
@@ -192,9 +200,12 @@ class TestBoard:
 
         not_implemented()
 
-    def reboot(self):
+    def reboot(self, expect_repl=True):
         """ restart the python interpreter on target by sending CTRL+D """
-        self.sendrepl("\x04\r\n\r\n")
+
+        # expect_repl deals with odd case probably for code.py autorun
+        self.sendrepl("\x04\r\n\r\n", expect_repl=expect_repl)
+
 
 
 class FileOPsCP:
@@ -272,13 +283,13 @@ class TestBoardCP(TestBoard):
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
-    def sendrepl(self, cmd):
+    def sendrepl(self, cmd, expect_repl=True):
         """ send a command to CircuitPython repl """
 
         #
         # use base class implementation with CR/LF tacked on
         #
-        return super().sendrepl(cmd + "\r\n")
+        return super().sendrepl(cmd + "\r\n", expect_repl)
 
     # def copy_files_from_target(self):
     #     """ copy files specified in 'setfiles' method from target to host """
