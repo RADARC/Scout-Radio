@@ -3,10 +3,6 @@ get a python command line on USB serial port and synchronise files
 for MicroPython and CircuitPython devices
 """
 
-#
-# TODO add source/target filenames & locations in copyfiles.
-# consider using a dict. keywords source/target or something.
-#
 import sys
 import os
 import subprocess
@@ -23,10 +19,12 @@ def not_implemented():
 
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
-    def __init__(self):
+    def __init__(self, target_mountpoint, fileops):
         self.m_files = []
         self.m_child = None
         self.m_ostype = None
+        self.m_mountpoint = target_mountpoint
+        self.m_fileops = fileops
 
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
@@ -73,7 +71,7 @@ class TestBoard:
                 else:
                     (src, dst) = item
 
-                source_fullpath = src #os.path.join(self.m_homedir, src)
+                source_fullpath = src
                 target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
                 self.m_fileops.ensuredir(target_homedir)
@@ -86,14 +84,21 @@ class TestBoard:
                 if not os.path.isdir(source_fullpath):
                     self.m_fileops.ensuredir(os.path.dirname(target_fullpath))
 
-                # possibly be more friendly
-                assert(os.path.exists(source_fullpath))
+                if not os.path.exists(source_fullpath):
+                    sys.exit(f"Error: {source_fullpath} not found")
 
                 if os.path.isdir(source_fullpath):
+                    #
+                    # copy in source directory tree first deleting any
+                    # on target
+                    #
                     self.m_fileops.deltree(target_fullpath)
 
                     self.m_fileops.copytree(source_fullpath, target_fullpath)
                 else:
+                    #
+                    # copy on single file
+                    #
                     self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
     def copy_files_from_target(self):
@@ -130,7 +135,7 @@ class TestBoard:
         not_implemented()
 
 class FileOPsCP:
-    """ file/directory operations collection for Circuit Python """
+    """ target file/directory operations collection for Circuit Python """
 
     def ensuredir(self, dirpath):
         """ mkdir -p equivalent """
@@ -156,23 +161,22 @@ class TestBoardCP(TestBoard):
         self.m_ser = serial.Serial()
         self.m_ser.baudrate = 115200
         self.m_ser.port = serialport
-        self.m_mountpoint = None
-        self.m_fileops = FileOPsCP()
 
         #
         # work out where the circuit python filesystem is mounted
         #
+        mountpoint = None
         with open('/proc/mounts', 'r', encoding="utf-8") as mounts:
             for line in mounts.readlines():
                 candidate_mp = line.strip().split()[1]
                 if "CIRCUITPY" in candidate_mp:
-                    self.m_mountpoint = candidate_mp
+                    mountpoint = candidate_mp
                     break
 
-        if not self.m_mountpoint:
+        if not mountpoint:
             sys.exit("Error: Circuit python filesystem mount not found")
 
-        super().__init__()
+        super().__init__(mountpoint, FileOPsCP())
 
     def create_pexepect_child(self):
         """ create a pexpect child object for CircuitPython """
@@ -211,7 +215,7 @@ class TestBoardCP(TestBoard):
         self.sendrepl("")
 
 class FileOPsMP:
-    """ file/directory operations collection for MicroPython """
+    """ target file/directory operations collection for MicroPython """
 
     def __init__(self, board):
         self.m_board = board
@@ -240,10 +244,9 @@ class TestBoardMP(TestBoard):
     def __init__(self):
         """ Create a MicroPython scout radio test board """
 
-        self.m_mountpoint = "/pyboard"
-        self.m_fileops = FileOPsMP(self)
+        self.m_rshell_debug = False
 
-        super().__init__()
+        super().__init__("/pyboard", FileOPsMP(self))
 
     def create_pexepect_child(self):
         """ create a pexpect child object for MicroPython """
@@ -255,7 +258,8 @@ class TestBoardMP(TestBoard):
     def sendrshellcmd(self, cmd, timeout = 10):
         """ send a command to rshell """
 
-        print(f"sending {cmd}")
+        if self.m_rshell_debug:
+            print(f"sending {cmd}")
         self.m_child.sendline(cmd)
 
         # can take a while to copy files in rshell
