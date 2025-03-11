@@ -85,44 +85,46 @@ class TestBoard:
 
         assert self.m_mountpoint
 
-        if self.m_files:
-            for installitem in self.m_files:
+        for installitem in self.m_files:
 
-                (source_fullpath, dst) = get_src_dst_from_item(installitem)
+            (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
-                if not os.path.exists(source_fullpath):
-                    sys.exit(f"Error: {source_fullpath} not found")
+            if not os.path.exists(source_fullpath):
+                sys.exit(f"Error: {source_fullpath} not found")
 
-                target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+            target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
-                if dst[0] == '/':
-                    target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
-                else:
-                    target_fullpath = os.path.join(target_homedir, dst)
+            #
+            # deal with relative or absolute paths on target
+            #
+            if dst[0] == '/':
+                target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
+            else:
+                target_fullpath = os.path.join(target_homedir, dst)
 
+            #
+            # works if target_fullpath is either a file or directory
+            #
+            self.m_fileops.ensuredirs(os.path.dirname(target_fullpath))
+
+            if self.m_verbose:
+                ftype = "dir" if os.path.isdir(source_fullpath) else "file"
+
+                print(f"{ftype}: {source_fullpath} -> {target_fullpath}")
+
+            if os.path.isdir(source_fullpath):
                 #
-                # works if target_fullpath is either a file or directory
+                # copy in source directory tree first deleting any
+                # on target
                 #
-                self.m_fileops.ensuredirs(os.path.dirname(target_fullpath))
+                self.m_fileops.deltree(target_fullpath)
 
-                if self.m_verbose:
-                    ftype = "dir" if os.path.isdir(source_fullpath) else "file"
-
-                    print(f"{ftype}: {source_fullpath} -> {target_fullpath}")
-
-                if os.path.isdir(source_fullpath):
-                    #
-                    # copy in source directory tree first deleting any
-                    # on target
-                    #
-                    self.m_fileops.deltree(target_fullpath)
-
-                    self.m_fileops.copytree(source_fullpath, target_fullpath)
-                else:
-                    #
-                    # copy on the single file
-                    #
-                    self.m_fileops.copyfile(source_fullpath, target_fullpath)
+                self.m_fileops.copytree(source_fullpath, target_fullpath)
+            else:
+                #
+                # copy on the single file
+                #
+                self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
             if self.m_verbose:
                 print()
@@ -132,35 +134,37 @@ class TestBoard:
 
         assert self.m_mountpoint
 
-        if self.m_files:
-            for installitem in self.m_files:
+        for installitem in self.m_files:
 
-                (source_fullpath, dst) = get_src_dst_from_item(installitem)
+            (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
-                target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+            target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
-                if dst[0] == '/':
-                    target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
-                else:
-                    target_fullpath = os.path.join(target_homedir, dst)
+            #
+            # deal with relative or absolute paths on target
+            #
+            if dst[0] == '/':
+                target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
+            else:
+                target_fullpath = os.path.join(target_homedir, dst)
 
-                if self.m_verbose:
-                    ftype = "dir" if os.path.isdir(source_fullpath) else "file"
+            if self.m_verbose:
+                ftype = "dir" if os.path.isdir(source_fullpath) else "file"
 
-                    print(f"{ftype}: {target_fullpath} -> {source_fullpath}")
+                print(f"{ftype}: {target_fullpath} -> {source_fullpath}")
 
-                if os.path.isdir(source_fullpath):
-                    #
-                    # a bit dangerous
-                    #
-                    self.m_fileops.deltree(source_fullpath)
+            if os.path.isdir(source_fullpath):
+                #
+                # a bit dangerous
+                #
+                self.m_fileops.deltree(source_fullpath)
 
-                    self.m_fileops.copytree(target_fullpath, source_fullpath)
-                else:
-                    #
-                    # copy off the single file
-                    #
-                    self.m_fileops.copyfile(target_fullpath, source_fullpath)
+                self.m_fileops.copytree(target_fullpath, source_fullpath)
+            else:
+                #
+                # copy off the single file
+                #
+                self.m_fileops.copyfile(target_fullpath, source_fullpath)
 
     def identify(self):
         """ print the scout radio os/python type """
