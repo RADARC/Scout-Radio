@@ -148,10 +148,15 @@ class TestBoard:
                 else:
                     target_fullpath = os.path.join(target_homedir, dst)
 
+                if self.m_verbose:
+                    ftype = "dir" if os.path.isdir(source_fullpath) else "file"
+
+                    print(f"{ftype}: {target_fullpath} -> {source_fullpath}")
+
                 if os.path.isdir(source_fullpath):
                     #
-                    # copy in source directory tree first deleting any
-                    # on target
+                    # copy back target directory tree first deleting any
+                    # on source
                     #
                     # TODO DANGEROUS!!
                     #self.m_fileops.deltree(source_fullpath)
@@ -159,7 +164,7 @@ class TestBoard:
                     self.m_fileops.copytree(target_fullpath, source_fullpath)
                 else:
                     #
-                    # copy on the single file
+                    # copy off the single file
                     #
                     self.m_fileops.copyfile(target_fullpath, source_fullpath)
 
@@ -192,6 +197,11 @@ class TestBoard:
         self.sendrepl("import os")
         target_homedir = os.path.basename(self.m_homedir)
         self.sendrepl(f"os.chdir(\"{target_homedir}\")")
+
+    def revsync(self):
+        """ pull files from target board back to host """
+        self.create_pexepect_child()
+        self.copy_files_from_target()
 
     def create_repl(self):
         """ stub method intentionally not implemented in base class """
@@ -291,17 +301,6 @@ class TestBoardCP(TestBoard):
         #
         return super().sendrepl(cmd + "\r\n", expect_repl)
 
-    # def copy_files_from_target(self):
-    #     """ copy files specified in 'setfiles' method from target to host """
-
-    #     assert self.m_mountpoint
-
-    #     for targetfile in self.m_files:
-    #         target_fullpath = os.path.join(self.m_mountpoint, targetfile)
-    #         host_fullpath = os.path.join(os.getcwd(), targetfile)
-
-    #         shutil.copyfile(target_fullpath, host_fullpath)
-
     def create_repl(self):
         """ get the CircuitPython repl ready on the serial port """
         #
@@ -388,12 +387,6 @@ class TestBoardMP(TestBoard):
         self.m_child.expect("> ", timeout)
 
         return self.m_child.before.decode()
-
-    # def copy_files_from_target(self):
-    #     """ copy files specified in 'setfiles' method from target to host """
-
-    #     # exit may be a bit harsh here...but probably fair
-    #     not_implemented()
 
     def create_repl(self):
         """ get the MicroPython repl ready on the serial port """

@@ -1,3 +1,4 @@
+import sys
 import installer
 
 def files():
@@ -8,6 +9,9 @@ def files():
 def homedir():
     return "Radio"
 
+#
+# may already be there....handy if we are working on them
+#
 def supportfiles():
     return [
       ("../lib/radarcplatform.py", "/lib/radarcplatform.py"),
@@ -15,6 +19,6 @@ def supportfiles():
       ]
 
 if __name__=="__main__":
-    installer.installfiles(homedir(), files() + supportfiles())
-    #installer.installfiles(homedir(), files())
+    installer.installfiles(sys.argv, homedir(), files() + supportfiles())
+    #installer.installfiles(sys.argv, homedir(), files())
 

@@ -1,3 +1,4 @@
+import sys
 import installer
 
 def files():
@@ -9,4 +10,4 @@ def homedir():
     return "Display"
 
 if __name__=="__main__":
-    installer.installfiles(homedir(), files())
+    installer.installfiles(sys.argv, homedir(), files())
