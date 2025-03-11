@@ -88,9 +88,7 @@ class TestBoard:
         if self.m_files:
             for installitem in self.m_files:
 
-                (src, dst) = get_src_dst_from_item(installitem)
-
-                source_fullpath = src
+                (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
                 if not os.path.exists(source_fullpath):
                     sys.exit(f"Error: {source_fullpath} not found")
@@ -137,9 +135,7 @@ class TestBoard:
         if self.m_files:
             for installitem in self.m_files:
 
-                (src, dst) = get_src_dst_from_item(installitem)
-
-                source_fullpath = src
+                (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
                 target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
