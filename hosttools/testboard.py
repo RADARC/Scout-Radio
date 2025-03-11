@@ -215,7 +215,10 @@ class TestBoard:
         self.sendrepl("\x04\r\n\r\n", expect_repl=expect_repl)
 
 
-
+#
+# could factor these two FileOPs objects out into a separate file
+# but something to be said for keeping everything in one place
+#
 class FileOPsCP:
     """ target file/directory operations collection for Circuit Python """
 
@@ -250,6 +253,53 @@ class FileOPsCP:
         shutil.copyfile(src, dst)
 
 
+class FileOPsMP:
+    """ target file/directory operations collection for MicroPython """
+
+    def __init__(self, board):
+        self.m_board = board
+        self.m_rshell_fileop_timeout = 30
+
+    def ensuresingledir(self, dirpath):
+        """ mkdir equivalent for Micro Python """
+        response = self.m_board.sendrshellcmd(f"ls {dirpath}")
+
+        if "Cannot access" in response:
+            self.m_board.sendrshellcmd(f"mkdir {dirpath}")
+
+    def ensuredirs(self, dirpath):
+        """ mkdir -p equivalent for Micro Python """
+
+        dirlist = dirpath.split(os.path.sep)
+
+        # expect dirlist to be something like ['', 'pyboard', 'Display']
+
+        assert dirlist[1] == "pyboard"
+
+        tmp = "/pyboard"
+
+        for dirname in dirlist[2:]:
+            tmp = os.path.join(tmp, dirname)
+            self.ensuresingledir(tmp)
+
+    def deltree(self, dst):
+        """ rm -rf equivalent for Micro Python """
+
+        self.m_board.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
+
+    def copytree(self, src, dst):
+        """ cp -a equivalent for Micro Python """
+
+        self.m_board.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
+
+    def copyfile(self, src, dst):
+        """ cp equivalent for single file for Micro Python """
+
+        self.m_board.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
+
+#
+# Circuit Python board
+#
 class TestBoardCP(TestBoard):
     """ A CircuitPython scout radio test board """
 
@@ -306,51 +356,10 @@ class TestBoardCP(TestBoard):
         #
         self.sendrepl("")
 
-class FileOPsMP:
-    """ target file/directory operations collection for MicroPython """
 
-    def __init__(self, board):
-        self.m_board = board
-        self.m_rshell_fileop_timeout = 30
-
-    def ensuresingledir(self, dirpath):
-        """ mkdir equivalent for Micro Python """
-        response = self.m_board.sendrshellcmd(f"ls {dirpath}")
-
-        if "Cannot access" in response:
-            self.m_board.sendrshellcmd(f"mkdir {dirpath}")
-
-    def ensuredirs(self, dirpath):
-        """ mkdir -p equivalent for Micro Python """
-
-        dirlist = dirpath.split(os.path.sep)
-
-        # expect dirlist to be something like ['', 'pyboard', 'Display']
-
-        assert dirlist[1] == "pyboard"
-
-        tmp = "/pyboard"
-
-        for dirname in dirlist[2:]:
-            tmp = os.path.join(tmp, dirname)
-            self.ensuresingledir(tmp)
-
-    def deltree(self, dst):
-        """ rm -rf equivalent for Micro Python """
-
-        self.m_board.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
-
-    def copytree(self, src, dst):
-        """ cp -a equivalent for Micro Python """
-
-        self.m_board.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
-
-    def copyfile(self, src, dst):
-        """ cp equivalent for single file for Micro Python """
-
-        self.m_board.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
-
-
+#
+# Micro Python board
+#
 class TestBoardMP(TestBoard):
     """ A MicroPython scout radio test board """
 
