@@ -69,9 +69,16 @@ class TestBoard:
 
         if self.m_files:
             for item in self.m_files:
+
+                #
+                # If a single string is specified, this is both the
+                # source and destination filename.
+                #
+                # If a tuple is specified, the first item is the source
+                # and the second the destination.
+                #
                 if isinstance(item, str):
-                    src = item
-                    dst = item
+                    src = dst = item
                 else:
                     (src, dst) = item
 
