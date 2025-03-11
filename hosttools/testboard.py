@@ -25,6 +25,7 @@ class TestBoard:
         self.m_ostype = None
         self.m_mountpoint = target_mountpoint
         self.m_fileops = fileops
+        self.m_homedir = None
 
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
