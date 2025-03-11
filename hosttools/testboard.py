@@ -84,6 +84,18 @@ class TestBoard:
 
         return self.m_child.before
 
+    def get_target_fullpath(self, dest):
+        """ helper for copy_files to/from target """
+        #
+        # deal with relative or absolute paths on target
+        #
+        if dest[0] == '/':
+            tgt_fullpath = os.path.join(self.m_mountpoint, dest[1:])
+        else:
+            tgt_fullpath = os.path.join(self.m_target_homedir, dest)
+
+        return tgt_fullpath
+
     def copy_files_to_target(self):
         """ copy files specified in 'setfiles' method from host to target """
 
@@ -97,13 +109,7 @@ class TestBoard:
             if not os.path.exists(source_fullpath):
                 sys.exit(f"Error: {source_fullpath} not found")
 
-            #
-            # deal with relative or absolute paths on target
-            #
-            if dst[0] == '/':
-                target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
-            else:
-                target_fullpath = os.path.join(self.m_target_homedir, dst)
+            target_fullpath = self.get_target_fullpath(dst)
 
             #
             # works if target_fullpath is either a file or directory
@@ -142,13 +148,7 @@ class TestBoard:
 
             (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
-            #
-            # deal with relative or absolute paths on target
-            #
-            if dst[0] == '/':
-                target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
-            else:
-                target_fullpath = os.path.join(self.m_target_homedir, dst)
+            target_fullpath = self.get_target_fullpath(dst)
 
             if self.m_verbose:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
