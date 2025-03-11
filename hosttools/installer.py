@@ -11,6 +11,7 @@ def installfiles(argv, homedir, files, expect_repl=True):
 
     board.setfiles(homedir, files)
 
+    # we should really use argparse properly...
     if len(argv) > 1 and argv[1] == "--revsync":
         board.revsync()
     else:
