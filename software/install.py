@@ -13,4 +13,4 @@ def homedir():
     return ""
 
 if __name__=="__main__":
-    installer.installfiles_norepl(sys.argv, homedir(), files_norepl())
+    installer.installfiles(sys.argv, homedir(), files_norepl(), expect_repl=False)

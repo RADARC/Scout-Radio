@@ -1,6 +1,8 @@
+""" helper for component install.py's """
+
 import testboard
 
-def installfiles(argv, homedir, files):
+def installfiles(argv, homedir, files, expect_repl=True):
     board = testboard.getboard()
 
     assert board
@@ -10,23 +12,9 @@ def installfiles(argv, homedir, files):
     if len(argv) > 1 and argv[1] == "--revsync":
         board.revsync()
     else:
-        board.initialise()
+        board.initialise(expect_repl)
 
-        board.reboot()
+        board.reboot(expect_repl)
 
-
-def installfiles_norepl(argv, homedir, files):
-    board = testboard.getboard()
-
-    assert board
-
-    board.setfiles(homedir, files)
-
-    if len(argv) > 1 and argv[1] == "--revsync":
-        board.revsync()
-    else:
-        board.initialise(expect_repl=False)
-
-        board.reboot(expect_repl=False)
 
 
