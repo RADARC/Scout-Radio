@@ -67,6 +67,7 @@ class TestBoard:
 
         self.m_child.sendline(cmd)
 
+        # don't expect repl to come back to us - eg. autorun code.py
         if not expect_repl:
             return b""
 
