@@ -278,7 +278,7 @@ class FileOPsMP:
         self.m_rshell_fileop_timeout = 30
 
 
-    def ensuresingledir(self, dirpath):
+    def ensure_single_dir(self, dirpath):
         """ mkdir equivalent for Micro Python """
         response = self.m_board.sendrshellcmd(f"ls {dirpath}")
 
@@ -299,7 +299,7 @@ class FileOPsMP:
 
         for dirname in dirlist[2:]:
             tmp = os.path.join(tmp, dirname)
-            self.ensuresingledir(tmp)
+            self.ensure_single_dir(tmp)
 
 
     def deltree(self, dst):
