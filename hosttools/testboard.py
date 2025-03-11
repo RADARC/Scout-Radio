@@ -11,7 +11,14 @@ import pexpect.fdpexpect
 import fileops
 import sysdetect
 
-VERBOSE = True
+#
+# beginnings of proper logging
+#
+VERBOSE_INSTALL = True
+VERBOSE_SEND_REPL = False
+VERBOSE_SEND_REPL_RESPONSE = False
+VERBOSE_SEND_RSHELL = False
+VERBOSE_SEND_RSHELL_RESPONSE = False
 
 def not_implemented():
     """ exit with error status indicating functionality not implemented """
@@ -65,6 +72,9 @@ class TestBoard:
     def sendrepl(self, cmd, expect_repl=True):
         """ send a command to MicroPython or CircuitPython repl """
 
+        if VERBOSE_SEND_REPL:
+            print(f">>> {cmd}")
+
         self.m_child.sendline(cmd)
 
         # don't expect repl to come back to us - eg. autorun code.py
@@ -73,6 +83,9 @@ class TestBoard:
 
         # timeout long enough for download patch etc.
         self.m_child.expect(">>> ", timeout = 8)
+
+        if VERBOSE_SEND_REPL_RESPONSE:
+            print(self.m_child.before.decode())
 
         if "Traceback" in self.m_child.before.decode():
             #
@@ -126,7 +139,7 @@ class TestBoard:
             #
             self.m_fileops.ensuredirs(os.path.dirname(target_fullpath))
 
-            if VERBOSE:
+            if VERBOSE_INSTALL:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
 
                 print(f"{ftype}: {source_fullpath} -> {target_fullpath}")
@@ -145,7 +158,7 @@ class TestBoard:
                 #
                 self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
-        if self.m_files and VERBOSE:
+        if self.m_files and VERBOSE_INSTALL:
             print()
 
 
@@ -163,7 +176,7 @@ class TestBoard:
 
             target_fullpath = self.get_target_fullpath(dst)
 
-            if VERBOSE:
+            if VERBOSE_INSTALL:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
 
                 print(f"{ftype}: {target_fullpath} -> {source_fullpath}")
@@ -311,8 +324,6 @@ class TestBoardMP(TestBoard):
     def __init__(self):
         """ Create a MicroPython scout radio test board """
 
-        self.m_rshell_debug = False
-
         #
         # Set mountpoint and fileops object member variables in base class
         # by passing them to the base class constructor.
@@ -333,12 +344,16 @@ class TestBoardMP(TestBoard):
     def sendrshellcmd(self, cmd, timeout = 10):
         """ send a command to rshell """
 
-        if self.m_rshell_debug:
-            print(f"sending {cmd}")
+        if VERBOSE_SEND_RSHELL:
+            print(f"rshell: sending {cmd}")
+
         self.m_child.sendline(cmd)
 
         # can take a while to copy files in rshell
         self.m_child.expect("> ", timeout)
+
+        if VERBOSE_SEND_RSHELL_RESPONSE:
+            print(self.m_child.before.decode())
 
         return self.m_child.before.decode()
 
