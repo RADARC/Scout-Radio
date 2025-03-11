@@ -46,6 +46,7 @@ class TestBoard:
         # set up by setfiles invocation
         self.m_target_homedir = ""
 
+
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
 
@@ -53,11 +54,13 @@ class TestBoard:
 
         not_implemented()
 
+
     def setfiles(self, homedir, targetfiles):
         """ configure the list of host python files to be run on target """
         self.m_homedir = homedir
         self.m_files = targetfiles
         self.m_target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
 
     def sendrepl(self, cmd, expect_repl=True):
         """ send a command to MicroPython or CircuitPython repl """
@@ -85,6 +88,7 @@ class TestBoard:
 
         return self.m_child.before
 
+
     def get_target_fullpath(self, dest):
         """ helper for copy_files to/from target """
         #
@@ -96,6 +100,7 @@ class TestBoard:
             tgt_fullpath = os.path.join(self.m_target_homedir, dest)
 
         return tgt_fullpath
+
 
     def copy_files_to_target(self):
         """ copy files specified in 'setfiles' method from host to target """
@@ -138,6 +143,7 @@ class TestBoard:
         if self.m_files and VERBOSE:
             print()
 
+
     def copy_files_from_target(self):
         """ copy files specified in 'setfiles' method from target to host """
 
@@ -168,6 +174,7 @@ class TestBoard:
                 #
                 self.m_fileops.copyfile(target_fullpath, source_fullpath)
 
+
     def identify(self):
         """ print the scout radio os/python type """
         self.sendrepl("import sys")
@@ -176,12 +183,14 @@ class TestBoard:
         print(f"{ostype} board created")
         self.m_ostype = ostype
 
+
     def ostype(self):
         """
         return string describing the type of python running on target.
         return None if the board is not initialised.
         """
         return self.m_ostype
+
 
     def initialise(self, expect_repl=True):
         """ get the test board ready for use using the python repl
@@ -199,10 +208,12 @@ class TestBoard:
             target_homedirname = os.path.basename(self.m_homedir)
             self.sendrepl(f"os.chdir(\"{target_homedirname}\")")
 
+
     def revsync(self):
         """ pull files from target board back to host """
         self.create_pexepect_child()
         self.copy_files_from_target()
+
 
     def create_repl(self):
         """ stub method intentionally not implemented in base class """
@@ -210,6 +221,7 @@ class TestBoard:
         assert self # pylint wants self referenced
 
         not_implemented()
+
 
     def reboot(self, expect_repl=True):
         """ restart the python interpreter on target by sending CTRL+D """
@@ -263,12 +275,14 @@ class FileOPsMP:
         self.m_board = board
         self.m_rshell_fileop_timeout = 30
 
+
     def ensuresingledir(self, dirpath):
         """ mkdir equivalent for Micro Python """
         response = self.m_board.sendrshellcmd(f"ls {dirpath}")
 
         if "Cannot access" in response:
             self.m_board.sendrshellcmd(f"mkdir {dirpath}")
+
 
     def ensuredirs(self, dirpath):
         """ mkdir -p equivalent for Micro Python """
@@ -285,15 +299,18 @@ class FileOPsMP:
             tmp = os.path.join(tmp, dirname)
             self.ensuresingledir(tmp)
 
+
     def deltree(self, dst):
         """ rm -rf equivalent for Micro Python """
 
         self.m_board.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
 
+
     def copytree(self, src, dst):
         """ cp -a equivalent for Micro Python """
 
         self.m_board.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
+
 
     def copyfile(self, src, dst):
         """ cp equivalent for single file for Micro Python """
@@ -334,6 +351,7 @@ class TestBoardCP(TestBoard):
         #
         super().__init__(mountpoint, FileOPsCP())
 
+
     def create_pexepect_child(self):
         """ create a pexpect child object for CircuitPython """
         try:
@@ -344,6 +362,7 @@ class TestBoardCP(TestBoard):
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
+
     def sendrepl(self, cmd, expect_repl=True):
         """ send a command to CircuitPython repl """
 
@@ -351,6 +370,7 @@ class TestBoardCP(TestBoard):
         # use base class implementation with CR/LF tacked on
         #
         return super().sendrepl(cmd + "\r\n", expect_repl)
+
 
     def create_repl(self):
         """ get the CircuitPython repl ready on the serial port """
@@ -379,12 +399,14 @@ class TestBoardMP(TestBoard):
         #
         super().__init__("/pyboard", FileOPsMP(self))
 
+
     def create_pexepect_child(self):
         """ create a pexpect child object for MicroPython """
         self.m_child = pexpect.spawn("rshell", timeout=1)
         self.m_child.expect("> ")
         if "No MicroPython boards connected" in self.m_child.before.decode():
             sys.exit("Error: rshell: No MicroPython boards connected")
+
 
     def sendrshellcmd(self, cmd, timeout = 10):
         """ send a command to rshell """
@@ -397,6 +419,7 @@ class TestBoardMP(TestBoard):
         self.m_child.expect("> ", timeout)
 
         return self.m_child.before.decode()
+
 
     def create_repl(self):
         """ get the MicroPython repl ready on the serial port """
