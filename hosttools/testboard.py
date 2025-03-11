@@ -155,11 +155,9 @@ class TestBoard:
 
                 if os.path.isdir(source_fullpath):
                     #
-                    # copy back target directory tree first deleting any
-                    # on source
+                    # a bit dangerous
                     #
-                    # TODO DANGEROUS!!
-                    #self.m_fileops.deltree(source_fullpath)
+                    self.m_fileops.deltree(source_fullpath)
 
                     self.m_fileops.copytree(target_fullpath, source_fullpath)
                 else:
