@@ -1,11 +1,14 @@
+""" install complete scout radio system """
 import sys
 import os
 
-toplevel = False
+TOPLEVEL = False
 
-components = ['Display', 'GPS', 'images', 'lib', 'LSM303', 'Morse', 'Radio']
+sr_components = ['Display', 'GPS', 'images', 'lib', 'LSM303', 'Morse', 'Radio']
 
 def installcomponent(component):
+    """ install one component of the scout radio system """
+
     installfile = "install.py"
 
     if os.path.exists(os.path.join(component, installfile)):
@@ -24,14 +27,16 @@ def installcomponent(component):
 #
 # install components
 #
-for component in components:
-    installcomponent(component)
+for sr_component in sr_components:
+    installcomponent(sr_component)
 
 #
-# install top level
+# install top level if required
 #
-if toplevel:
-    rc = os.system(f"python3 install.py")
+if TOPLEVEL:
+    print("installing top level")
 
-    if rc != 0:
-        sys.exit(f"Install failed on top level install.py")
+    top_level_rc = os.system("python3 install.py")
+
+    if top_level_rc != 0:
+        sys.exit("Install failed on top level install.py")
