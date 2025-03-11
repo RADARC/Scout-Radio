@@ -6,7 +6,6 @@ for MicroPython and CircuitPython devices
 import sys
 import os
 import subprocess
-import argparse
 import shutil
 import serial
 import pexpect
@@ -16,6 +15,21 @@ def not_implemented():
     """ exit with error status indicating functionality not implemented """
     sys.exit("not implemented")
 
+def get_src_dst_from_item(item):
+    """ helper method to determine src/dst paths from thing to be installed """
+    #
+    # If a single string is specified, this is both the
+    # source and destination filename.
+    #
+    # If a tuple is specified, the first item is the source
+    # and the second the destination.
+    #
+    if isinstance(item, str):
+        src = dst = item
+    else:
+        (src, dst) = item
+
+    return (src, dst)
 
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
@@ -26,6 +40,7 @@ class TestBoard:
         self.m_mountpoint = target_mountpoint
         self.m_fileops = fileops
         self.m_homedir = None
+        self.m_verbose = True
 
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
@@ -68,19 +83,9 @@ class TestBoard:
         assert self.m_mountpoint
 
         if self.m_files:
-            for item in self.m_files:
+            for installitem in self.m_files:
 
-                #
-                # If a single string is specified, this is both the
-                # source and destination filename.
-                #
-                # If a tuple is specified, the first item is the source
-                # and the second the destination.
-                #
-                if isinstance(item, str):
-                    src = dst = item
-                else:
-                    (src, dst) = item
+                (src, dst) = get_src_dst_from_item(installitem)
 
                 source_fullpath = src
 
@@ -89,19 +94,20 @@ class TestBoard:
 
                 target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
-                self.m_fileops.ensuredir(target_homedir)
-
                 if dst[0] == '/':
                     target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
                 else:
                     target_fullpath = os.path.join(target_homedir, dst)
 
                 #
-                # If we are installing a file, make sure its
-                # destination directory exists on target.
+                # works if target_fullpath is either a file or directory
                 #
-                if not os.path.isdir(source_fullpath):
-                    self.m_fileops.ensuredir(os.path.dirname(target_fullpath))
+                self.m_fileops.ensuredirs(os.path.dirname(target_fullpath))
+
+                if self.m_verbose:
+                    ftype = "dir" if os.path.isdir(source_fullpath) else "file"
+
+                    print(f"{ftype}: {source_fullpath} -> {target_fullpath}")
 
                 if os.path.isdir(source_fullpath):
                     #
@@ -117,12 +123,42 @@ class TestBoard:
                     #
                     self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
+            if self.m_verbose:
+                print()
+
     def copy_files_from_target(self):
-        """ stub method intentionally not implemented in base class """
+        """ copy files specified in 'setfiles' method from target to host """
 
-        assert self # pylint wants self referenced
+        assert self.m_mountpoint
 
-        not_implemented()
+        if self.m_files:
+            for installitem in self.m_files:
+
+                (src, dst) = get_src_dst_from_item(installitem)
+
+                source_fullpath = src
+
+                target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
+                if dst[0] == '/':
+                    target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
+                else:
+                    target_fullpath = os.path.join(target_homedir, dst)
+
+                if os.path.isdir(source_fullpath):
+                    #
+                    # copy in source directory tree first deleting any
+                    # on target
+                    #
+                    # TODO DANGEROUS!!
+                    #self.m_fileops.deltree(source_fullpath)
+
+                    self.m_fileops.copytree(target_fullpath, source_fullpath)
+                else:
+                    #
+                    # copy on the single file
+                    #
+                    self.m_fileops.copyfile(target_fullpath, source_fullpath)
 
     def identify(self):
         """ print the scout radio os/python type """
@@ -164,7 +200,7 @@ class TestBoard:
 class FileOPsCP:
     """ target file/directory operations collection for Circuit Python """
 
-    def ensuredir(self, dirpath):
+    def ensuredirs(self, dirpath):
         """ mkdir -p equivalent for Circuit Python """
 
         assert self # pylint wants self referenced
@@ -244,16 +280,16 @@ class TestBoardCP(TestBoard):
         #
         return super().sendrepl(cmd + "\r\n")
 
-    def copy_files_from_target(self):
-        """ copy files specified in 'setfiles' method from target to host """
+    # def copy_files_from_target(self):
+    #     """ copy files specified in 'setfiles' method from target to host """
 
-        assert self.m_mountpoint
+    #     assert self.m_mountpoint
 
-        for targetfile in self.m_files:
-            target_fullpath = os.path.join(self.m_mountpoint, targetfile)
-            host_fullpath = os.path.join(os.getcwd(), targetfile)
+    #     for targetfile in self.m_files:
+    #         target_fullpath = os.path.join(self.m_mountpoint, targetfile)
+    #         host_fullpath = os.path.join(os.getcwd(), targetfile)
 
-            shutil.copyfile(target_fullpath, host_fullpath)
+    #         shutil.copyfile(target_fullpath, host_fullpath)
 
     def create_repl(self):
         """ get the CircuitPython repl ready on the serial port """
@@ -269,12 +305,27 @@ class FileOPsMP:
         self.m_board = board
         self.m_rshell_fileop_timeout = 30
 
-    def ensuredir(self, dirpath):
-        """ mkdir -p equivalent for Micro Python """
+    def ensuresingledir(self, dirpath):
+        """ mkdir equivalent for Micro Python """
         response = self.m_board.sendrshellcmd(f"ls {dirpath}")
 
         if "Cannot access" in response:
             self.m_board.sendrshellcmd(f"mkdir {dirpath}")
+
+    def ensuredirs(self, dirpath):
+        """ mkdir -p equivalent for Micro Python """
+
+        dirlist = dirpath.split(os.path.sep)
+
+        # expect dirlist to be something like ['', 'pyboard', 'Display']
+
+        assert dirlist[1] == "pyboard"
+
+        tmp = "/pyboard"
+
+        for dirname in dirlist[2:]:
+            tmp = os.path.join(tmp, dirname)
+            self.ensuresingledir(tmp)
 
     def deltree(self, dst):
         """ rm -rf equivalent for Micro Python """
@@ -327,11 +378,11 @@ class TestBoardMP(TestBoard):
 
         return self.m_child.before.decode()
 
-    def copy_files_from_target(self):
-        """ copy files specified in 'setfiles' method from target to host """
+    # def copy_files_from_target(self):
+    #     """ copy files specified in 'setfiles' method from target to host """
 
-        # exit may be a bit harsh here...but probably fair
-        not_implemented()
+    #     # exit may be a bit harsh here...but probably fair
+    #     not_implemented()
 
     def create_repl(self):
         """ get the MicroPython repl ready on the serial port """
@@ -425,24 +476,10 @@ def getboard( serialport="/dev/ttyACM0" ):
 
 if __name__ == "__main__":
     SERIALPORT = "/dev/ttyACM0"
-    board = getboard(SERIALPORT)
+    myboard = getboard(SERIALPORT)
 
-    if not board:
+    if not myboard:
         print("No MicroPython/CircuitPython test boards found")
     else:
-        board.initialise()
+        myboard.initialise()
         print(f"repl available on serial port {SERIALPORT}")
-
-        parser = argparse.ArgumentParser()
-        parser.add_argument("--revsync",
-                            help="reverse sync: copy files from target to host",
-                            action="store_true")
-        args = parser.parse_args()
-        if args.revsync:
-            #
-            # hacky...circular dependency between test.py and
-            # testboard.py but very limited use here.
-            #
-            from test import TARGETFILES
-            board.setfiles(TARGETFILES)
-            board.copy_files_from_target()
