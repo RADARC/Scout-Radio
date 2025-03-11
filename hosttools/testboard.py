@@ -9,7 +9,7 @@ import serial
 import pexpect
 import pexpect.fdpexpect
 import fileops
-import boarddetect
+import sysdetect
 
 VERBOSE = True
 
@@ -367,7 +367,7 @@ def getboard( serialport="/dev/ttyACM0" ):
 
     if os.path.exists(serialport):
         if not G_BOARD:
-            if boarddetect.circuitpython():
+            if sysdetect.circuitpython():
                 #
                 # Create a CircuitPython board
                 #

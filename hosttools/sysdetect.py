@@ -5,7 +5,7 @@ import serial
 import pexpect
 import pexpect.fdpexpect
 
-def boarddetect_circuitpython_serial(serialport):
+def sysdetect_circuitpython_serial(serialport):
     """ Detect via USB serial port if a board is running circuit python """
     ser = serial.Serial()
     ser.baudrate = 115200
@@ -31,10 +31,10 @@ def boarddetect_circuitpython_serial(serialport):
     return "circuitpython" in child.before.decode()
 
 
-def boarddetect_circuitpython_usb():
+def sysdetect_circuitpython_usb():
     """ Detect via lsusb command if a board is running circuit python """
 
-    # lighter weight than boarddetect_circuitpython_serial
+    # lighter weight than sysdetect_circuitpython_serial
     proc = subprocess.run(["lsusb"], shell = True, check = True, stdout=subprocess.PIPE)
 
     #
@@ -45,4 +45,4 @@ def boarddetect_circuitpython_usb():
 def circuitpython():
     """ returns True if running on circuit python """
 
-    return boarddetect_circuitpython_usb()
+    return sysdetect_circuitpython_usb()
