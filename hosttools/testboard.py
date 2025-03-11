@@ -29,6 +29,9 @@ class TestBoard:
 
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
+
+        assert self # pylint wants self referenced
+
         not_implemented()
 
     def setfiles(self, homedir, targetfiles):
@@ -109,6 +112,9 @@ class TestBoard:
 
     def copy_files_from_target(self):
         """ stub method intentionally not implemented in base class """
+
+        assert self # pylint wants self referenced
+
         not_implemented()
 
     def identify(self):
@@ -138,6 +144,9 @@ class TestBoard:
 
     def create_repl(self):
         """ stub method intentionally not implemented in base class """
+
+        assert self # pylint wants self referenced
+
         not_implemented()
 
     def reboot(self):
@@ -149,18 +158,33 @@ class FileOPsCP:
     """ target file/directory operations collection for Circuit Python """
 
     def ensuredir(self, dirpath):
-        """ mkdir -p equivalent """
+        """ mkdir -p equivalent for Circuit Python """
+
+        assert self # pylint wants self referenced
+
         if not os.path.exists(dirpath):
             os.makedirs(dirpath)
 
     def deltree(self, dirpath):
+        """ rm -rf equivalent for Circuit Python """
+
+        assert self # pylint wants self referenced
+
         if os.path.exists(dirpath):
             shutil.rmtree(dirpath)
 
     def copytree(self, src, dst):
+        """ cp -a equivalent for Circuit Python """
+
+        assert self # pylint wants self referenced
+
         shutil.copytree(src, dst)
 
     def copyfile(self, src, dst):
+        """ cp equivalent for single file for Circuit Python """
+
+        assert self  # pylint wants self referenced
+
         shutil.copyfile(src, dst)
 
 
@@ -239,19 +263,25 @@ class FileOPsMP:
         self.m_rshell_fileop_timeout = 30
 
     def ensuredir(self, dirpath):
-        """ mkdir -p equivalent """
+        """ mkdir -p equivalent for Micro Python """
         response = self.m_board.sendrshellcmd(f"ls {dirpath}")
 
         if "Cannot access" in response:
             self.m_board.sendrshellcmd(f"mkdir {dirpath}")
 
     def deltree(self, dst):
+        """ rm -rf equivalent for Micro Python """
+
         self.m_board.sendrshellcmd(f"rm -r {dst}", timeout = self.m_rshell_fileop_timeout)
 
     def copytree(self, src, dst):
+        """ cp -a equivalent for Micro Python """
+
         self.m_board.sendrshellcmd(f"cp -r {src} {dst}", timeout = self.m_rshell_fileop_timeout)
 
     def copyfile(self, src, dst):
+        """ cp equivalent for single file for Micro Python """
+
         self.m_board.sendrshellcmd(f"cp {src} {dst}", timeout = self.m_rshell_fileop_timeout)
 
 
