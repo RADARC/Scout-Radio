@@ -11,4 +11,4 @@ def installfiles(homedir, files):
     board.initialise()
 
     # reboot
-    board.sendrepl("\x04\r\n\r\n")
+    board.reboot()

@@ -115,7 +115,7 @@ class TestBoard:
         self.m_ostype = ostype
 
     def ostype(self):
-        """ 
+        """
         return string describing the type of python running on target.
         return None if the board is not initialised.
         """
@@ -134,6 +134,11 @@ class TestBoard:
     def create_repl(self):
         """ stub method intentionally not implemented in base class """
         not_implemented()
+
+    def reboot(self):
+        """ restart the python interpreter on target by sending CTRL+D """
+        self.sendrepl("\x04\r\n\r\n")
+
 
 class FileOPsCP:
     """ target file/directory operations collection for Circuit Python """
@@ -177,6 +182,12 @@ class TestBoardCP(TestBoard):
         if not mountpoint:
             sys.exit("Error: Circuit python filesystem mount not found")
 
+        #
+        # Set mountpoint and fileops object member variables in base class
+        # by passing them to the base class constructor.
+        #
+        # pylint seems to prefer this.
+        #
         super().__init__(mountpoint, FileOPsCP())
 
     def create_pexepect_child(self):
@@ -247,6 +258,12 @@ class TestBoardMP(TestBoard):
 
         self.m_rshell_debug = False
 
+        #
+        # Set mountpoint and fileops object member variables in base class
+        # by passing them to the base class constructor.
+        #
+        # pylint seems to prefer this.
+        #
         super().__init__("/pyboard", FileOPsMP(self))
 
     def create_pexepect_child(self):
