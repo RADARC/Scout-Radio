@@ -14,14 +14,14 @@ def installcomponent(component):
     if os.path.exists(os.path.join(component, installfile)):
         print(f"Installing {component}")
         if component:
-            rc = os.system(f"cd {component}; python3 {installfile}")
+            return_code = os.system(f"cd {component}; python3 {installfile}")
         else:
-            rc = os.system(f"python3 {installfile}")
+            return_code = os.system(f"python3 {installfile}")
 
         #
         # propagate failure up
         #
-        if rc != 0:
+        if return_code != 0:
             sys.exit(f"Install failed on component {component}")
 
 #
