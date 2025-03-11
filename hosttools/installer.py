@@ -3,6 +3,8 @@
 import testboard
 
 def installfiles(argv, homedir, files, expect_repl=True):
+    """ install or revsync files/directories from homedir source (component) """
+
     board = testboard.getboard()
 
     assert board
@@ -15,6 +17,3 @@ def installfiles(argv, homedir, files, expect_repl=True):
         board.initialise(expect_repl)
 
         board.reboot(expect_repl)
-
-
-
