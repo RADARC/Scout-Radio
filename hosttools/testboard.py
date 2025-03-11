@@ -210,6 +210,8 @@ class TestBoard:
             return
 
         self.create_repl()
+
+        # files installed?
         if self.m_homedir:
             self.sendrepl("import os")
             target_homedirname = os.path.basename(self.m_homedir)
