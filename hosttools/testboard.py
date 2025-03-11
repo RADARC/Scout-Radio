@@ -73,20 +73,25 @@ class TestBoard:
                     (src, dst) = item
 
                 source_fullpath = src
+
+                if not os.path.exists(source_fullpath):
+                    sys.exit(f"Error: {source_fullpath} not found")
+
                 target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
                 self.m_fileops.ensuredir(target_homedir)
 
-                if dst[0] != '/':
-                    target_fullpath = os.path.join(target_homedir, dst)
-                else:
+                if dst[0] == '/':
                     target_fullpath = os.path.join(self.m_mountpoint, dst[1:])
+                else:
+                    target_fullpath = os.path.join(target_homedir, dst)
 
+                #
+                # If we are installing a file, make sure its
+                # destination directory exists on target.
+                #
                 if not os.path.isdir(source_fullpath):
                     self.m_fileops.ensuredir(os.path.dirname(target_fullpath))
-
-                if not os.path.exists(source_fullpath):
-                    sys.exit(f"Error: {source_fullpath} not found")
 
                 if os.path.isdir(source_fullpath):
                     #
@@ -98,7 +103,7 @@ class TestBoard:
                     self.m_fileops.copytree(source_fullpath, target_fullpath)
                 else:
                     #
-                    # copy on single file
+                    # copy on the single file
                     #
                     self.m_fileops.copyfile(source_fullpath, target_fullpath)
 
