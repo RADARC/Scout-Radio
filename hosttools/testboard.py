@@ -85,14 +85,14 @@ class TestBoard:
 
         assert self.m_mountpoint
 
+        target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
         for installitem in self.m_files:
 
             (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
             if not os.path.exists(source_fullpath):
                 sys.exit(f"Error: {source_fullpath} not found")
-
-            target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
             #
             # deal with relative or absolute paths on target
@@ -134,11 +134,11 @@ class TestBoard:
 
         assert self.m_mountpoint
 
+        target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
         for installitem in self.m_files:
 
             (source_fullpath, dst) = get_src_dst_from_item(installitem)
-
-            target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
 
             #
             # deal with relative or absolute paths on target
