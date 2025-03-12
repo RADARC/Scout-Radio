@@ -14,6 +14,7 @@ def installfiles(argv, homedir, files, expect_repl=True):
     #
     # consider introducing --app optionc on install.py's to indicate
     # the component should be installed as the system application
+    # i.e. the "active" application
     #
 
     # we should really use argparse properly...
