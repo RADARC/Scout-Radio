@@ -20,8 +20,11 @@ VERBOSE_SEND_REPL_RESPONSE = False
 VERBOSE_SEND_RSHELL = False
 VERBOSE_SEND_RSHELL_RESPONSE = False
 
-def not_implemented():
+def not_implemented(unused):
     """ exit with error status indicating functionality not implemented """
+
+    assert unused # pylint
+
     sys.exit("not implemented")
 
 def get_src_dst_from_item(item):
@@ -57,9 +60,7 @@ class TestBoard:
     def create_pexepect_child(self):
         """ stub method intentionally not implemented in base class """
 
-        assert self # pylint wants self referenced
-
-        not_implemented()
+        not_implemented(self)
 
 
     def setfiles(self, homedir, targetfiles):
@@ -240,9 +241,7 @@ class TestBoard:
     def create_repl(self):
         """ stub method intentionally not implemented in base class """
 
-        assert self # pylint wants self referenced
-
-        not_implemented()
+        not_implemented(self)
 
 
     def reboot(self, expect_repl=True):
