@@ -378,12 +378,9 @@ class SI4735:
 
         # stash parameters
         self.device_address = device_i2c_address
-        self.i2c = i2c
         self.reset_pin = reset_pin
 
-        # TODO get rid of self.i2c? what right do we have to go messing
-        # with other devices??
-        self.si4735_i2c = RADARCi2cdev(self.i2c, self.device_address)
+        self.si4735_i2c = RADARCi2cdev(i2c, self.device_address)
 
         # 1 = LSB and 2 = USB; 0 = AM, FM or WB
         self.currentSsbStatus = 0
