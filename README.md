@@ -136,7 +136,7 @@ The placed component costs can be excluded, so $44.32 for five. With tax and shi
 
 ## PCB Files
 
-## Software Project Plan, 7th Feb 2025.
+## Software Project Plan, 12th March 2025.
 Tasks are either small, medium or large (S/M/L)
 
 In priority order:
