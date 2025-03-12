@@ -335,8 +335,18 @@ class TestBoardMP(TestBoard):
 
     def create_pexepect_child(self):
         """ create a pexpect child object for MicroPython """
-        self.m_child = pexpect.spawn("rshell", timeout=1)
+
+        try:
+            self.m_child = pexpect.spawn("rshell", timeout=1)
+
+        except pexpect.exceptions.ExceptionPexpect as pexpect_excep:
+            if "The command was not found or was not executable" in repr(pexpect_excep):
+                sys.exit("Error: rshell: command not found. Please install rshell")
+        #
+        # At least we didn't exception on the spawn...continue
+        #
         self.m_child.expect("> ")
+
         if "No MicroPython boards connected" in self.m_child.before.decode():
             sys.exit("Error: rshell: No MicroPython boards connected")
 
