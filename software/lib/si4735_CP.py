@@ -1,3 +1,5 @@
+# TODO consider moving to uctypes for bitfield management
+# https://docs.micropython.org/en/v1.9.2/wipy/library/uctypes.html
 import time
 from struct import pack, unpack
 from micropython import const
