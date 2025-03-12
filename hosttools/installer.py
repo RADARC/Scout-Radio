@@ -11,6 +11,11 @@ def installfiles(argv, homedir, files, expect_repl=True):
 
     board.setfiles(homedir, files)
 
+    #
+    # consider introducing --app optionc on install.py's to indicate
+    # the component should be installed as the system application
+    #
+
     # we should really use argparse properly...
     if len(argv) > 1 and argv[1] == "--revsync":
         board.revsync()
