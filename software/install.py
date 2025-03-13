@@ -1,4 +1,7 @@
 """ top level installer """
+
+# Environment: host python3
+
 import sys
 import installer
 

@@ -1,4 +1,7 @@
 """ installer for Display component """
+
+# Environment: host python3
+
 import sys
 import installer
 

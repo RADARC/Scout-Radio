@@ -1,4 +1,7 @@
 """ installer for Morse component """
+
+# Environment: host python3
+
 import sys
 import installer
 

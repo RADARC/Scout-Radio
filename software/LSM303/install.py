@@ -1,6 +1,8 @@
 """ installer for LSM303 component """
 # fails due to adafruit_lsm303dlh_mag and adafruit_lsm303_accel not being found
 
+# Environment: host python3
+
 import sys
 import installer
 
