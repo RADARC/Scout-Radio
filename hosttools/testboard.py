@@ -229,7 +229,7 @@ class TestBoard:
         if self.m_homedir:
             self.sendrepl("import os")
             target_homedirname = os.path.basename(self.m_homedir)
-            self.sendrepl(f"os.chdir(\"{target_homedirname}\")")
+            self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
 
 
     def revsync(self):
