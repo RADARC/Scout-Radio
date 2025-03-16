@@ -36,7 +36,10 @@ class FileOPsCP:
 
         assert self  # pylint wants self referenced
 
-        if not os.path.exists(dst) or not filecmp.cmp(src, dst):
+        if os.path.exists(dst):
+            if not filecmp.cmp(src, dst):
+                shutil.copyfile(src, dst)
+        else:
             shutil.copyfile(src, dst)
 
 
