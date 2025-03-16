@@ -14,6 +14,7 @@ import install
 SERIALPORT = "/dev/ttyACM0"
 
 def usage():
+    """ help text - should use argparse """
     print("use --install to install target files")
     print("use --revsync to pull them back to host")
     sys.exit(2)
