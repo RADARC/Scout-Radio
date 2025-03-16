@@ -55,7 +55,7 @@ if __name__=="__main__":
 
     # once we've done developing, start the app on power up
     # -- puts a code.py/main.py on target
-    BOARD.start_app_on_powerup("radioapp")
+    #BOARD.start_app_on_powerup("radioapp")
 
     #
     # start the app, we won't get a >>> back
