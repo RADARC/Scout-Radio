@@ -50,7 +50,7 @@ if __name__=="__main__":
         BOARD.revsync()
         sys.exit(0)
 
-    # does copy files to target
+    # does copy files to target if any are specified in setfiles method
     BOARD.initialise()
 
     # once we've done developing, start the app on power up
