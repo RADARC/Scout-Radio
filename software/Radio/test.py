@@ -7,6 +7,7 @@
 import unittest
 import time
 import testboard
+from testboard import formatoutput
 import install
 import sys
 
@@ -14,11 +15,6 @@ import sys
 #unittest.TestLoader.sortTestMethodsUsing = None
 
 SERIALPORT = "/dev/ttyACM0"
-
-def formatoutput(output):
-    """ format output from target board """
-    for line in output.decode().split("\r\n"):
-        print(line)
 
 # hack so setUp main contents only run once...lots of ways to do this
 board = None

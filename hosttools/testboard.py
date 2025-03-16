@@ -20,6 +20,15 @@ VERBOSE_SEND_REPL_RESPONSE = False
 VERBOSE_SEND_RSHELL = False
 VERBOSE_SEND_RSHELL_RESPONSE = False
 
+#
+# handy formatter
+#
+def formatoutput(output):
+    """ format output from target board """
+    for line in output.decode().split("\r\n"):
+        print(line)
+
+
 def not_implemented(unused):
     """ exit with error status indicating functionality not implemented """
 
