@@ -289,7 +289,7 @@ class TestBoard:
                 startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
                 startupfile.write(f"import {appname}\n")
                 startupfile.seek(0)
-                tgtmain = os.path.join(self.m_mountpoint, self.m_mainfile)
+                tgtmain = os.path.join(self.m_mountpoint, self.m_auto_run_file)
                 self.m_fileops.copyfile(startupfile.name, tgtmain)
 
 
