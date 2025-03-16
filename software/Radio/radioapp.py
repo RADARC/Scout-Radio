@@ -16,7 +16,6 @@ from adafruit_st7789 import ST7789
 from adafruit_display_text import label
 from analogio import AnalogIn
 
-
 switch1 = DigitalInOut(board.GP2)
 switch2 = DigitalInOut(board.GP3)
 switch3 = DigitalInOut(board.GP6)
@@ -267,4 +266,3 @@ while True:
             text_station_text.text = radio.station_text
         
         t= time.time()
-        

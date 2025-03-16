@@ -136,13 +136,14 @@ The placed component costs can be excluded, so $44.32 for five. With tax and shi
 
 ## PCB Files
 
-## Software Project Plan, 7th Feb 2025.
+## Software Project Plan, 12th March 2025.
 Tasks are either small, medium or large (S/M/L)
 
 In priority order:
 * Sort out test code and harness for si4735 driver (done)
-* Design and implement a software installation process for target hardware, automating wherever possible (M)
-* Design and implement standalone POST/BIST for target hardware (M)
+* Design and implement a software installation process for target hardware, automating wherever possible (M, done)
 * Document possible use cases (M)
+* Provide example higher level libraries and applications (M)
+* Design and implement standalone POST/BIST for target hardware (M)
 * Design and implement production test software. Possibly involves use of
   laptop. Scouts need to know if what they have built works :-) (M)
