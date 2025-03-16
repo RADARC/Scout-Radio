@@ -5,6 +5,7 @@ for MicroPython and CircuitPython devices
 
 import sys
 import os
+import tempfile
 import serial
 import pexpect
 import pexpect.fdpexpect
@@ -54,13 +55,14 @@ def get_src_dst_from_item(item):
 
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
-    def __init__(self, serialport, target_mountpoint, file_operations):
+    def __init__(self, serialport, target_mountpoint, file_operations, mainfile):
         self.m_files = []
         self.m_child = None
         self.m_ostype = None
         self.m_mountpoint = target_mountpoint
         self.m_fileops = file_operations
         self.m_homedir = None
+        self.m_auto_run_file = mainfile
 
         # set up by setfiles invocation
         self.m_target_homedir = ""
@@ -277,6 +279,19 @@ class TestBoard:
         # expect_repl deals with odd case probably for code.py autorun
         self.sendrepl("\x03", expect_repl=expect_repl)
 
+    def start_app_on_powerup(self, appname):
+        """ provide a system startup file (eg. code.py etc.) for the
+            component this testboard is concerned with """
+
+        if self.m_homedir:
+            with tempfile.NamedTemporaryFile("w") as startupfile:
+                startupfile.write("import os\n")
+                startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
+                startupfile.write(f"import {appname}\n")
+                startupfile.seek(0)
+                tgtmain = os.path.join(self.m_mountpoint, self.m_mainfile)
+                self.m_fileops.copyfile(startupfile.name, tgtmain)
+
 
 #
 # Circuit Python board
@@ -307,7 +322,10 @@ class TestBoardCP(TestBoard):
         #
         # pylint seems to prefer this.
         #
-        super().__init__(serialport, mountpoint, fileops.FileOPsCP())
+        super().__init__(serialport,
+                         mountpoint,
+                         fileops.FileOPsCP(),
+                         "code.py")
 
 
     def sendrepl(self, cmd, expect_repl=True):
@@ -342,7 +360,10 @@ class TestBoardMP(TestBoard):
         #
         # pylint seems to prefer this.
         #
-        super().__init__(serialport, "/pyboard", fileops.FileOPsMP(self))
+        super().__init__(serialport,
+                         "/pyboard",
+                         fileops.FileOPsMP(self),
+                         "main.py")
 
 
     def create_pexpect_rshell_child(self):
