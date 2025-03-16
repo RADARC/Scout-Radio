@@ -29,7 +29,7 @@ if __name__=="__main__":
     # must get one
     assert BOARD
 
-    /Radio on target: see install.py
+    # /Radio on target: see install.py
     BOARD.sethomedir(install.homedir())
 
     # optionally install files
