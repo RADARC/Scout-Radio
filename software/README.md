@@ -7,7 +7,7 @@ then
 
 ```python sysintall.py```
 
-To install individual components:
+To install or update individual components (for example Radio):
 
 ```cd Radio```
 
