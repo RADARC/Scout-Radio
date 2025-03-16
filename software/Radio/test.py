@@ -8,6 +8,7 @@ import unittest
 import time
 import testboard
 import install
+import sys
 
 # hack - should be able to run unit tests in any order eventually
 #unittest.TestLoader.sortTestMethodsUsing = None
@@ -47,7 +48,11 @@ class Si4735test(unittest.TestCase):
             # must get one
             assert board
 
-            board.setfiles(install.homedir(), install.files() + install.supportfiles())
+            board.sethomedir(install.homedir())
+
+            # optionally install files
+            if len(sys.argv) > 1 and sys.argv[1] == "--install":
+                board.setfiles(install.files() + install.supportfiles())
 
             board.initialise()
 

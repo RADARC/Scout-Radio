@@ -63,11 +63,15 @@ class TestBoard:
         not_implemented(self)
 
 
-    def setfiles(self, homedir, targetfiles):
-        """ configure the list of host python files to be run on target """
+    def sethomedir(self, homedir):
+        """ configure the home directory for the component """
         self.m_homedir = homedir
-        self.m_files = targetfiles
         self.m_target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+
+
+    def setfiles(self, targetfiles):
+        """ configure the list of host python files to be run on target """
+        self.m_files = targetfiles
 
 
     def sendrepl(self, cmd, expect_repl=True):
@@ -225,11 +229,9 @@ class TestBoard:
 
         self.create_repl()
 
-        # files installed?
-        if self.m_homedir:
-            self.sendrepl("import os")
-            target_homedirname = os.path.basename(self.m_homedir)
-            self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
+        self.sendrepl("import os")
+        target_homedirname = os.path.basename(self.m_homedir)
+        self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
 
 
     def revsync(self):

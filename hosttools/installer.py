@@ -9,7 +9,8 @@ def installfiles(argv, homedir, files, expect_repl=True):
 
     assert board
 
-    board.setfiles(homedir, files)
+    board.sethomedir(homedir)
+    board.setfiles(files)
 
     #
     # consider introducing --app optionc on install.py's to indicate
