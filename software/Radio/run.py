@@ -1,5 +1,6 @@
 """
-run a test file - this file is derived from test.py
+run up a radio - this file is derived from test.py. Test.py without the formal
+test aspect.
 """
 
 import sys
@@ -28,13 +29,16 @@ if __name__=="__main__":
     # must get one
     assert BOARD
 
+    /Radio on target: see install.py
     BOARD.sethomedir(install.homedir())
 
     # optionally install files
+    # could specify different file lists here from install.py
+    # if wanted.
     if DO_INSTALL or DO_REVSYNC:
         BOARD.setfiles(install.files() + install.supportfiles())
 
-    # pull files back?
+    # pull files back from target?
     if DO_REVSYNC:
         BOARD.revsync()
         sys.exit(0)
@@ -43,12 +47,15 @@ if __name__=="__main__":
     BOARD.initialise()
 
     #
-    # grab a singleton si4735 device as our first job
+    # grab an si4735 device
     #
     BOARD.sendrepl('import harness')
     text = BOARD.sendrepl('radio = harness.getradio()')
     formatoutput(text)
 
+    #
+    # do some stuff
+    #
     text = BOARD.sendrepl('radio.reset()')
     formatoutput(text)
 
