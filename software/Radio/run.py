@@ -46,6 +46,8 @@ if __name__=="__main__":
     # does copy files to target
     BOARD.initialise()
 
+    # once we've done developing
+    #BOARD.start_app_on_powerup("radioapp")
     BOARD.sendrepl('import radioapp', expect_repl=False)
 
     # #
