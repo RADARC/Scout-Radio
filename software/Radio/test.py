@@ -16,8 +16,9 @@ import install
 
 SERIALPORT = "/dev/ttyACM0"
 
-# hack so setUp main contents only run once...lots of ways to do this
+# singleton board
 BOARD = None
+
 DO_INSTALL = False
 
 #
