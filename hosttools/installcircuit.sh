@@ -10,7 +10,7 @@ mountpoint()
 await_mount()
 {
     echo "waiting for mountpoint"
-    while [ $(mountpoint) = "" ]; do
+    while [ "$(mountpoint)" = "" ]; do
         sleep 0.1
     done
 }
