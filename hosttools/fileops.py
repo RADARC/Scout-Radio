@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import filecmp
 
 # Use duck typing for FileOPsCP and FileOPsMP
 class FileOPsCP:
@@ -35,7 +36,8 @@ class FileOPsCP:
 
         assert self  # pylint wants self referenced
 
-        shutil.copyfile(src, dst)
+        if not os.path.exists(dst) or not filecmp.cmp(src, dst):
+            shutil.copyfile(src, dst)
 
 
 class FileOPsMP:
