@@ -195,7 +195,6 @@ class Si4735test(unittest.TestCase):
 
 if __name__=="__main__":
 
-    progname = sys.argv[0]
     if len(sys.argv) > 1:
         if "--install" in sys.argv[1:]:
             DO_INSTALL = True
