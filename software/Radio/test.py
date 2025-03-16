@@ -34,6 +34,7 @@ DO_INSTALL = False
 # https://docs.python.org/3/library/unittest.html
 #
 class Si4735test(unittest.TestCase):
+    """ Si4735test object """
 
     def setUp(self):
         """ copy test files to target; grab a radio in the repl for testing """
