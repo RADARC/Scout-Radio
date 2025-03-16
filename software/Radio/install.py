@@ -28,4 +28,3 @@ def supportfiles():
 if __name__=="__main__":
     installer.installfiles(sys.argv, homedir(), files() + supportfiles())
     #installer.installfiles(sys.argv, homedir(), files())
-
