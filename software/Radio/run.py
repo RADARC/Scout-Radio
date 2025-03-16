@@ -13,6 +13,11 @@ import install
 
 SERIALPORT = "/dev/ttyACM0"
 
+def usage():
+    print("use --install to install target files")
+    print("use --revsync to pull them back to host")
+    sys.exit(2)
+
 if __name__=="__main__":
 
     DO_INSTALL = False
@@ -23,6 +28,8 @@ if __name__=="__main__":
             DO_INSTALL = True
         if "--revsync" in sys.argv[1:]:
             DO_REVSYNC = True
+        if "--help" in sys.argv[1:]:
+            usage()
 
     BOARD = testboard.getboard(SERIALPORT)
 
@@ -48,7 +55,7 @@ if __name__=="__main__":
 
     # once we've done developing, start the app on power up
     # -- puts a code.py/main.py on target
-    #BOARD.start_app_on_powerup("radioapp")
+    BOARD.start_app_on_powerup("radioapp")
 
     #
     # start the app, we won't get a >>> back
