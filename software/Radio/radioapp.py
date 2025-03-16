@@ -7,7 +7,6 @@ import time
 import board
 import busio
 import sys
-import os
 import displayio
 import terminalio
 import rotaryio
@@ -16,8 +15,6 @@ from fourwire import FourWire
 from adafruit_st7789 import ST7789
 from adafruit_display_text import label
 from analogio import AnalogIn
-
-os.chdir("/Radio")
 
 switch1 = DigitalInOut(board.GP2)
 switch2 = DigitalInOut(board.GP3)
