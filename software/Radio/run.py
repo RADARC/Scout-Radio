@@ -14,14 +14,14 @@ SERIALPORT = "/dev/ttyACM0"
 
 if __name__=="__main__":
 
+    DO_INSTALL = False
+    DO_REVSYNC = False
+
     if len(sys.argv) > 1:
         if "--install" in sys.argv[1:]:
             DO_INSTALL = True
         if "--revsync" in sys.argv[1:]:
             DO_REVSYNC = True
-    else:
-        DO_INSTALL = False
-        DO_REVSYNC = False
 
     BOARD = testboard.getboard(SERIALPORT)
 
