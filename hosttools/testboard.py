@@ -54,7 +54,7 @@ def get_src_dst_from_item(item):
 
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
-    def __init__(self, target_mountpoint, file_operations):
+    def __init__(self, serialport, target_mountpoint, file_operations):
         self.m_files = []
         self.m_child = None
         self.m_ostype = None
@@ -65,11 +65,23 @@ class TestBoard:
         # set up by setfiles invocation
         self.m_target_homedir = ""
 
+        #
+        # serial port scaffold stuff
+        #
+        self.m_ser = serial.Serial()
+        self.m_ser.baudrate = 115200
+        self.m_ser.port = serialport
 
-    def create_pexepect_child(self):
-        """ stub method intentionally not implemented in base class """
 
-        not_implemented(self)
+    def create_pexpect_child(self):
+        """ create a pexpect child object with python repl """
+        try:
+            self.m_ser.open()
+
+        except serial.SerialException as excep:
+            sys.exit(f"{excep}")
+
+        self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
 
     def sethomedir(self, homedir):
@@ -89,7 +101,7 @@ class TestBoard:
         if VERBOSE_SEND_REPL:
             print(f">>> {cmd}")
 
-        self.m_child.sendline(cmd)
+        self.m_child.sendline(cmd + "\r\n")
 
         # don't expect repl to come back to us - eg. autorun code.py
         if not expect_repl:
@@ -98,10 +110,12 @@ class TestBoard:
         # timeout long enough for download patch etc.
         self.m_child.expect(">>> ", timeout = 8)
 
-        if VERBOSE_SEND_REPL_RESPONSE:
-            print(self.m_child.before.decode())
+        output = self.m_child.before.decode()
 
-        if "Traceback" in self.m_child.before.decode():
+        if VERBOSE_SEND_REPL_RESPONSE:
+            print(output)
+
+        if "Traceback" in output and not "KeyboardInterrupt:" in output:
             #
             # dump the traceback from target
             #
@@ -229,37 +243,39 @@ class TestBoard:
     def initialise(self, expect_repl=True):
         """ get the test board ready for use using the python repl
             on the (USB) serial port """
-        self.create_pexepect_child()
+        self.create_pexpect_child()
+        self.ctrlc()
+        self.reboot()
         self.copy_files_to_target()
 
         # odd case for code.py
         if not expect_repl:
             return
 
-        self.create_repl()
-
-        self.sendrepl("import os")
-        target_homedirname = os.path.basename(self.m_homedir)
-        self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
+        # homedir may necessarily not be set: eg. python testboard.py
+        if self.m_homedir:
+            self.sendrepl("import os")
+            target_homedirname = os.path.basename(self.m_homedir)
+            self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
 
 
     def revsync(self):
         """ pull files from target board back to host """
-        self.create_pexepect_child()
+        self.create_pexpect_child()
         self.copy_files_from_target()
-
-
-    def create_repl(self):
-        """ stub method intentionally not implemented in base class """
-
-        not_implemented(self)
 
 
     def reboot(self, expect_repl=True):
         """ restart the python interpreter on target by sending CTRL+D """
 
         # expect_repl deals with odd case probably for code.py autorun
-        self.sendrepl("\x04\r\n\r\n", expect_repl=expect_repl)
+        self.sendrepl("\x04", expect_repl=expect_repl)
+
+    def ctrlc(self, expect_repl=True):
+        """ restart the python interpreter on target by sending CTRL+C """
+
+        # expect_repl deals with odd case probably for code.py autorun
+        self.sendrepl("\x03", expect_repl=expect_repl)
 
 
 #
@@ -270,9 +286,6 @@ class TestBoardCP(TestBoard):
 
     def __init__(self, serialport):
         """ Create a CircuitPython scout radio test board """
-        self.m_ser = serial.Serial()
-        self.m_ser.baudrate = 115200
-        self.m_ser.port = serialport
 
         #
         # work out where the circuit python filesystem is mounted
@@ -294,18 +307,7 @@ class TestBoardCP(TestBoard):
         #
         # pylint seems to prefer this.
         #
-        super().__init__(mountpoint, fileops.FileOPsCP())
-
-
-    def create_pexepect_child(self):
-        """ create a pexpect child object for CircuitPython """
-        try:
-            self.m_ser.open()
-
-        except serial.SerialException as excep:
-            sys.exit(f"{excep}")
-
-        self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
+        super().__init__(serialport, mountpoint, fileops.FileOPsCP())
 
 
     def sendrepl(self, cmd, expect_repl=True):
@@ -314,15 +316,8 @@ class TestBoardCP(TestBoard):
         #
         # use base class implementation with CR/LF tacked on
         #
-        return super().sendrepl(cmd + "\r\n", expect_repl)
+        return super().sendrepl(cmd, expect_repl)
 
-
-    def create_repl(self):
-        """ get the CircuitPython repl ready on the serial port """
-        #
-        # rattle return key
-        #
-        self.sendrepl("")
 
 
 #
@@ -331,23 +326,30 @@ class TestBoardCP(TestBoard):
 class TestBoardMP(TestBoard):
     """ A MicroPython scout radio test board """
 
-    def __init__(self):
+    def __init__(self, serialport):
         """ Create a MicroPython scout radio test board """
 
         #
-        # Set mountpoint and fileops object member variables in base class
-        # by passing them to the base class constructor.
+        # come up with a python expect session
+        #
+        self.m_expect_session_type = "python"
+
+        self.m_rshell_child = None
+
+        #
+        # Set serial port, mountpoint, fileops object member variables
+        # in base class by passing them to the base class constructor.
         #
         # pylint seems to prefer this.
         #
-        super().__init__("/pyboard", fileops.FileOPsMP(self))
+        super().__init__(serialport, "/pyboard", fileops.FileOPsMP(self))
 
 
-    def create_pexepect_child(self):
+    def create_pexpect_rshell_child(self):
         """ create a pexpect child object for MicroPython """
 
         try:
-            self.m_child = pexpect.spawn("rshell", timeout=1)
+            self.m_rshell_child = pexpect.spawn("rshell", timeout=1)
 
         except pexpect.exceptions.ExceptionPexpect as pexpect_excep:
             if "The command was not found or was not executable" in repr(pexpect_excep):
@@ -355,43 +357,89 @@ class TestBoardMP(TestBoard):
         #
         # At least we didn't exception on the spawn...continue
         #
-        self.m_child.expect("> ")
+        self.m_rshell_child.expect("> ")
 
-        if "No MicroPython boards connected" in self.m_child.before.decode():
+        if "No MicroPython boards connected" in self.m_rshell_child.before.decode():
             sys.exit("Error: rshell: No MicroPython boards connected")
+
+
+    def set_expect_session_type(self, sessiontype):
+        """ switch between rshell and python repl in Micro Python env """
+
+        # happy path
+        if self.m_expect_session_type == sessiontype:
+            return
+
+        if sessiontype == "rshell":
+            #
+            # switching from python repl on serial port to rshell app
+            #
+
+            # kill the serial port session with the python interpreter
+            del self.m_child
+            self.m_ser.close()
+
+            # create the rshell session
+            self.create_pexpect_rshell_child()
+
+            #
+            # remember we are now in rshell
+            #
+            self.m_expect_session_type = "rshell"
+
+        if sessiontype == "python":
+            #
+            # switching from rshell app to python repl on serial port
+            #
+
+            #
+            # get out of rshell:
+            # back to linux/windows shell with control-D
+            #
+            self.m_rshell_child.sendline("\x04\r\n")
+
+            #
+            # done with the rshell expect session
+            #
+            del self.m_rshell_child
+
+            #
+            # create expect session on serial port
+            #
+            self.create_pexpect_child()
+
+            #
+            # remember we are now in python mode on serial port
+            #
+            self.m_expect_session_type = "python"
 
 
     def sendrshellcmd(self, cmd, timeout = 10):
         """ send a command to rshell """
 
+        self.set_expect_session_type("rshell")
+
         if VERBOSE_SEND_RSHELL:
             print(f"rshell: sending {cmd}")
 
-        self.m_child.sendline(cmd)
+        self.m_rshell_child.sendline(cmd)
 
         # can take a while to copy files in rshell
-        self.m_child.expect("> ", timeout)
+        self.m_rshell_child.expect("> ", timeout)
+
+        response = self.m_rshell_child.before.decode()
 
         if VERBOSE_SEND_RSHELL_RESPONSE:
-            print(self.m_child.before.decode())
+            print(response)
 
-        return self.m_child.before.decode()
+        return response
 
+    def sendrepl(self, cmd, expect_repl=True):
+        """ send a command to MicroPython repl """
 
-    def create_repl(self):
-        """ get the MicroPython repl ready on the serial port """
-        #
-        # we're assuming we're in rshell here...
-        #
-        self.m_child.sendline('repl pyboard')
+        self.set_expect_session_type("python")
 
-        #
-        # We do get a couple of instances of chevrons here.
-        # Swallow them all so child.before remains consistent.
-        #
-        self.m_child.expect(">>> ")
-        self.m_child.expect(">>> ")
-
+        return super().sendrepl(cmd, expect_repl)
 
 # capitals keeps pylint happy
 G_BOARD = None
@@ -411,13 +459,7 @@ def getboard( serialport="/dev/ttyACM0" ):
                 #
                 # Create a MicroPython board
                 #
-                # TODO rshell/serial port interaction
-                # rshell won't respect serial port passed here
-                # so long as we only have one board it's not an issue.
-                # Longer term perhaps we can look at ditching rshell
-                # if we can work out how to copy files back and forth.
-                #
-                G_BOARD = TestBoardMP()
+                G_BOARD = TestBoardMP(serialport)
 
     if not G_BOARD:
         sys.exit("Error: board not found")
