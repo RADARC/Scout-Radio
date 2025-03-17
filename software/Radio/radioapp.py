@@ -15,6 +15,7 @@ from adafruit_st7789 import ST7789
 from adafruit_display_text import label
 from analogio import AnalogIn
 import si4735_CP
+import radio_rx
 
 switch1 = DigitalInOut(board.GP2)
 switch2 = DigitalInOut(board.GP3)
@@ -121,32 +122,33 @@ i2c = busio.I2C( board.GP19, board.GP18)
 
 si4735_reset_pin = DigitalInOut(board.GP17)
 si4735_reset_pin.direction = Direction.OUTPUT
-radio = si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin)
+
+radio_ = radio_rx.RADIO_RX(si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin))
 
 def displayFrequency():
-    if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
-        text_area.text = "FM " + str(radio.getFrequency()/100)
+    if radio_.get_mode() == radio_rx.RADIO_RX.FM:
+        text_area.text = "FM " + str(radio_.get_frequency()/100)
                 
-    elif radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
-        text_area.text = "SSB " + str(radio.getFrequency()/1000)
+    elif radio_.get_mode() == radio_rx.RADIO_RX.SSB_USB:
+        text_area.text = "USB " + str(radio_.get_frequency()/1000)
+
+    elif radio_.get_mode() == radio_rx.RADIO_RX.SSB_LSB:
+        text_area.text = "LSB " + str(radio_.get_frequency()/1000)
         
-    elif radio.getMode() == si4735_CP.AM_CURRENT_MODE:
-        text_area.text = "AM " + str(radio.getFrequency())
+    elif radio_.get_mode() == radio_rx.RADIO_RX.AM:
+        text_area.text = "AM " + str(radio_.get_frequency())
 
 
-radio.reset()
-addr = radio.get_device_i2c_address()
-if addr == 0:
-    sys.exit()
+radio_.reset()
 
-radio.setFM()
-radio.setRDSConfig(1,3,3,3,3)
-radio.setFrequency(9703)
+
+radio_.set_mode(radio_rx.RADIO_RX.FM)
+
 displayFrequency()
 text_status.text = ""
 
 oldvol=32 #int((1 - (pot0.value / 65535)) * 63)
-radio.setVolume(oldvol)
+#radio.setVolume(oldvol)
 
 #BM = bytearray(b'\xfc\x00\x03\xff\xbf\xfc\x00\x03\xf0\xfc\x00\x00\x7f\x6f\xe0\x00\x03\xf0\xff\xff\xf8\x1f\x6f\x81\xff\xff\xf0\xff\xff\xff\x0f\x5f\x0f\xff\xff\xf0\xff\xff\xff\x8f\x6f\x1f\xff\xff\xf0\xff\xff\xff\xc7\xee\x3f\xff\xff\xf0\xff\xff\xff\xc7\xfe\x3f\xff\xff\xf0\xff\xff\xff\xcf\xff\x3f\xff\xff\xf0\xff\xff\xff\x8f\xbf\x1f\xff\xff\xf0\xff\xff\xfe\x1f\x9f\x87\xff\xff\xf0\xff\xff\xe0\x3f\x5f\xc0\x7f\xff\xf0\xff\xe7\xe0\x7f\x0f\xe0\x7e\x7f\xf0\xff\xdb\xe0\x3f\x6f\xc0\x7d\xbf\xf0\xff\xbd\xfe\x1f\xff\x87\xfb\xdf\xf0\xff\xbd\xff\x8f\xff\x1f\xfb\xdf\xf0\xff\xbd\xff\xcf\xff\x3f\xfb\xdf\xf0\xff\x7e\xff\xc7\x4e\x3f\xf7\xef\xf0\xff\x7e\xff\xc7\x6e\x3f\xf7\xef\xf0\xff\x7e\xff\xcf\x6f\x3f\xf7\xef\xf0\xff\x7e\xff\x0f\x6f\x0f\xf7\xef\xf0\xff\x7e\xfc\x1f\x1f\x83\xf7\xef\xf0\xff\x7e\xc0\x7f\xff\xe0\x37\xef\xf0\xff\x7e\xe0\x7f\xff\xe0\x77\xef\xf0\x7f\x7f\xf8\x1f\xbf\x81\xff\xef\xe0\x7f\x7f\xff\x0f\x9f\x0f\xff\xef\xe0\x7f\x7f\xff\xcf\x5f\x3f\xff\xef\xe0\x7f\xff\xff\xc7\x0e\x3f\xff\xff\xe0\x7e\xff\xff\xc7\x6e\x3f\xff\xf7\xe0\x7e\xff\xff\xcf\xff\x3f\xff\xf7\xe0\xfe\xff\xff\x8f\xff\x1f\xff\xf7\xf0\xbe\xff\xfe\x1f\xff\x87\xff\xf7\xd0\xbe\xff\xe0\x3f\x0f\xc0\x7f\xf7\xd0\xbd\xff\xe0\x7f\x6f\xe0\x7f\xfb\xd0\xdd\xff\xe0\x3f\x1f\xc0\x7f\xfb\xb0\xeb\xff\xfe\x1f\x4f\x87\xff\xfd\x70\xff\xff\xff\x8f\x6f\x1f\xff\xff\xf0\xff\xff\xff\xcf\xff\x3f\xff\xff\xf0\xff\xff\xff\xc7\xfe\x3f\xff\xff\xf0\xff\xff\xff\xc7\x9e\x3f\xff\xff\xf0\xff\xff\xff\x8f\x6f\x1f\xff\xff\xf0\xff\xff\xff\x0f\x7f\x0f\xff\xff\xf0\xff\xff\xf8\x1f\x6f\x81\xff\xff\xf0\xfc\x00\x00\x7f\x2f\xe0\x00\x03\xf0\xfc\x00\x03\xff\xff\xfc\x00\x03\xf0')
 
@@ -165,7 +167,7 @@ while True:
     newvol= 32 #int((1 - (pot0.value / 65535)) * 63)
     if newvol!=oldvol:
         oldvol=newvol
-        radio.setVolume(newvol)
+        radio_.set_volume(newvol)
         print(newvol)
  
 
@@ -174,18 +176,12 @@ while True:
     position = encoder.position
     if last_position is None or position != last_position:
         
-        if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
-            increment=10
-        elif radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
-            increment=1
-        elif radio.getMode() == si4735_CP.AM_CURRENT_MODE:
-            increment=1
-            
+
         if position > last_position:
-            radio.setFrequency(radio.getFrequency()+increment)
+            radio_.frequency_increment()
            
         elif position < last_position:
-            radio.setFrequency(radio.getFrequency()-increment)
+            radio_.frequency_decrement()
            
         displayFrequency()
             
@@ -193,13 +189,13 @@ while True:
     
     if switch1.value is False:
             #Bandwidth, only for SSB
-            if radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
-                oldBW = radio.getSSBbandwidth()
+            if radio_.get_mode() == radio_rx.RADIO_RX.SSB_USB or radio_.get_mode() == radio_rx.RADIO_RX.SSB_LSB:
+                oldBW = radio_.get_ssb_bandwidth()
                 
                 if (oldBW == 5):
-                    radio.setSSBAudioBandwidth(0)
+                    radio_.set_ssb_audio_bandwidth(0)
                 else:
-                    radio.setSSBAudioBandwidth(oldBW+1)
+                    radio_.set_ssb_audio_bandwidth(oldBW+1)
                 
          
             
@@ -207,62 +203,39 @@ while True:
     if switch5.value is False:
         
         
-        
-        
-        if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
+        if radio_.get_mode() == radio_rx.RADIO_RX.FM:
             #Go to AM Mode
-            radio.setAM()
-            radio.setFrequency(198)
-            
-       
-        elif radio.getMode() == si4735_CP.AM_CURRENT_MODE:
+            radio_.set_mode( radio_rx.RADIO_RX.AM)
+
+        elif radio_.get_mode() == radio_rx.RADIO_RX.AM:
            
-            #Go to SSB Mode
+            #Go to SSB USB Mode
             text_status.text = "Please wait..."
-            radio.powerDown()
-            radio.patchPowerUp()
-            radio.downloadPatch()
-
-            radio.setSSB(si4735_CP.SSB_SIDEBAND_USB)
-            radio.setFrequency(14000)
-
-            radio.setSSBConfig(1, 0, 0, 1, 0, 1)
+            radio_.set_mode(radio_rx.RADIO_RX.SSB_USB)
             text_status.text = ""
             
-        elif radio.getMode() == si4735_CP.SSB_CURRENT_MODE:
-            
-            #If volume button is down when the mode button is pressed and mode is SSB
-            #Switch LSB/USB
-            if switch4.value is False:
-                if radio.getSSBsideband() == si4735_CP.SSB_SIDEBAND_LSB:
-                     radio.setSSB(si4735_CP.SSB_SIDEBAND_USB)
-                     radio.setFrequency(radio.getFrequency())
-                elif radio.getSSBsideband() == si4735_CP.SSB_SIDEBAND_USB:
-                     radio.setSSB(si4735_CP.SSB_SIDEBAND_LSB)
-                     radio.setFrequency(radio.getFrequency())
-                
-            else:
+        elif radio_.get_mode() == radio_rx.RADIO_RX.SSB_USB:
+
+            radio_.set_mode(radio_rx.RADIO_RX.SSB_LSB)
+
+        else:
+            radio_.set_mode(radio_rx.RADIO_RX.FM)
         
-                #Go to FM Mode
-                radio.setFM()
-                radio.setRDSConfig(1,3,3,3,3)
-                radio.setFrequency(9703)
-            
-            
+
         displayFrequency()
         
    
    
     if time.time()-t > 1:
         
-        sigquality = radio.getCurrentReceivedSignalQuality(0)
+        sigquality = radio_.get_current_signal_quality()
         
         text_signalstrength.text = "rssi:" + str(sigquality["rssi"]) + " SNR:" + str(sigquality["SNR"])
       
-        if radio.getMode() == si4735_CP.FM_CURRENT_MODE:
-            radio.getRDSStatus(0,0,0)
+
+        radio_.poll()
           
-            text_station_name.text = radio.station_name
-            text_station_text.text = radio.station_text
+        text_station_name.text = radio_.station_name
+        text_station_text.text = radio_.station_text
         
         t= time.time()
