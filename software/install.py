@@ -6,9 +6,8 @@ import sys
 import installer
 
 def files_norepl():
-    """ just one file at top level: autorun thing """
+    """ autorun thing at some point, maybe. Nothing right now. """
     return [
-        "code.py"
       ]
 
 def homedir():
