@@ -26,7 +26,7 @@ VERBOSE_SEND_RSHELL_RESPONSE = False
 #
 def formatoutput(output):
     """ format output from target board """
-    for line in output.decode().split("\r\n"):
+    for line in output.split("\r\n"):
         print(line)
 
 
@@ -93,6 +93,8 @@ class TestBoard:
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
+        self.sendrepl("", False)
+
 
     def sethomedir(self, homedir):
         """ configure the home directory for the component """
@@ -129,16 +131,16 @@ class TestBoard:
             #
             # dump the traceback from target
             #
-            print(self.m_child.before.decode())
+            print(output)
 
             #
             # force failure - we have a traceback from target.
             # Could use False here but hopefully what's below
             # is more descriptive of what's gone wrong.
             #
-            assert "Traceback" not in self.m_child.before.decode()
+            assert "Traceback" not in output
 
-        return self.m_child.before
+        return output
 
 
     def get_target_fullpath(self, dest):
@@ -237,7 +239,7 @@ class TestBoard:
         """ print the scout radio os/python type """
         self.sendrepl("import sys")
         text = self.sendrepl("print(sys.implementation.name)")
-        ostype = text.decode().strip().split("\r\n")[1]
+        ostype = text.strip().split("\r\n")[1]
         print(f"{ostype} board created")
         self.m_ostype = ostype
 
@@ -250,11 +252,22 @@ class TestBoard:
         return self.m_ostype
 
 
+    def get_control(self):
+        """
+        send control c to target if unresponsive
+        """
+
+        try:
+            self.m_child.expect(">>> ", timeout = 0.1)
+        except pexpect.exceptions.TIMEOUT:
+            self.ctrlc()
+
+
     def initialise(self, expect_repl=True):
         """ get the test board ready for use using the python repl
             on the (USB) serial port """
         self.create_pexpect_child()
-        self.ctrlc()
+        self.get_control()
         self.reboot()
         self.copy_files_to_target()
 
@@ -282,6 +295,8 @@ class TestBoard:
 
         # expect_repl deals with odd case probably for code.py autorun
         self.sendrepl("\x04", expect_repl=expect_repl)
+        if expect_repl:
+            self.sendrepl("")
 
     def ctrlc(self, expect_repl=True):
         """ restart the python interpreter on target by sending CTRL+C """
@@ -517,4 +532,5 @@ if __name__ == "__main__":
         print("No MicroPython/CircuitPython test boards found")
     else:
         myboard.initialise()
+        myboard.identify()
         print(f"repl available on serial port {SERIALPORT}")
