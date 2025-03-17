@@ -118,7 +118,7 @@ splash.append(text_group)
 
 
 
-i2c = busio.I2C( board.GP19, board.GP18)
+i2c = busio.I2C( board.GP19, board.GP18, frequency=400000)
 
 si4735_reset_pin = DigitalInOut(board.GP17)
 si4735_reset_pin.direction = Direction.OUTPUT
@@ -140,8 +140,6 @@ def displayFrequency():
 
 
 radio_.reset()
-
-
 radio_.set_mode(radio_rx.RADIO_RX.FM)
 
 displayFrequency()

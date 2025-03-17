@@ -18,7 +18,8 @@ GET_INT_STATUS = const(0x14) # Read interrupt status bits.
 
 MAX_DELAY_AFTER_SET_FREQUENCY = const(0.030) # In ms - This value helps to improve the precision during of getting frequency value
 MAX_DELAY_AFTER_POWERUP = const(0.010)       # In ms - Max delay you have to setup after a power up command.
-MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
+#MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
+MIN_DELAY_WAIT_SEND_LOOP = const(0.003)
 MAX_SEEK_TIME = const(8000)               # defines the maximum seeking time 8s is default.
 
 FM_TUNE_FREQ = const(0x20)
@@ -570,7 +571,7 @@ class SI4735:
         self.waitToSend()
         print(self.si4735_i2c.writeto(bytearray((POWER_UP,self.powerUp.get_raw()[0],self.powerUp.get_raw()[1]))))
         self.waitToSend()
-        time.sleep(MAX_DELAY_AFTER_POWERUP)
+        time.sleep(MAX_DELAY_AFTER_POWERUP/1_000_000)
         print("Patch power up")
 
     def setSSB(self,usblsb):
