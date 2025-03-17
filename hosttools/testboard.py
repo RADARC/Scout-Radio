@@ -74,14 +74,22 @@ class TestBoard:
         self.m_ser.baudrate = 115200
         self.m_ser.port = serialport
 
-
-    def create_pexpect_child(self):
-        """ create a pexpect child object with python repl """
+    def open_serial(self):
+        """ open the serial device """
         try:
             self.m_ser.open()
 
         except serial.SerialException as excep:
             sys.exit(f"{excep}")
+
+    def close_serial(self):
+        """ close the serial device """
+        self.m_ser.close()
+
+    def create_pexpect_child(self):
+        """ create a pexpect child object with python repl """
+
+        self.open_serial()
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
@@ -295,6 +303,27 @@ class TestBoard:
                 self.m_fileops.copyfile(startupfile.name, tgtmain)
 
 
+    def readserial(self):
+        """ very crude serial port monitor """
+        # kill expect, release the serial port and reopen for our use
+        del self.m_child
+        self.close_serial()
+        self.open_serial()
+
+        while True:
+            out = ""
+            while self.m_ser.inWaiting() > 0:
+                try:
+                    char = self.m_ser.read(1).decode()
+
+                # maybe the snake causes this
+                except UnicodeDecodeError:
+                    pass
+
+                out += char
+
+            if out != '':
+                print(out, end="")
 #
 # Circuit Python board
 #

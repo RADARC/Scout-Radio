@@ -62,6 +62,9 @@ if __name__=="__main__":
     #
     BOARD.sendrepl('import gps_simpletest', expect_repl=False)
 
+    # runs until user interrupt
+    BOARD.readserial()
+
     # #
     # # grab an si4735 device
     # #

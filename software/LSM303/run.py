@@ -62,27 +62,5 @@ if __name__=="__main__":
     #
     BOARD.sendrepl('import lsm303dlh_mag_simpletest', expect_repl=False)
 
-    # #
-    # # grab an si4735 device
-    # #
-    # BOARD.sendrepl('import harness')
-    # text = BOARD.sendrepl('radio = harness.getradio()')
-    # formatoutput(text)
-
-    # #
-    # # do some stuff
-    # #
-    # text = BOARD.sendrepl('radio.reset()')
-    # formatoutput(text)
-
-    # text = BOARD.sendrepl('radio.patchPowerUp()')
-    # formatoutput(text)
-
-    # text = BOARD.sendrepl('radio.downloadPatch()')
-    # formatoutput(text)
-
-    # text = BOARD.sendrepl('radio.setSSB(2)')
-    # formatoutput(text)
-
-    # text = BOARD.sendrepl('radio.setFrequency(14000)')
-    # formatoutput(text)
+    # runs until user interrupt
+    BOARD.readserial()
