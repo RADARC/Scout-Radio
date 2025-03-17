@@ -106,10 +106,10 @@ class RADIO_RX:
                self.hw_library.getRDSStatus(0,0,0)
 
     def get_ssb_bandwidth(self):
-        return hw_library.getSSBAudioBandwidth()
+        return self.hw_library.getSSBAudioBandwidth()
 
     def set_ssb_bandwidth(self,bandwidth):
-        hw_library.setSSBAudioBandwidth(bandwidth)
+        self.hw_library.setSSBAudioBandwidth(bandwidth)
 
 
 
