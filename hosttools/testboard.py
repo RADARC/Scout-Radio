@@ -263,8 +263,10 @@ class TestBoard:
 
     def revsync(self):
         """ pull files from target board back to host """
-        self.create_pexpect_child()
-        self.copy_files_from_target()
+
+        if self.m_files:
+            self.create_pexpect_child()
+            self.copy_files_from_target()
 
 
     def reboot(self, expect_repl=True):
