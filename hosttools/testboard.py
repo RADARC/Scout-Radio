@@ -330,16 +330,6 @@ class TestBoardCP(TestBoard):
                          "code.py")
 
 
-    def sendrepl(self, cmd, expect_repl=True):
-        """ send a command to CircuitPython repl """
-
-        #
-        # use base class implementation with CR/LF tacked on
-        #
-        return super().sendrepl(cmd, expect_repl)
-
-
-
 #
 # Micro Python board
 #
