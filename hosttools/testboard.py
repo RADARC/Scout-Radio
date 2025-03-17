@@ -419,7 +419,7 @@ class TestBoardMP(TestBoard):
 
             # kill the serial port session with the python interpreter
             del self.m_child
-            self.m_ser.close()
+            self.close_serial()
 
             # create the rshell session
             self.create_pexpect_rshell_child()
