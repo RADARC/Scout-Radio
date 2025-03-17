@@ -1,4 +1,5 @@
 # Prerequisites
+Linux-only support initially.
 First set up PYTHONPATH as appropriate. For example,
 
 ```export PYTHONPATH=${HOME}/Scout-Radio/hosttools```
