@@ -1,6 +1,7 @@
 """
-run up a radio - this file is derived from test.py. Test.py without the formal
-test aspect.
+run up a radio - this file is derived from test.py. i.e. test.py without
+the formal test aspect.
+Runs on host, full fat python.
 """
 
 import sys
