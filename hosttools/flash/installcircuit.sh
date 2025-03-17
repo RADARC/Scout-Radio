@@ -10,6 +10,7 @@ mountpoint()
 await_mount()
 {
     echo "waiting for mountpoint - plug in USB with bootsel pressed until this continues"
+    echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD"
     while [ "$(mountpoint)" = "" ]; do
         sleep 0.1
     done
