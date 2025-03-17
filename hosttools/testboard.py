@@ -61,11 +61,11 @@ class TestBoard:
         self.m_ostype = None
         self.m_mountpoint = target_mountpoint
         self.m_fileops = file_operations
-        self.m_homedir = None
         self.m_auto_run_file = mainfile
 
-        # set up by setfiles invocation
-        self.m_target_homedir = ""
+        # set up by sethomedir invocation
+        self.m_homedir = None
+        self.m_target_homedir = None
 
         #
         # serial port scaffold stuff
