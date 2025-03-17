@@ -11,7 +11,11 @@ def homedir():
 
 def files():
     """ source files/directories """
-    return ["radarcplatform.py", "si4735_CP.py", "adafruit_st7789.mpy",
+    return ["radarcplatform.py",
+            "si4735_CP.py",
+            "adafruit_st7789.mpy",
+            "adafruit_gps.mpy",
+            "adafruit_lsm303dlh_mag.mpy",
             "adafruit_display_text"]
 
 if __name__=="__main__":
