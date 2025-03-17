@@ -9,7 +9,7 @@ mountpoint()
 
 await_mount()
 {
-    echo "waiting for mountpoint"
+    echo "waiting for mountpoint - plug in USB with bootsel pressed until this continues"
     while [ "$(mountpoint)" = "" ]; do
         sleep 0.1
     done
