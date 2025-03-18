@@ -26,7 +26,7 @@ def getradio():
         if circuitpython():
             reset_pin = DigitalInOut(board.GP17)
             reset_pin.direction = Direction.OUTPUT
-            i2c = I2C(board.GP19, board.GP18)
+            i2c = I2C(board.GP19, board.GP18, frequency=400000)
             i2c_address = 0x63
 
             #
@@ -41,7 +41,7 @@ def getradio():
 
         if micropython():
             reset_pin = Pin(15, Pin.OUT, Pin.PULL_UP)
-            i2c = I2C(0, scl=Pin(5), sda=Pin(4))
+            i2c = I2C(0, scl=Pin(5), sda=Pin(4), freq=400000)
             i2c_address = 0x11
 
         G_RADIO = si4735.SI4735(i2c, i2c_address, reset_pin)
