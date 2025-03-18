@@ -94,7 +94,7 @@ class TestBoard:
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
         # can't use sendrepl here as that potentially switches session type
-        self.m_child.sendline( "\r\n")
+        self.m_child.sendline("\r\n")
 
 
     def sethomedir(self, homedir):
@@ -114,7 +114,7 @@ class TestBoard:
         if VERBOSE_SEND_REPL:
             print(f">>> {cmd}")
 
-        self.m_child.sendline(cmd + "\r\n")
+        self.m_child.sendline(cmd)
 
         # don't expect repl to come back to us - eg. autorun code.py
         if not expect_repl:
@@ -141,7 +141,12 @@ class TestBoard:
             #
             assert "Traceback" not in output
 
-        return output
+        #
+        # Don't echo the command sent.
+        # Return the second line of output onwards.
+        # The strip is debatable.
+        #
+        return "".join(output.split("\r\n")[1:]).strip()
 
 
     def get_target_fullpath(self, dest):
@@ -315,8 +320,6 @@ class TestBoard:
 
         # expect_repl deals with odd case probably for code.py autorun
         self.sendrepl("\x04", expect_repl=expect_repl)
-        if expect_repl:
-            self.sendrepl("")
 
     def ctrlc(self, expect_repl=True):
         """ restart the python interpreter on target by sending CTRL+C """
@@ -393,6 +396,11 @@ class TestBoardCP(TestBoard):
                          fileops.FileOPsCP(),
                          "code.py")
 
+
+    def sendrepl(self, cmd, expect_repl=True):
+        """ send a command to CircuitPython repl """
+
+        return super().sendrepl(cmd + "\r\n", expect_repl)
 
 #
 # Micro Python board
@@ -516,7 +524,19 @@ class TestBoardMP(TestBoard):
 
         self.set_expect_session_type("python")
 
-        return super().sendrepl(cmd, expect_repl)
+        return super().sendrepl(cmd + "\r\n", expect_repl)
+
+
+    def reboot(self, expect_repl=True):
+        """ restart the python interpreter on target by sending CTRL+D """
+
+        # expect_repl deals with odd case probably for code.py autorun
+
+        #
+        # MicroPython CTRL+D doesn't need CR tacked on.
+        #
+        super().sendrepl("\x04", expect_repl=expect_repl)
+
 
 # capitals keeps pylint happy
 G_BOARD = None
