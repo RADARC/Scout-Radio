@@ -78,6 +78,7 @@ class TestBoard:
         """ open the serial device """
         try:
             self.m_ser.open()
+            self.m_ser.reset_input_buffer()
 
         except serial.SerialException as excep:
             sys.exit(f"{excep}")
@@ -86,15 +87,16 @@ class TestBoard:
         """ close the serial device """
         self.m_ser.close()
 
-    def create_pexpect_child(self):
+    def create_pexpect_child(self, send_cr=True):
         """ create a pexpect child object with python repl """
 
         self.open_serial()
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
-        # can't use sendrepl here as that potentially switches session type
-        self.m_child.sendline("\r\n")
+        if send_cr:
+            # can't use sendrepl here as that potentially switches session type
+            self.m_child.sendline("\r\n")
 
 
     def sethomedir(self, homedir):
@@ -489,14 +491,22 @@ class TestBoardMP(TestBoard):
             del self.m_rshell_child
 
             #
-            # create expect session on serial port
+            # Create expect session on serial port for python again.
+            # TODO HACK Not sure why sending a CR here gets pexpect confused.
+            # Could be to do with the way the initial python pexpect session
+            # was closed.
             #
-            self.create_pexpect_child()
+            self.create_pexpect_child(send_cr=False)
 
             #
             # remember we are now in python mode on serial port
             #
             self.m_expect_session_type = "python"
+
+            #
+            # reboot here as rshell has been using the board
+            #
+            self.reboot()
 
 
     def sendrshellcmd(self, cmd, timeout = 10):
