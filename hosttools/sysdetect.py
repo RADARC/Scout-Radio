@@ -1,5 +1,6 @@
 """ methods to try and detect target hardware type """
 
+import time
 import subprocess
 import serial
 import pexpect
@@ -59,5 +60,24 @@ def get_cp_mountpoint():
             if "CIRCUITPY" in candidate_mp:
                 mountpoint = candidate_mp
                 break
+
+    return mountpoint
+
+def wait_get_cp_mountpoint():
+    """
+        wait a while for the circuit python mount point to appear
+        then return it, or None
+    """
+
+    #
+    # maybe wait a bit for circuit python filesystem to come up
+    #
+    attempts = 0
+    while attempts < 40:
+        mountpoint = get_cp_mountpoint()
+        if mountpoint:
+            break
+        time.sleep(0.1)
+        attempts += 1
 
     return mountpoint

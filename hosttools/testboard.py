@@ -5,7 +5,6 @@ for MicroPython and CircuitPython devices
 
 import sys
 import os
-import time
 import tempfile
 import serial
 import pexpect
@@ -393,16 +392,7 @@ class TestBoardCP(TestBoard):
     def __init__(self, serialport):
         """ Create a CircuitPython scout radio test board """
 
-        #
-        # maybe wait a bit for circuit python filesystem to come up
-        #
-        attempts = 0
-        while attempts < 40:
-            mountpoint = sysdetect.get_cp_mountpoint()
-            if mountpoint:
-                break
-            time.sleep(0.1)
-            attempts += 1
+        mountpoint = sysdetect.wait_get_cp_mountpoint()
 
         if not mountpoint:
             sys.exit("Error: Circuit python filesystem mount not found")
