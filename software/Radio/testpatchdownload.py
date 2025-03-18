@@ -69,6 +69,11 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl("radio.downloadPatch()")
         self.assertTrue(text == "Download patch")
 
+    def test06(self):
+        """ test report firmware """
+        text = BOARD.sendrepl("harness.reportfirmware(radio)")
+        formatoutput(text)
+
 
 if __name__=="__main__":
 
