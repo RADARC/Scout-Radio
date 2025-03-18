@@ -257,8 +257,27 @@ class TestBoard:
         send control c to target if unresponsive
         """
 
+        #
+        # TODO/latent BUG.
+        # Not sure why we can't just unconditionally
+        # throw a control-c at target eg. even if it
+        # doesn't need interrupting i.e. is at the
+        # usual python repl prompt >>>.
+        #
+        # If we do, "python testboard.py" with a board
+        # present fails the board.identify() invocation.
+        #
+        # Aside: If the target is unresponsive due to code.py
+        # or main.py autorun thing in place, testboard.py
+        # can't cope with this anyway as it reboots the
+        # board.
+        #
+        # Timeout used below is totally arbitrary to
+        # determine whether the prompt is there or not.
+        #
         try:
             self.m_child.expect(">>> ", timeout = 0.1)
+
         except pexpect.exceptions.TIMEOUT:
             self.ctrlc()
 
