@@ -377,7 +377,7 @@ class TestBoardCP(TestBoard):
         # maybe wait a bit for circuit python filesystem to come up
         #
         attempts = 0
-        while attempts < 20:
+        while attempts < 40:
             mountpoint = sysdetect.get_cp_mountpoint()
             if mountpoint:
                 break
