@@ -93,7 +93,8 @@ class TestBoard:
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
-        self.sendrepl("", False)
+        # can't use sendrepl here as that potentially switches session type
+        self.m_child.sendline( "\r\n")
 
 
     def sethomedir(self, homedir):
