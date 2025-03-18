@@ -110,6 +110,20 @@ class TestBoard:
         """ configure the list of host python files to be run on target """
         self.m_files = targetfiles
 
+    def sendrepl(self, cmd, expect_repl=True):
+        """ code not used, here just for pylint """
+
+        # keep pylint from grumping
+        assert self
+        assert cmd
+        assert expect_repl
+
+        # should not be called
+        assert False
+
+        # pylint, can't get here anyway
+        return ""
+
 
     def sendreplbase(self, cmd, expect_repl=True):
         """
