@@ -65,7 +65,7 @@ class Si4735test(unittest.TestCase):
     def test01(self):
         """ reset radio """
         text = BOARD.sendrepl('radio.reset()')
-        formatoutput(text)
+        self.assertTrue(text == "Reset")
 
     def test03(self):
         """ test report firmware """
@@ -80,7 +80,7 @@ class Si4735test(unittest.TestCase):
     def test05(self):
         """ downloadPatch """
         text = BOARD.sendrepl("radio.downloadPatch()")
-        formatoutput(text)
+        self.assertTrue(text == "Download patch")
 
     def test06(self):
         """ tune an FM station """
