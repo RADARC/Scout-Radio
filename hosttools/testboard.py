@@ -111,8 +111,14 @@ class TestBoard:
         self.m_files = targetfiles
 
 
-    def sendrepl(self, cmd, expect_repl=True):
-        """ send a command to MicroPython or CircuitPython repl """
+    def sendreplbase(self, cmd, expect_repl=True):
+        """
+            Base class code to send a command to MicroPython
+            or CircuitPython repl. Tweaks to the invocation/behaviour
+            are in the derived classes in sendrepl.
+
+            Not to be used directly, generally.
+        """
 
         if VERBOSE_SEND_REPL:
             print(f">>> {cmd}")
@@ -402,7 +408,7 @@ class TestBoardCP(TestBoard):
     def sendrepl(self, cmd, expect_repl=True):
         """ send a command to CircuitPython repl """
 
-        return super().sendrepl(cmd + "\r\n", expect_repl)
+        return self.sendreplbase(cmd + "\r\n", expect_repl)
 
 #
 # Micro Python board
@@ -534,7 +540,7 @@ class TestBoardMP(TestBoard):
 
         self.set_expect_session_type("python")
 
-        return super().sendrepl(cmd + "\r\n", expect_repl)
+        return self.sendreplbase(cmd + "\r\n", expect_repl)
 
 
     def reboot(self, expect_repl=True):
@@ -545,7 +551,7 @@ class TestBoardMP(TestBoard):
         #
         # MicroPython CTRL+D doesn't need CR tacked on.
         #
-        super().sendrepl("\x04", expect_repl=expect_repl)
+        self.sendreplbase("\x04", expect_repl=expect_repl)
 
 
 # capitals keeps pylint happy
