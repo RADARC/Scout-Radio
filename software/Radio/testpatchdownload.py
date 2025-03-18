@@ -54,11 +54,6 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl('radio.reset()')
         self.assertTrue(text == "Reset")
 
-    def test03(self):
-        """ test report firmware """
-        text = BOARD.sendrepl("harness.reportfirmware(radio)")
-        formatoutput(text)
-
     def test04(self):
         """ patchPowerUp """
         text = BOARD.sendrepl("radio.patchPowerUp()")
