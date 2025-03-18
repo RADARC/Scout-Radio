@@ -246,8 +246,7 @@ class TestBoard:
     def identify(self):
         """ print the scout radio os/python type """
         self.sendrepl("import sys")
-        text = self.sendrepl("print(sys.implementation.name)")
-        ostype = text.strip().split("\r\n")[1]
+        ostype = self.sendrepl("print(sys.implementation.name)")
         print(f"{ostype} board created")
         self.m_ostype = ostype
 
