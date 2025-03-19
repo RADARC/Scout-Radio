@@ -168,7 +168,7 @@ class TestBoard:
         # Return the second line of output onwards.
         # The strip is debatable.
         #
-        return "".join(output.split("\r\n")[1:]).strip()
+        return "\r\n".join(output.split("\r\n")[1:]).strip()
 
 
     def get_target_fullpath(self, dest):
