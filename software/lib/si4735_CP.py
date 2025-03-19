@@ -19,7 +19,7 @@ GET_INT_STATUS = const(0x14) # Read interrupt status bits.
 MAX_DELAY_AFTER_SET_FREQUENCY = const(0.030) # In ms - This value helps to improve the precision during of getting frequency value
 MAX_DELAY_AFTER_POWERUP = const(0.010)       # In ms - Max delay you have to setup after a power up command.
 #MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
-MIN_DELAY_WAIT_SEND_LOOP = const(0.0003)
+MIN_DELAY_WAIT_SEND_LOOP = const(0.002)
 MAX_SEEK_TIME = const(8000)               # defines the maximum seeking time 8s is default.
 
 FM_TUNE_FREQ = const(0x20)
@@ -1681,50 +1681,16 @@ class SI4735:
             print("Download patch")
 
     def download_compressed_patch(self):
-        dlcp_debug = False
-
-        def dbgprint(cl, eb):
-            if dlcp_debug:
-                print(cl-1, [hex(x) for x in eb])
-
-        def writechunk(eb):
-            self.si4735_i2c.writeto(bytearray(eightbytes))
-            time.sleep(MIN_DELAY_WAIT_SEND_LOOP)
-
-        idx = 0
-        command_line = 0
-        eightbytes = []
-
-        for ele in self.sb_patch_content:
-            if idx % 7 != 0:
-                eightbytes.append(ele)
-            else:
-                dbgprint(command_line, eightbytes)
-
-                #
-                # First case eigbhtbytes is an empty list
-                #
-                if eightbytes:
-                    writechunk(eightbytes)
-
-                if command_line in self.cmd_0x15:
-                    cmd = 0x15
-                else:
-                    cmd = 0x16
-
-                # beginning of a new row
-                eightbytes = [cmd, ele]
-
-                command_line+=1
-
-            idx+=1
-
-        #
-        # last one...always forget that
-        #
-        assert len(eightbytes) == 8
-        dbgprint(command_line, eightbytes)
-        writechunk(eightbytes)
+        with open('patch.bin', mode="rb") as f:
+            chunksize = 8
+            chunk = f.read(chunksize)
+            #print([hex(x) for x in chunk])
+            while chunk:
+                self.si4735_i2c.writeto(bytearray(chunk))
+                time.sleep(MIN_DELAY_WAIT_SEND_LOOP)
+                chunk = f.read(chunksize)
+                #if chunk:
+                #    print([hex(x) for x in chunk])
 
         print("Download compressed patch")
 
