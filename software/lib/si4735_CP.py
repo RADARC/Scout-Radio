@@ -20,6 +20,7 @@ MAX_DELAY_AFTER_SET_FREQUENCY = const(0.030) # In ms - This value helps to impro
 MAX_DELAY_AFTER_POWERUP = const(0.010)       # In ms - Max delay you have to setup after a power up command.
 #MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
 MIN_DELAY_WAIT_SEND_LOOP = const(0.003)
+MIN_DELAY_WAIT_DLPATCH = const(0.001)
 MAX_SEEK_TIME = const(8000)               # defines the maximum seeking time 8s is default.
 
 FM_TUNE_FREQ = const(0x20)
@@ -617,7 +618,7 @@ class SI4735:
                 # This sleep is critical. Needs tweaking for performance.
                 # This does seem to work.
                 #
-                time.sleep(MIN_DELAY_WAIT_SEND_LOOP/1_000_000)
+                time.sleep(MIN_DELAY_WAIT_DLPATCH/1_000_000)
 
                 line_number += 1
 
