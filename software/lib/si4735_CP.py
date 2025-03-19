@@ -563,7 +563,7 @@ class SI4735:
                     #print(chunk)
                     self.si4735_i2c.writeto(bytearray(chunk))
                 line = f.readline()
-                time.sleep(MIN_DELAY_WAIT_SEND_LOOP)
+                time.sleep(MIN_DELAY_WAIT_SEND_LOOP/1_000_000)
             print("Download patch")
 
     def download_compressed_patch(self):
