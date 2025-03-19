@@ -629,7 +629,7 @@ class SI4735:
         self.waitToSend()
         self.powerUp.setPowerUp(1,0,1,self.currentClockType,0,SI473X_ANALOG_AUDIO)
         self.waitToSend()
-        print(self.si4735_i2c.writeto(bytearray((POWER_UP,self.powerUp.get_raw()[0],self.powerUp.get_raw()[1]))))
+        self.si4735_i2c.writeto(bytearray((POWER_UP,self.powerUp.get_raw()[0],self.powerUp.get_raw()[1])))
         self.waitToSend()
         time.sleep(MAX_DELAY_AFTER_POWERUP/1_000_000)
         print("Patch power up")

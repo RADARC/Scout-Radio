@@ -58,9 +58,10 @@ class Si4735test(unittest.TestCase):
         """ test report firmware """
         text = BOARD.sendrepl("harness.reportfirmware(radio)")
         formatoutput(text)
-        actual_hex = text.split('{')[0]
+        # split off embedded CR/LF
+        actual_hex = text.split('{')[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
-        self.assertTrue(expected_hex == actual_hex)
+        self.assertTrue(expected_hex == actual_hex.strip())
 
     def test04(self):
         """ patchPowerUp """
@@ -77,14 +78,8 @@ class Si4735test(unittest.TestCase):
     def test06(self):
         """ test report firmware """
         text = BOARD.sendrepl("harness.reportfirmware(radio)")
-        formatoutput(text)
-        expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
-
+        expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
         self.assertTrue(text == expected)
-
-    def test07(self):
-        text = BOARD.sendrepl('radio.setSSB(2)')
-        formatoutput(text)
 
 
 if __name__=="__main__":
