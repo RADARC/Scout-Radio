@@ -71,7 +71,7 @@ class Si4735test(unittest.TestCase):
         """ test report firmware """
         text = BOARD.sendrepl("harness.reportfirmware(radio)")
         formatoutput(text)
-        actual_hex = text.split('{')[0]
+        actual_hex = text.split('{')[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
         self.assertTrue(expected_hex == actual_hex)
 
