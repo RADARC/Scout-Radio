@@ -375,7 +375,6 @@ class Si47xRdsStatus:
 
 
 class SI4735:
-
     def __init__(self, i2c, device_i2c_address, reset_pin):
         """ i2c and reset_pin are CircuitPython or MicroPython objects """
 

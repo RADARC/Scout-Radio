@@ -1,6 +1,6 @@
 """
  Investigate tardy i2c patch loading
- run with 
+ run with
    time python testpatchdownload.py [--install]
 """
 import unittest
