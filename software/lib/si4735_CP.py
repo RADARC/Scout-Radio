@@ -579,7 +579,7 @@ class SI4735:
             """ write to i2c """
             assert len(eb) == 8
             self.si4735_i2c.writeto(eightbytes)
-            time.sleep(MIN_DELAY_WAIT_DLPATCH)
+            time.sleep(MIN_DELAY_WAIT_SEND_LOOP/1_000_000)
 
         def get_specials(f):
             """ get list of line numbers starting with 0x15 """
