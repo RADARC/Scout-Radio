@@ -588,14 +588,14 @@ class SI4735:
 
             return specials
 
-        with open('patchcomp.bin', mode="rb") as f:
+        with open('patchcomp.bin', mode="rb") as binfile:
 
             # lines with 0x15
-            specials = get_specials(f)
+            specials = get_specials(binfile)
 
             line_number = 0
 
-            sevenbytes = f.read(7)
+            sevenbytes = binfile.read(7)
 
             # should be left with sequences of seven bytes
             while sevenbytes:
@@ -621,7 +621,7 @@ class SI4735:
 
                 line_number += 1
 
-                sevenbytes = f.read(7)
+                sevenbytes = binfile.read(7)
 
         print("Download compressed patch")
 
