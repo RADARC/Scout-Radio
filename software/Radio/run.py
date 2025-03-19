@@ -18,18 +18,26 @@ def usage():
     """ help text - should use argparse """
     print("use --install to install target files")
     print("use --revsync to pull them back to host")
+    print("use --app to create code.py/main.py to autorun this app on boot")
     sys.exit(2)
 
 if __name__=="__main__":
 
+    #
+    # TODO factgor all this stuff out into a library, probably installer.
+    # to avoid repeated code in various run.pys
+    #
     DO_INSTALL = False
     DO_REVSYNC = False
+    DO_AUTORUN = False
 
     if len(sys.argv) > 1:
         if "--install" in sys.argv[1:]:
             DO_INSTALL = True
         if "--revsync" in sys.argv[1:]:
             DO_REVSYNC = True
+        if "--app" in sys.argv[1:]:
+            DO_AUTORUN = True
         if "--help" in sys.argv[1:]:
             usage()
 
@@ -57,8 +65,13 @@ if __name__=="__main__":
 
     # once we've done developing, start the app on power up
     # -- puts a code.py/main.py on target
-    #BOARD.start_app_on_powerup("radioapp")
-
+    if DO_AUTORUN:
+        BOARD.start_app_on_powerup("radioapp")
+        #
+        # pyexpect will most likely time out here as the app will
+        # now be running on target.
+        #
+        sys.exit(0)
     #
     # start the app, we won't get a >>> back
     #
