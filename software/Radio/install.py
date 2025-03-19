@@ -8,7 +8,7 @@ import installer
 def files():
     """ source files """
     return [
-        "harness.py", "patch.csg", "radioapp.py","radio_rx.py"
+        "harness.py", "patchcomp.bin", "radioapp.py","radio_rx.py"
       ]
 
 def homedir():
