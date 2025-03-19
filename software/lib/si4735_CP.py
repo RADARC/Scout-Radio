@@ -571,18 +571,24 @@ class SI4735:
         dlcp_debug = False
 
         def dbgprint(cl, eb):
+            """ print line number and bytes at it """
             if dlcp_debug:
                 print(cl, [hex(x) for x in eb])
 
-        def writechunk(eb):
+        def writechunk_to_i2c(eb):
+            """ write to i2c """
             assert len(eb) == 8
             self.si4735_i2c.writeto(eightbytes)
             time.sleep(MIN_DELAY_WAIT_DLPATCH)
 
         def get_specials(f):
+            """ get list of line numbers starting with 0x15 """
+
+            # first byte in the binary file has this
             specials_length = int.from_bytes(f.read(1), "big")
             specials = []
 
+            # get the sequence of shorts
             for sidx in range(specials_length):
                 special = int.from_bytes(f.read(2), "big")
                 specials.append(special)
@@ -591,12 +597,14 @@ class SI4735:
 
         with open('patchcomp.bin', mode="rb") as f:
 
+            # lines with 0x15
             specials = get_specials(f)
 
             line_number = 0
 
             sevenbytes = f.read(7)
 
+            # should be left with sequences of seven bytes
             while sevenbytes:
 
                 if line_number in specials:
@@ -606,9 +614,9 @@ class SI4735:
 
                 eightbytes.extend(sevenbytes)
 
-                dbgprint(line_number, eightbytes)
+                #dbgprint(line_number, eightbytes)
 
-                writechunk(eightbytes)
+                writechunk_to_i2c(eightbytes)
 
                 line_number += 1
 
