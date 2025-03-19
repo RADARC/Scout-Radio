@@ -570,21 +570,9 @@ class SI4735:
         dlcp_debug = False
 
         def dbgprint(cl, eb):
-            """ print line number and bytes at it """
+            """ debug print line number and bytes at it """
             if dlcp_debug:
-                print(cl, [hex(x) for x in eb])
-
-        def writechunk_to_i2c(eb):
-            """ write to i2c """
-            assert len(eb) == 8
-            self.si4735_i2c.writeto(eightbytes)
-            #
-            # HACK WARNING
-            # should probably have a sleep here...
-            # like MIN_DELAY_WAIT_SEND_LOOP or something
-            #
-            # for now, try without as it does kill performance
-            #
+                print(cl, [hex(x)+'0' if x<16 else hex(x) for x in eb])
 
         def get_specials(f):
             """ get list of line numbers starting with 0x15 """
@@ -621,7 +609,15 @@ class SI4735:
 
                 #dbgprint(line_number, eightbytes)
 
-                writechunk_to_i2c(eightbytes)
+                self.si4735_i2c.writeto(eightbytes)
+
+                #
+                # HACK WARNING
+                #
+                # This sleep is critical. Needs tweaking for performance.
+                # This does seem to work.
+                #
+                time.sleep(MIN_DELAY_WAIT_SEND_LOOP/1_000_000)
 
                 line_number += 1
 
