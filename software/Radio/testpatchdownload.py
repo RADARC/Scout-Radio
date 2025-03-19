@@ -57,7 +57,6 @@ class Si4735test(unittest.TestCase):
     def test03(self):
         """ test report firmware """
         text = BOARD.sendrepl("harness.reportfirmware(radio)")
-        formatoutput(text)
         # split off embedded CR/LF
         actual_hex = text.split('{')[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
@@ -65,8 +64,7 @@ class Si4735test(unittest.TestCase):
 
     def test04(self):
         """ patchPowerUp """
-        text = BOARD.sendrepl("radio.patchPowerUp()")
-        formatoutput(text)
+        BOARD.sendrepl("radio.patchPowerUp()")
 
     def test05(self):
         """ downloadPatch """
