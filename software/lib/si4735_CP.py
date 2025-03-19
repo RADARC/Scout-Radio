@@ -620,8 +620,7 @@ class SI4735:
             specials_length = int.from_bytes(f.read(1), "big")
             specials = []
 
-            for idx in range(0, specials_length*2, 2):
-                special_idx = idx + 1
+            for idx in range(specials_length):
                 special = int.from_bytes(f.read(2), "big")
                 specials.append(special)
 
