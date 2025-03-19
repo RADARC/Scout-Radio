@@ -20,7 +20,7 @@ MAX_DELAY_AFTER_SET_FREQUENCY = const(0.030) # In ms - This value helps to impro
 MAX_DELAY_AFTER_POWERUP = const(0.010)       # In ms - Max delay you have to setup after a power up command.
 #MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
 MIN_DELAY_WAIT_SEND_LOOP = const(0.003)
-MIN_DELAY_WAIT_DLPATCH = const(0.002)
+MIN_DELAY_WAIT_DLPATCH = const(0.003)
 MAX_SEEK_TIME = const(8000)               # defines the maximum seeking time 8s is default.
 
 FM_TUNE_FREQ = const(0x20)
@@ -567,68 +567,46 @@ class SI4735:
                 time.sleep(MIN_DELAY_WAIT_SEND_LOOP)
             print("Download patch")
 
-    def download_compressed_patch_impl(self, specials, content):
+    def download_compressed_patch(self):
         dlcp_debug = False
 
         def dbgprint(cl, eb):
             if dlcp_debug:
-                print(cl-1, [hex(x) for x in eb])
+                print(cl, [hex(x) for x in eb])
 
         def writechunk(eb):
-            self.si4735_i2c.writeto(bytearray(eightbytes))
+            assert len(eb) == 8
+            self.si4735_i2c.writeto(eightbytes)
             time.sleep(MIN_DELAY_WAIT_DLPATCH)
 
-        idx = 0
-        command_line = 0
-        eightbytes = []
-
-        for ele in content:
-            if idx % 7 != 0:
-                eightbytes.append(ele)
-            else:
-                dbgprint(command_line, eightbytes)
-
-                #
-                # First case eigbhtbytes is an empty list
-                #
-                if eightbytes:
-                    writechunk(eightbytes)
-
-                if command_line in specials:
-                    cmd = 0x15
-                else:
-                    cmd = 0x16
-
-                # beginning of a new row
-                eightbytes = [cmd, ele]
-
-                command_line+=1
-
-            idx+=1
-
-        #
-        # last one...always forget that
-        #
-        assert len(eightbytes) == 8
-        dbgprint(command_line, eightbytes)
-        writechunk(eightbytes)
-
-        print("Download compressed patch")
-
-    def download_compressed_patch(self):
         with open('patchcomp.bin', mode="rb") as f:
             specials_length = int.from_bytes(f.read(1), "big")
             specials = []
 
-            for idx in range(specials_length):
+            for sidx in range(specials_length):
                 special = int.from_bytes(f.read(2), "big")
                 specials.append(special)
 
-            the_rest = f.read()
+            command_line = 0
 
-            assert len(the_rest) % 7 == 0
+            sevenbytes = f.read(7)
 
-            self.download_compressed_patch_impl(specials, the_rest)
+            while sevenbytes:
+
+                if command_line in specials:
+                    eightbytes = bytearray([0x15])
+                else:
+                    eightbytes = bytearray([0x16])
+
+                eightbytes.extend(sevenbytes)
+
+                dbgprint(command_line, eightbytes)
+
+                writechunk(eightbytes)
+
+                command_line += 1
+
+                sevenbytes = f.read(7)
 
         print("Download compressed patch")
 
