@@ -5,6 +5,9 @@
 import sys
 import installer
 
+#
+# if patchcomp.bin does not exist, create it by running csg2bin.py
+#
 def files():
     """ source files """
     return [
