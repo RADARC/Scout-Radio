@@ -579,7 +579,7 @@ class SI4735:
             self.si4735_i2c.writeto(eightbytes)
             time.sleep(MIN_DELAY_WAIT_DLPATCH)
 
-        with open('patchcomp.bin', mode="rb") as f:
+        def get_specials(f):
             specials_length = int.from_bytes(f.read(1), "big")
             specials = []
 
@@ -587,24 +587,30 @@ class SI4735:
                 special = int.from_bytes(f.read(2), "big")
                 specials.append(special)
 
-            command_line = 0
+            return specials
+
+        with open('patchcomp.bin', mode="rb") as f:
+
+            specials = get_specials(f)
+
+            line_number = 0
 
             sevenbytes = f.read(7)
 
             while sevenbytes:
 
-                if command_line in specials:
+                if line_number in specials:
                     eightbytes = bytearray([0x15])
                 else:
                     eightbytes = bytearray([0x16])
 
                 eightbytes.extend(sevenbytes)
 
-                dbgprint(command_line, eightbytes)
+                dbgprint(line_number, eightbytes)
 
                 writechunk(eightbytes)
 
-                command_line += 1
+                line_number += 1
 
                 sevenbytes = f.read(7)
 
