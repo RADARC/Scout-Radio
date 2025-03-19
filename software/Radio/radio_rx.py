@@ -42,7 +42,7 @@ class RADIO_RX:
             elif mode_selection == self.SSB_USB:
                 self.hw_library.powerDown()
                 self.hw_library.patchPowerUp()
-                self.hw_library.downloadPatch()
+                self.hw_library.download_compressed_patch()
 
                 self.hw_library.setSSB(si4735_CP.SSB_SIDEBAND_USB)
                 self.set_frequency(14000)

@@ -71,7 +71,7 @@ def test2():
 
     print("Address is ",addr)
     radio.patchPowerUp()
-    radio.downloadPatch()
+    radio.download_compressed_patch()
 
     radio.setSSB(2)
     radio.setFrequency(14000)
