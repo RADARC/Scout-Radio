@@ -1,3 +1,4 @@
+""" convert patch.csg to compressed binary file """
 #
 # create patchcomp.bin from patch.csg
 # "compressed" version of patch.csg
@@ -1119,23 +1120,25 @@ sb_patch_content = (
  0x00, 0x00, 0x00, 0x00, 0x00, 0xA9, 0x02)
 
 def decodecompbin(cmpbytes):
+    """ for verification purposes """
     length = int(cmpbytes[0])
 
-    specials=[]
+    specials_hex_15=[]
     for i in range(0,length*2,2):
         special_idx = i + 1
         special = int.from_bytes(cmpbytes[special_idx:special_idx+2],"big")
-        specials.append(special)
+        specials_hex_15.append(special)
 
     the_rest = cmpbytes[1 + length*2:]
 
     assert len(the_rest) % 7 == 0
 
-    return (length, specials, the_rest)
+    return (length, specials_hex_15, the_rest)
 
 def readcsgfile(csgfilespec):
+    """ internalise patch.csg """
     result = bytearray()
-    specials = []
+    specials_hex_15 = []
     line_number = 0
 
     with open(csgfilespec,"r") as csgfile:
@@ -1150,14 +1153,15 @@ def readcsgfile(csgfilespec):
             result.extend(bytearray(chunk[1:]))
 
             if chunk[0] == 0x15:
-                specials.append(line_number)
+                specials_hex_15.append(line_number)
 
             line_number += 1
 
-    return (result, specials)
+    return (result, specials_hex_15)
 
-def writebinfile(outfile, specials, body):
-    header=bytearray([len(specials)])
+def writebinfile(outfilename, specials_hex_15, compressed_body):
+    """ write pseudo-compressed binary file """
+    header=bytearray([len(specials_hex_15)])
 
     for d in specials:
         # endian is arbitrary
@@ -1165,15 +1169,19 @@ def writebinfile(outfile, specials, body):
         header.extend(d.to_bytes(2, "big"))
 
     #print(result)
-    finalbytearray = header + body
+    finalbytearray = header + compressed_body
 
     # sanity
-    (special_len, specials, body) = decodecompbin(finalbytearray)
+    (special_len, specials_list_decoded, decoded_body) = decodecompbin(finalbytearray)
+
+    assert special_len == len(specials_hex_15)
+    assert specials_hex_15 == specials_list_decoded
 
     print(special_len, specials)
 
-    with open(outfile,"wb") as compressed_binpatchfile:
+    with open(outfilename,"wb") as compressed_binpatchfile:
         compressed_binpatchfile.write(finalbytearray)
+
 
 if __name__ == "__main__":
     infile = "patch.csg"
