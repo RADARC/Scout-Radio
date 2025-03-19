@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """ convert patch.csg to compressed binary file """
 #
 # create patchcomp.bin from patch.csg
