@@ -57,7 +57,7 @@ class Si47xxtest(unittest.TestCase):
         # split off embedded CR/LF
         actual_hex = text.split('{', maxsplit=1)[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
-        self.assertTrue(expected_hex == actual_hex.strip())
+        self.assertTrue(expected_hex == actual_hex)
 
     def test04(self):
         """ patchPowerUp """
