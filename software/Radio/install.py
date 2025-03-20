@@ -3,12 +3,18 @@
 # Environment: host python3
 
 import sys
+import os
 import installer
 
+SIBINPATCH="patchcomp.bin"
+
+#
+# if patchcomp.bin does not exist, create it by running csg2bin.py
+#
 def files():
     """ source files """
     return [
-        "harness.py", "patch.csg", "radioapp.py","radio_rx.py"
+        "si47xx.py", "harness.py", SIBINPATCH, "radioapp.py","radio_rx.py"
       ]
 
 def homedir():
@@ -22,9 +28,12 @@ def supportfiles():
     """ source files from lib - handy for development """
     return [
       ("../lib/radarcplatform.py", "/lib/radarcplatform.py"),
-      ("../lib/si4735_CP.py", "/lib/si4735_CP.py"),
       ]
 
 if __name__=="__main__":
+    if not os.path.exists(SIBINPATCH):
+        print(f"{SIBINPATCH} does not exist. Please generate by running csg2bin.py")
+        sys.exit(1)
+
     installer.installfiles(sys.argv, homedir(), files() + supportfiles())
     #installer.installfiles(sys.argv, homedir(), files())

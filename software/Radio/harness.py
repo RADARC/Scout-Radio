@@ -5,34 +5,41 @@ Runs on CircuitPython or MicroPython
 #TODO Change to drive UI functions in the radio.scout module
 
 import time
-import si4735_CP as si4735
+import si47xx
 from radarcplatform import circuitpython, micropython
 
 if circuitpython():
     import board
     from busio import I2C
     from digitalio import DigitalInOut, Direction
+    import microcontroller
+    #microcontroller.cpu.frequency = 250_000_000  # run at 250 MHz instead of 125 MHz
+    #microcontroller.cpu.frequency = 200_000_000  # run at 200 MHz instead of 125 MHz
+    #microcontroller.cpu.frequency = 150_000_000  # run at 150 MHz instead of 125 MHz
+    microcontroller.cpu.frequency = 150_000_000  # run at 150 MHz instead of 125 MHz
+
 elif micropython():
     from machine import Pin, I2C
+
 
 G_RADIO = None
 
 # grab a singleton radio
 def getradio():
-    """ return a singleton si4735 device """
+    """ return a singleton si47xx device """
     global G_RADIO
 
     if not G_RADIO:
         if circuitpython():
             reset_pin = DigitalInOut(board.GP17)
             reset_pin.direction = Direction.OUTPUT
-            i2c = I2C(board.GP19, board.GP18, frequency=400000)
+            i2c = I2C(board.GP19, board.GP18, frequency=1000000)
             i2c_address = 0x63
 
             #
             # FIXME
             # If we don't do this, the torch flashes randomly
-            # whilst programming the si4735. Need to find out
+            # whilst programming the si47xx. Need to find out
             # why this is happening - it shouldn't.
             #
             torch = DigitalInOut(board.GP16)
@@ -41,10 +48,10 @@ def getradio():
 
         if micropython():
             reset_pin = Pin(15, Pin.OUT, Pin.PULL_UP)
-            i2c = I2C(0, scl=Pin(5), sda=Pin(4), freq=400000)
+            i2c = I2C(0, scl=Pin(5), sda=Pin(4), freq=1000000)
             i2c_address = 0x11
 
-        G_RADIO = si4735.SI4735(i2c, i2c_address, reset_pin)
+        G_RADIO = si47xx.SI4735(i2c, i2c_address, reset_pin)
 
     return G_RADIO
 
@@ -71,7 +78,7 @@ def test2():
 
     print("Address is ",addr)
     radio.patchPowerUp()
-    radio.downloadPatch()
+    radio.download_compressed_patch()
 
     radio.setSSB(2)
     radio.setFrequency(14000)

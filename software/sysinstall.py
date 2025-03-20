@@ -2,8 +2,6 @@
 import sys
 import os
 
-TOPLEVEL = False
-
 sr_components = ['Display', 'GPS', 'images', 'lib', 'LSM303', 'Morse', 'Radio']
 
 def installcomponent(component):
@@ -29,14 +27,3 @@ def installcomponent(component):
 #
 for sr_component in sr_components:
     installcomponent(sr_component)
-
-#
-# install top level if required
-#
-if TOPLEVEL:
-    print("Installing top level")
-
-    top_level_rc = os.system("python3 install.py")
-
-    if top_level_rc != 0:
-        sys.exit("Install failed on top level install.py")
