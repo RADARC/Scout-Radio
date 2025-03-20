@@ -577,7 +577,7 @@ class SI4735:
         def get_specials_consume_header(binf):
             """ get list of line numbers starting with 0x15 """
 
-            # first byte in the binary file has this
+            # first byte in the binary file has number of "specials"
             specials_length = int.from_bytes(binf.read(1), "big")
             specials = []
 
