@@ -4,6 +4,10 @@ First set up PYTHONPATH as appropriate. For example,
 
 ```export PYTHONPATH=${HOME}/Scout-Radio/hosttools```
 
+You may find
+```alias sr='export PYTHONPATH=${HOME}/Scout-Radio/hosttools'```
+in your ~/.bashrc or whatever handy
+
 # To install a blank system
 
 ```python sysintall.py```
