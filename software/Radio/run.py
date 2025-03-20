@@ -8,11 +8,11 @@ import sys
 import os
 import runlib
 import install
-from install import COMPRESSED_PATCH
+from install import SIBINPATCH
 
 if __name__=="__main__":
-    if not os.path.exists(COMPRESSED_PATCH):
-        print(f"{COMPRESSED_PATCH} does not exist. Please generate by running csg2bin.py")
+    if not os.path.exists(SIBINPATCH):
+        print(f"{SIBINPATCH} does not exist. Please generate by running csg2bin.py")
         sys.exit(1)
 
     runlib.runapp("radioapp",

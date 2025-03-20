@@ -5,7 +5,7 @@ Runs on CircuitPython or MicroPython
 #TODO Change to drive UI functions in the radio.scout module
 
 import time
-import si4735_CP as si4735
+import si47xx
 from radarcplatform import circuitpython, micropython
 
 if circuitpython():
@@ -26,7 +26,7 @@ G_RADIO = None
 
 # grab a singleton radio
 def getradio():
-    """ return a singleton si4735 device """
+    """ return a singleton si47xx device """
     global G_RADIO
 
     if not G_RADIO:
@@ -39,7 +39,7 @@ def getradio():
             #
             # FIXME
             # If we don't do this, the torch flashes randomly
-            # whilst programming the si4735. Need to find out
+            # whilst programming the si47xx. Need to find out
             # why this is happening - it shouldn't.
             #
             torch = DigitalInOut(board.GP16)
@@ -51,7 +51,7 @@ def getradio():
             i2c = I2C(0, scl=Pin(5), sda=Pin(4), freq=1000000)
             i2c_address = 0x11
 
-        G_RADIO = si4735.SI4735(i2c, i2c_address, reset_pin)
+        G_RADIO = si47xx.SI4735(i2c, i2c_address, reset_pin)
 
     return G_RADIO
 

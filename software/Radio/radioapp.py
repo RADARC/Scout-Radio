@@ -14,7 +14,7 @@ from fourwire import FourWire
 from adafruit_st7789 import ST7789
 from adafruit_display_text import label
 from analogio import AnalogIn
-import si4735_CP
+import si47xx
 import radio_rx
 import microcontroller
 #microcontroller.cpu.frequency = 250_000_000  # run at 250 MHz instead of 125 MHz
@@ -128,7 +128,7 @@ i2c = busio.I2C( board.GP19, board.GP18, frequency=1000000)
 si4735_reset_pin = DigitalInOut(board.GP17)
 si4735_reset_pin.direction = Direction.OUTPUT
 
-radio_ = radio_rx.RADIO_RX(si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin))
+radio_ = radio_rx.RADIO_RX(si47xx.SI4735(i2c, 0x63, si4735_reset_pin))
 
 def displayFrequency():
     if radio_.get_mode() == radio_rx.RADIO_RX.FM:

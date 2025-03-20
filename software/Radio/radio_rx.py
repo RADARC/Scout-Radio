@@ -1,4 +1,4 @@
-import si4735_CP
+import si47xx
 
 class RADIO_RX:
 
@@ -44,14 +44,14 @@ class RADIO_RX:
                 self.hw_library.patchPowerUp()
                 self.hw_library.download_compressed_patch()
 
-                self.hw_library.setSSB(si4735_CP.SSB_SIDEBAND_USB)
+                self.hw_library.setSSB(si47xx.SSB_SIDEBAND_USB)
                 self.set_frequency(14000)
 
                 self.hw_library.setSSBConfig(1, 0, 0, 1, 0, 1)
 
             elif mode_selection == self.SSB_LSB:
 
-                self.hw_library.setSSB(si4735_CP.SSB_SIDEBAND_LSB)
+                self.hw_library.setSSB(si47xx.SSB_SIDEBAND_LSB)
                 self.set_frequency(self.frequency)
 
             elif mode_selection == self.FM:
