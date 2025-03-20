@@ -23,3 +23,8 @@ in your ~/.bashrc or whatever handy
 ```cd Radio```
 
 ```python run.py```
+
+# Tips
+* If you see pexpect.exceptions.TIMEOUT: Timeout exceeded. look for code.py
+on the target system. Since stuff is auto-running, the tools can't access
+the system.
