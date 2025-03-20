@@ -17,6 +17,7 @@ from analogio import AnalogIn
 import si4735_CP
 import radio_rx
 
+
 switch1 = DigitalInOut(board.GP2)
 switch2 = DigitalInOut(board.GP3)
 switch3 = DigitalInOut(board.GP6)
@@ -127,14 +128,11 @@ radio = radio_rx.RADIO_RX(si4735_CP.SI4735(i2c, 0x63, si4735_reset_pin))
 
 def displayFrequency():
     if radio.get_mode() == radio_rx.RADIO_RX.FM:
-        text_area.text = "FM " + str(radio.get_frequency()/100)
-                
+        text_area.text = "FM " + str(radio.get_frequency()/100)               
     elif radio.get_mode() == radio_rx.RADIO_RX.SSB_USB:
         text_area.text = "USB " + str(radio.get_frequency()/1000)
-
     elif radio.get_mode() == radio_rx.RADIO_RX.SSB_LSB:
         text_area.text = "LSB " + str(radio.get_frequency()/1000)
-        
     elif radio.get_mode() == radio_rx.RADIO_RX.AM:
         text_area.text = "AM " + str(radio.get_frequency())
 
