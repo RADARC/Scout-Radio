@@ -6,7 +6,6 @@
 import unittest
 import sys
 import testboard
-from testboard import formatoutput
 import install
 
 # hack - should be able to run unit tests in any order eventually
@@ -45,8 +44,7 @@ class Si4735test(unittest.TestCase):
             # grab a singleton si4735 device as our first job
             #
             BOARD.sendrepl('import harness')
-            text = BOARD.sendrepl('radio = harness.getradio()')
-            formatoutput(text)
+            BOARD.sendrepl('radio = harness.getradio()')
 
     def test01(self):
         """ reset radio """
