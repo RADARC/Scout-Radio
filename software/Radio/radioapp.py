@@ -161,32 +161,43 @@ oldvol=32 #int((1 - (pot0.value / 65535)) * 63)
 #display.fill_rect(82, 8, 20, 8,1)
 #display.text('Rx', 84, 7, 0)
 #display.show()
-
+newvol= 20
+radio.set_volume(newvol)
 t=0
 while True:
-    
-    newvol= 32 #int((1 - (pot0.value / 65535)) * 63)
-    if newvol!=oldvol:
-        oldvol=newvol
-        radio.set_volume(newvol)
-        print(newvol)
- 
-
+   
     time.sleep(0.050)
     
     position = encoder.position
     if last_position is None or position != last_position:
         
+        if switch1.value is False:
+            #Volume     
 
-        if position > last_position:
-            radio.frequency_increment()
+            if position > last_position:
+                radio.frequency_increment()
            
-        elif position < last_position:
-            radio.frequency_decrement()
+            elif position < last_position:
+                radio.frequency_decrement()
            
-        displayFrequency()
+            displayFrequency()
+
+        elif switch4.value is False:
+            #Volume
+            if position > last_position:
+                if newvol<59:
+                    newvol=newvol+5
+           
+            elif position < last_position:
+                 if newvol > 5:
+                    newvol=newvol-5
+
+            if newvol!=oldvol:
+                oldvol=newvol
+                radio.set_volume(newvol)
+                print(newvol)   
             
-    last_position = position
+        last_position = position
     
     if switch1.value is False:
             #Bandwidth, only for SSB
@@ -198,7 +209,7 @@ while True:
                 else:
                     radio.set_ssb_bandwidth(oldBW+1)
                 
-         
+    
             
     #Mode button
     if switch5.value is False:
