@@ -15,6 +15,12 @@ if circuitpython():
 elif micropython():
     from machine import Pin, I2C
 
+import microcontroller
+#microcontroller.cpu.frequency = 250_000_000  # run at 250 MHz instead of 125 MHz
+#microcontroller.cpu.frequency = 200_000_000  # run at 200 MHz instead of 125 MHz
+#microcontroller.cpu.frequency = 150_000_000  # run at 150 MHz instead of 125 MHz
+microcontroller.cpu.frequency = 150_000_000  # run at 150 MHz instead of 125 MHz
+
 G_RADIO = None
 
 # grab a singleton radio

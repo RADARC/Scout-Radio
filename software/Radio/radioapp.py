@@ -16,6 +16,11 @@ from adafruit_display_text import label
 from analogio import AnalogIn
 import si4735_CP
 import radio_rx
+import microcontroller
+#microcontroller.cpu.frequency = 250_000_000  # run at 250 MHz instead of 125 MHz
+#microcontroller.cpu.frequency = 200_000_000  # run at 200 MHz instead of 125 MHz
+#microcontroller.cpu.frequency = 150_000_000  # run at 150 MHz instead of 125 MHz
+microcontroller.cpu.frequency = 150_000_000  # run at 150 MHz instead of 125 MHz
 
 switch1 = DigitalInOut(board.GP2)
 switch2 = DigitalInOut(board.GP3)
