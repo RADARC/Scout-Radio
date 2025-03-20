@@ -14,7 +14,7 @@ SIBINPATCH="patchcomp.bin"
 def files():
     """ source files """
     return [
-        "si47xx.py", "harness.py", SIBINPATCH, "radioapp.py","radio_rx.py"
+        "si47xx.py", "harness.py", SIBINPATCH, "radioapp.py","radio.py"
       ]
 
 def homedir():

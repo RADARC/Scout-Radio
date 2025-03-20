@@ -15,7 +15,7 @@ from adafruit_st7789 import ST7789
 from adafruit_display_text import label
 from analogio import AnalogIn
 import si47xx
-import radio_rx
+import radio
 import microcontroller
 #microcontroller.cpu.frequency = 250_000_000  # run at 250 MHz instead of 125 MHz
 #microcontroller.cpu.frequency = 200_000_000  # run at 200 MHz instead of 125 MHz
@@ -129,21 +129,21 @@ i2c = busio.I2C( board.GP19, board.GP18, frequency=1000000)
 si4735_reset_pin = DigitalInOut(board.GP17)
 si4735_reset_pin.direction = Direction.OUTPUT
 
-radio = radio_rx.RADIO_RX(si47xx.SI4735(i2c, 0x63, si4735_reset_pin))
+radio = radio.RADIO(si47xx.SI4735(i2c, 0x63, si4735_reset_pin))
 
 def displayFrequency():
-    if radio.get_mode() == radio_rx.RADIO_RX.FM:
+    if radio.get_mode() == radio.RADIO.FM:
         text_area.text = "FM " + str(radio.get_frequency()/100)               
-    elif radio.get_mode() == radio_rx.RADIO_RX.SSB_USB:
+    elif radio.get_mode() == radio.RADIO.SSB_USB:
         text_area.text = "USB " + str(radio.get_frequency()/1000)
-    elif radio.get_mode() == radio_rx.RADIO_RX.SSB_LSB:
+    elif radio.get_mode() == radio.RADIO.SSB_LSB:
         text_area.text = "LSB " + str(radio.get_frequency()/1000)
-    elif radio.get_mode() == radio_rx.RADIO_RX.AM:
+    elif radio.get_mode() == radio.RADIO.AM:
         text_area.text = "AM " + str(radio.get_frequency())
 
 
 radio.reset()
-radio.set_mode(radio_rx.RADIO_RX.FM)
+radio.set_mode(radio.RADIO.FM)
 
 displayFrequency()
 text_status.text = ""
@@ -190,7 +190,7 @@ while True:
     
     if switch1.value is False:
             #Bandwidth, only for SSB
-            if radio.get_mode() == radio_rx.RADIO_RX.SSB_USB or radio.get_mode() == radio_rx.RADIO_RX.SSB_LSB:
+            if radio.get_mode() == radio.RADIO.SSB_USB or radio.get_mode() == radio.RADIO.SSB_LSB:
                 oldBW = radio.get_ssb_bandwidth()
                 
                 if (oldBW == 5):
@@ -204,23 +204,23 @@ while True:
     if switch5.value is False:
         
         
-        if radio.get_mode() == radio_rx.RADIO_RX.FM:
+        if radio.get_mode() == radio.RADIO.FM:
             #Go to AM Mode
-            radio.set_mode( radio_rx.RADIO_RX.AM)
+            radio.set_mode( radio.RADIO.AM)
 
-        elif radio.get_mode() == radio_rx.RADIO_RX.AM:
+        elif radio.get_mode() == radio.RADIO.AM:
            
             #Go to SSB USB Mode
             text_status.text = "Please wait..."
-            radio.set_mode(radio_rx.RADIO_RX.SSB_USB)
+            radio.set_mode(radio.RADIO.SSB_USB)
             text_status.text = ""
             
-        elif radio.get_mode() == radio_rx.RADIO_RX.SSB_USB:
+        elif radio.get_mode() == radio.RADIO.SSB_USB:
 
-            radio.set_mode(radio_rx.RADIO_RX.SSB_LSB)
+            radio.set_mode(radio.RADIO.SSB_LSB)
 
         else:
-            radio.set_mode(radio_rx.RADIO_RX.FM)
+            radio.set_mode(radio.RADIO.FM)
         
 
         displayFrequency()
@@ -233,7 +233,7 @@ while True:
         
         text_signalstrength.text = "rssi:" + str(sigquality["rssi"]) + " SNR:" + str(sigquality["SNR"])
       
-        if radio.get_mode() == radio_rx.RADIO_RX.FM:
+        if radio.get_mode() == radio.RADIO.FM:
 
             radio.update_rds()
           

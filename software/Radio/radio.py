@@ -1,6 +1,6 @@
 import si47xx
 
-class RADIO_RX:
+class RADIO:
 
     FM = 1
     AM = 2
