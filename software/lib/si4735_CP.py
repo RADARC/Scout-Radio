@@ -549,23 +549,6 @@ class SI4735:
         print(self.currentTune)
 
 
-
-    def downloadPatch(self):
-
-        with open('patch.csg', mode="rt") as f:
-            line = f.readline()
-            while line:
-                if not line.startswith("#"):
-                    chunkstrlist = line.strip().split(',')
-                    #print(chunkstrlist)
-
-                    chunk = [int(item, 0) for item in chunkstrlist]
-                    #print(chunk)
-                    self.si4735_i2c.writeto(bytearray(chunk))
-                line = f.readline()
-                time.sleep(MIN_DELAY_WAIT_SEND_LOOP/1_000_000)
-            print("Download patch")
-
     def download_compressed_patch(self):
         dlcp_debug = False
 
