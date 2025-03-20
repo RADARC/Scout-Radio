@@ -139,23 +139,23 @@ class Si47xxtest(unittest.TestCase):
         formatoutput(text)
 
         time.sleep(2)
-        text = BOARD.sendrepl('radio.setSSBAudioBandwidth(2)')
+        text = BOARD.sendrepl('radio.setSSBBandwidth(2)')
         formatoutput(text)
 
         print("bandwidth 2")
         time.sleep(2)
-        text = BOARD.sendrepl('radio.setSSBAudioBandwidth(3)')
+        text = BOARD.sendrepl('radio.setSSBBandwidth(3)')
         formatoutput(text)
 
         print("bandwidth 3")
         time.sleep(2)
 
-        text = BOARD.sendrepl('radio.setSSBAudioBandwidth(4)')
+        text = BOARD.sendrepl('radio.setSSBBandwidth(4)')
         formatoutput(text)
         print("bandwidth 4")
         time.sleep(2)
 
-        text = BOARD.sendrepl('radio.setSSBAudioBandwidth(1)')
+        text = BOARD.sendrepl('radio.setSSBBandwidth(1)')
         formatoutput(text)
         print("bandwidth 1")
         time.sleep(2)
