@@ -416,7 +416,7 @@ class SI4735:
     def getMode(self):
         return self.currentMode
 
-    def getSSBbandwidth(self):
+    def getSSBBandwidth(self):
         return self.ssbMode.audio_bandwidth
 
     def getSSBsideband(self):
@@ -685,7 +685,7 @@ class SI4735:
         time.sleep(MAX_DELAY_AFTER_POWERUP)
         print("send SSB Mode")
 
-    def setSSBAudioBandwidth(self,AUDIOBW):
+    def setSSBBandwidth(self,AUDIOBW):
         self.ssbMode.audio_bandwidth = AUDIOBW
         self.sendSSBModeProperty()
 

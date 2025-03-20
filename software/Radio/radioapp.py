@@ -201,6 +201,7 @@ while True:
     
     if switch1.value is False:
             #Bandwidth, only for SSB
+            print("Bandwidth")
             if radio.get_mode() == radio.SSB_USB or radio.get_mode() == radio.SSB_LSB:
                 oldBW = radio.get_ssb_bandwidth()
                 
@@ -217,21 +218,25 @@ while True:
         
         if radio.get_mode() == radio.FM:
             #Go to AM Mode
-            radio.set_mode( radio.AM)
+            radio.set_mode(radio.AM)
+            radio.set_volume(newvol)
 
         elif radio.get_mode() == radio.AM:
            
             #Go to SSB USB Mode
             text_status.text = "Please wait..."
             radio.set_mode(radio.SSB_USB)
+            radio.set_volume(newvol)
             text_status.text = ""
             
         elif radio.get_mode() == radio.SSB_USB:
 
             radio.set_mode(radio.SSB_LSB)
+            radio.set_volume(newvol)
 
         else:
             radio.set_mode(radio.FM)
+            radio.set_volume(newvol)
         
 
         displayFrequency()
