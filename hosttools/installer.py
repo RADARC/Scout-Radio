@@ -19,7 +19,7 @@ def installfiles(argv, homedir, files, expect_repl=True):
     #
 
     # we should really use argparse properly...
-    if len(argv) > 1 and argv[1] == "--revsync":
+    if len(argv) > 1 and "--revsync" in argv[1:]:
         board.revsync()
     else:
         board.initialise(expect_repl)
