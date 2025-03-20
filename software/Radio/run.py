@@ -66,7 +66,12 @@ if __name__=="__main__":
     # once we've done developing, start the app on power up
     # -- puts a code.py/main.py on target
     if DO_AUTORUN:
-        BOARD.start_app_on_powerup("radioapp")
+        appname = "radioapp"
+
+        BOARD.start_app_on_powerup(appname)
+
+        print(f"{appname} set to run on boot")
+
         #
         # pyexpect will most likely time out here as the app will
         # now be running on target.
