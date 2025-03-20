@@ -18,8 +18,8 @@ BOARD = None
 
 DO_INSTALL = False
 
-class Si4735test(unittest.TestCase):
-    """ Si4735test object """
+class Si47xxtest(unittest.TestCase):
+    """ Si47xxtest object """
 
     def setUp(self):
         """ copy test files to target; grab a radio in the repl for testing """
@@ -41,7 +41,7 @@ class Si4735test(unittest.TestCase):
             BOARD.initialise()
 
             #
-            # grab a singleton si4735 device as our first job
+            # grab a singleton si47xx device as our first job
             #
             BOARD.sendrepl('import harness')
             BOARD.sendrepl('radio = harness.getradio()')
@@ -90,9 +90,9 @@ if __name__=="__main__":
 # need to install 'rshell' command line utility for micropython
 #
 # can invoke using
-# python -m unittest test.Si4735test
+# python -m unittest test.Si47xxtest
 # or
-# python -m unittest test.Si4735test.test6
+# python -m unittest test.Si47xxtest.test6
 #
 # for example
 # or just plain old python test.py which is the __main__ case above
