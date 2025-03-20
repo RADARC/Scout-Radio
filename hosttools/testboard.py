@@ -401,6 +401,14 @@ class TestBoardCP(TestBoard):
             sys.exit("Error: Circuit python filesystem mount not found")
 
         #
+        # A bit rude, but we want access. This may help.
+        #
+        autorunfile = os.path.join(mountpoint, "code.py")
+
+        if os.path.exists(autorunfile):
+            os.unlink(autorunfile)
+
+        #
         # Set mountpoint and fileops object member variables in base class
         # by passing them to the base class constructor.
         #
