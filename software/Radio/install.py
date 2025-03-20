@@ -3,7 +3,10 @@
 # Environment: host python3
 
 import sys
+import os
 import installer
+
+COMPRESSED_PATCH="patchcomp.bin"
 
 #
 # if patchcomp.bin does not exist, create it by running csg2bin.py
@@ -11,7 +14,7 @@ import installer
 def files():
     """ source files """
     return [
-        "harness.py", "patchcomp.bin", "radioapp.py","radio_rx.py"
+        "harness.py", COMPRESSED_PATCH, "radioapp.py","radio_rx.py"
       ]
 
 def homedir():
@@ -29,5 +32,9 @@ def supportfiles():
       ]
 
 if __name__=="__main__":
+    if not os.path.exists(COMPRESSED_PATCH):
+        print(f"{COMPRESSED_PATCH} does not exist. Please generate by running csg2bin.py")
+        sys.exit(1)
+
     installer.installfiles(sys.argv, homedir(), files() + supportfiles())
     #installer.installfiles(sys.argv, homedir(), files())
