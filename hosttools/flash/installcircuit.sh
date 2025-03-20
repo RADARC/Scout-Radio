@@ -17,11 +17,13 @@ await_mount()
 }
 
 await_mount
+echo "Copying flashnuke...."
 cp flash_nuke.uf2 $(mountpoint)
 
 echo "unplug and replug USB then any key to continue"
 read -n1 cont
 
 await_mount
+echo "Copying circuit python...."
 cp adafruit-circuitpython-raspberry_pi_pico-en_GB-9.2.4.uf2 $(mountpoint)
-
+echo "Copying circuit python....done"

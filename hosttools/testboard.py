@@ -168,7 +168,7 @@ class TestBoard:
         # Return the second line of output onwards.
         # The strip is debatable.
         #
-        return "".join(output.split("\r\n")[1:]).strip()
+        return "\r\n".join(output.split("\r\n")[1:]).strip()
 
 
     def get_target_fullpath(self, dest):
@@ -350,7 +350,10 @@ class TestBoard:
 
     def start_app_on_powerup(self, appname):
         """ provide a system startup file (eg. code.py etc.) for the
-            component this testboard is concerned with """
+            component this testboard is concerned with.
+            As a result of calling this method, the pyexpect
+            session will most likely hang as the target system
+            will start the app as soon as the code.py/main.py appears """
 
         if self.m_homedir:
             with tempfile.NamedTemporaryFile("w") as startupfile:

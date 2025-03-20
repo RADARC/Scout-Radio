@@ -71,7 +71,7 @@ class Si4735test(unittest.TestCase):
         """ test report firmware """
         text = BOARD.sendrepl("harness.reportfirmware(radio)")
         formatoutput(text)
-        actual_hex = text.split('{')[0]
+        actual_hex = text.split('{')[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
         self.assertTrue(expected_hex == actual_hex)
 
@@ -82,8 +82,8 @@ class Si4735test(unittest.TestCase):
 
     def test05(self):
         """ downloadPatch """
-        text = BOARD.sendrepl("radio.downloadPatch()")
-        self.assertTrue(text == "Download patch")
+        text = BOARD.sendrepl("radio.download_compressed_patch()")
+        self.assertTrue(text == "Download compressed patch")
 
     def test06(self):
         """ test report firmware """
@@ -126,7 +126,7 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl('radio.patchPowerUp()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.downloadPatch()')
+        text = BOARD.sendrepl('radio.download_compressed_patch()')
         formatoutput(text)
 
         text = BOARD.sendrepl('radio.setSSB(2)')
@@ -178,7 +178,7 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl('radio.patchPowerUp()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.downloadPatch()')
+        text = BOARD.sendrepl('radio.download_compressed_patch()')
         formatoutput(text)
 
         # Set LSB
