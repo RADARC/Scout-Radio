@@ -78,6 +78,7 @@ class TestBoard:
         """ open the serial device """
         try:
             self.m_ser.open()
+            self.m_ser.reset_input_buffer()
 
         except serial.SerialException as excep:
             sys.exit(f"{excep}")
@@ -86,14 +87,16 @@ class TestBoard:
         """ close the serial device """
         self.m_ser.close()
 
-    def create_pexpect_child(self):
+    def create_pexpect_child(self, send_cr=True):
         """ create a pexpect child object with python repl """
 
         self.open_serial()
 
         self.m_child = pexpect.fdpexpect.fdspawn(self.m_ser, timeout=5)
 
-        self.sendrepl("", False)
+        if send_cr:
+            # can't use sendrepl here as that potentially switches session type
+            self.m_child.sendline("\r\n")
 
 
     def sethomedir(self, homedir):
@@ -106,14 +109,34 @@ class TestBoard:
         """ configure the list of host python files to be run on target """
         self.m_files = targetfiles
 
-
     def sendrepl(self, cmd, expect_repl=True):
-        """ send a command to MicroPython or CircuitPython repl """
+        """ code not used, here just for pylint """
+
+        # keep pylint from grumping
+        assert self
+        assert cmd
+        assert expect_repl
+
+        # should not be called
+        assert False
+
+        # pylint, can't get here anyway
+        return ""
+
+
+    def sendreplbase(self, cmd, expect_repl=True):
+        """
+            Base class code to send a command to MicroPython
+            or CircuitPython repl. Tweaks to the invocation/behaviour
+            are in the derived classes in sendrepl.
+
+            Not to be used directly, generally.
+        """
 
         if VERBOSE_SEND_REPL:
             print(f">>> {cmd}")
 
-        self.m_child.sendline(cmd + "\r\n")
+        self.m_child.sendline(cmd)
 
         # don't expect repl to come back to us - eg. autorun code.py
         if not expect_repl:
@@ -140,7 +163,12 @@ class TestBoard:
             #
             assert "Traceback" not in output
 
-        return output
+        #
+        # Don't echo the command sent.
+        # Return the second line of output onwards.
+        # The strip is debatable.
+        #
+        return "\r\n".join(output.split("\r\n")[1:]).strip()
 
 
     def get_target_fullpath(self, dest):
@@ -238,8 +266,7 @@ class TestBoard:
     def identify(self):
         """ print the scout radio os/python type """
         self.sendrepl("import sys")
-        text = self.sendrepl("print(sys.implementation.name)")
-        ostype = text.strip().split("\r\n")[1]
+        ostype = self.sendrepl("print(sys.implementation.name)")
         print(f"{ostype} board created")
         self.m_ostype = ostype
 
@@ -257,8 +284,27 @@ class TestBoard:
         send control c to target if unresponsive
         """
 
+        #
+        # TODO/latent BUG.
+        # Not sure why we can't just unconditionally
+        # throw a control-c at target eg. even if it
+        # doesn't need interrupting i.e. is at the
+        # usual python repl prompt >>>.
+        #
+        # If we do, "python testboard.py" with a board
+        # present fails the board.identify() invocation.
+        #
+        # Aside: If the target is unresponsive due to code.py
+        # or main.py autorun thing in place, testboard.py
+        # can't cope with this anyway as it reboots the
+        # board.
+        #
+        # Timeout used below is totally arbitrary to
+        # determine whether the prompt is there or not.
+        #
         try:
             self.m_child.expect(">>> ", timeout = 0.1)
+
         except pexpect.exceptions.TIMEOUT:
             self.ctrlc()
 
@@ -295,8 +341,6 @@ class TestBoard:
 
         # expect_repl deals with odd case probably for code.py autorun
         self.sendrepl("\x04", expect_repl=expect_repl)
-        if expect_repl:
-            self.sendrepl("")
 
     def ctrlc(self, expect_repl=True):
         """ restart the python interpreter on target by sending CTRL+C """
@@ -306,7 +350,10 @@ class TestBoard:
 
     def start_app_on_powerup(self, appname):
         """ provide a system startup file (eg. code.py etc.) for the
-            component this testboard is concerned with """
+            component this testboard is concerned with.
+            As a result of calling this method, the pyexpect
+            session will most likely hang as the target system
+            will start the app as soon as the code.py/main.py appears """
 
         if self.m_homedir:
             with tempfile.NamedTemporaryFile("w") as startupfile:
@@ -348,16 +395,7 @@ class TestBoardCP(TestBoard):
     def __init__(self, serialport):
         """ Create a CircuitPython scout radio test board """
 
-        #
-        # work out where the circuit python filesystem is mounted
-        #
-        mountpoint = None
-        with open('/proc/mounts', 'r', encoding="utf-8") as mounts:
-            for line in mounts.readlines():
-                candidate_mp = line.strip().split()[1]
-                if "CIRCUITPY" in candidate_mp:
-                    mountpoint = candidate_mp
-                    break
+        mountpoint = sysdetect.wait_get_cp_mountpoint()
 
         if not mountpoint:
             sys.exit("Error: Circuit python filesystem mount not found")
@@ -373,6 +411,11 @@ class TestBoardCP(TestBoard):
                          fileops.FileOPsCP(),
                          "code.py")
 
+
+    def sendrepl(self, cmd, expect_repl=True):
+        """ send a command to CircuitPython repl """
+
+        return self.sendreplbase(cmd + "\r\n", expect_repl)
 
 #
 # Micro Python board
@@ -461,14 +504,22 @@ class TestBoardMP(TestBoard):
             del self.m_rshell_child
 
             #
-            # create expect session on serial port
+            # Create expect session on serial port for python again.
+            # TODO HACK Not sure why sending a CR here gets pexpect confused.
+            # Could be to do with the way the initial python pexpect session
+            # was closed.
             #
-            self.create_pexpect_child()
+            self.create_pexpect_child(send_cr=False)
 
             #
             # remember we are now in python mode on serial port
             #
             self.m_expect_session_type = "python"
+
+            #
+            # reboot here as rshell has been using the board
+            #
+            self.reboot()
 
 
     def sendrshellcmd(self, cmd, timeout = 10):
@@ -496,7 +547,19 @@ class TestBoardMP(TestBoard):
 
         self.set_expect_session_type("python")
 
-        return super().sendrepl(cmd, expect_repl)
+        return self.sendreplbase(cmd + "\r\n", expect_repl)
+
+
+    def reboot(self, expect_repl=True):
+        """ restart the python interpreter on target by sending CTRL+D """
+
+        # expect_repl deals with odd case probably for code.py autorun
+
+        #
+        # MicroPython CTRL+D doesn't need CR tacked on.
+        #
+        self.sendreplbase("\x04", expect_repl=expect_repl)
+
 
 # capitals keeps pylint happy
 G_BOARD = None

@@ -65,12 +65,15 @@ class Si4735test(unittest.TestCase):
     def test01(self):
         """ reset radio """
         text = BOARD.sendrepl('radio.reset()')
-        formatoutput(text)
+        self.assertTrue(text == "Reset")
 
     def test03(self):
         """ test report firmware """
         text = BOARD.sendrepl("harness.reportfirmware(radio)")
         formatoutput(text)
+        actual_hex = text.split('{')[0][:-2]
+        expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
+        self.assertTrue(expected_hex == actual_hex)
 
     def test04(self):
         """ patchPowerUp """
@@ -79,10 +82,16 @@ class Si4735test(unittest.TestCase):
 
     def test05(self):
         """ downloadPatch """
-        text = BOARD.sendrepl("radio.downloadPatch()")
-        formatoutput(text)
+        text = BOARD.sendrepl("radio.download_compressed_patch()")
+        self.assertTrue(text == "Download compressed patch")
 
     def test06(self):
+        """ test report firmware """
+        text = BOARD.sendrepl("harness.reportfirmware(radio)")
+        formatoutput(text)
+        expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
+
+    def test07(self):
         """ tune an FM station """
         #
         # FIXME: improve quality by switching to radio 4
@@ -90,22 +99,22 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl("harness.testfm(radio, 10440)")
         formatoutput(text)
 
-    def test07(self):
+    def test08(self):
         """ report RSSI """
         text = BOARD.sendrepl('radio.getCurrentReceivedSignalQuality(0)["rssi"]')
         formatoutput(text)
 
-    def test08(self):
+    def test09(self):
         """ report RSSI and RDS """
         text = BOARD.sendrepl('harness.sigrssi(radio)')
         formatoutput(text)
 
-    def test09(self):
+    def test10(self):
         """ set volume low-ish """
         text = BOARD.sendrepl('radio.setVolume(32)')
         formatoutput(text)
 
-    def test10(self):
+    def test11(self):
         """ test ssb stuff """
         #
         # NOTE time.sleep's can be done either on host or target.
@@ -117,7 +126,7 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl('radio.patchPowerUp()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.downloadPatch()')
+        text = BOARD.sendrepl('radio.download_compressed_patch()')
         formatoutput(text)
 
         text = BOARD.sendrepl('radio.setSSB(2)')
@@ -154,14 +163,14 @@ class Si4735test(unittest.TestCase):
     #
     # back to FM to finish with
     #
-    def test11(self):
+    def test12(self):
         self.test01()
         self.test06()
 
-    def test12(self):
+    def test13(self):
         self.test09()
 
-    def test13(self):
+    def test14(self):
         # Test SSB Sideband switching
         text = BOARD.sendrepl('radio.reset()')
         formatoutput(text)
@@ -169,7 +178,7 @@ class Si4735test(unittest.TestCase):
         text = BOARD.sendrepl('radio.patchPowerUp()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.downloadPatch()')
+        text = BOARD.sendrepl('radio.download_compressed_patch()')
         formatoutput(text)
 
         # Set LSB
@@ -187,10 +196,6 @@ class Si4735test(unittest.TestCase):
 
         text = BOARD.sendrepl('radio.setFrequency(14000)')
         formatoutput(text)
-
-        time.sleep(10)
-
-
 
 
 

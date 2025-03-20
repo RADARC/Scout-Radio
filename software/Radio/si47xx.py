@@ -18,7 +18,9 @@ GET_INT_STATUS = const(0x14) # Read interrupt status bits.
 
 MAX_DELAY_AFTER_SET_FREQUENCY = const(0.030) # In ms - This value helps to improve the precision during of getting frequency value
 MAX_DELAY_AFTER_POWERUP = const(0.010)       # In ms - Max delay you have to setup after a power up command.
-MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
+#MIN_DELAY_WAIT_SEND_LOOP = const(300)     # In uS (Microsecond) - each loop of waitToSend sould wait this value in microsecond
+MIN_DELAY_WAIT_SEND_LOOP = const(0.003)
+MIN_DELAY_WAIT_DLPATCH = const(0.001)
 MAX_SEEK_TIME = const(8000)               # defines the maximum seeking time 8s is default.
 
 FM_TUNE_FREQ = const(0x20)
@@ -547,30 +549,76 @@ class SI4735:
         print(self.currentTune)
 
 
+    def download_compressed_patch(self):
+        dlcp_debug = False
 
-    def downloadPatch(self):
+        def dbgprint(cl, eb):
+            """ debug print line number and bytes at it """
+            if dlcp_debug:
+                print(cl, [hex(x)+'0' if x<16 else hex(x) for x in eb])
 
-        with open('patch.csg', mode="rt") as f:
-            line = f.readline()
-            while line:
-                if not line.startswith("#"):
-                    chunkstrlist = line.strip().split(',')
-                    #print(chunkstrlist)
+        def get_specials_consume_header(binf):
+            """ get list of line numbers starting with 0x15 """
 
-                    chunk = [int(item, 0) for item in chunkstrlist]
-                    #print(chunk)
-                    self.si4735_i2c.writeto(bytearray(chunk))
-                line = f.readline()
-                time.sleep(MIN_DELAY_WAIT_SEND_LOOP/1_000_000)
-            print("Download patch")
+            # first byte in the binary file has number of "specials"
+            specials_length = int.from_bytes(binf.read(1), "big")
+            specials = []
+
+            #
+            # get the sequence of shorts
+            #
+            sidx = 0
+            while sidx < specials_length:
+                special = int.from_bytes(binf.read(2), "big")
+                specials.append(special)
+                sidx += 1
+
+            return specials
+
+        with open('patchcomp.bin', mode="rb") as f:
+
+            # lines with 0x15
+            specials = get_specials_consume_header(f)
+
+            line_number = 0
+
+            sevenbytes = f.read(7)
+
+            # should be left with sequences of seven bytes
+            while sevenbytes:
+
+                if line_number in specials:
+                    eightbytes = bytearray([0x15])
+                else:
+                    eightbytes = bytearray([0x16])
+
+                eightbytes.extend(sevenbytes)
+
+                #dbgprint(line_number, eightbytes)
+
+                self.si4735_i2c.writeto(eightbytes)
+
+                #
+                # HACK WARNING
+                #
+                # This sleep is critical. Needs tweaking for performance.
+                # This does seem to work.
+                #
+                time.sleep(MIN_DELAY_WAIT_DLPATCH/1_000_000)
+
+                line_number += 1
+
+                sevenbytes = f.read(7)
+
+        print("Download compressed patch")
 
     def patchPowerUp(self):
         self.waitToSend()
         self.powerUp.setPowerUp(1,0,1,self.currentClockType,0,SI473X_ANALOG_AUDIO)
         self.waitToSend()
-        print(self.si4735_i2c.writeto(bytearray((POWER_UP,self.powerUp.get_raw()[0],self.powerUp.get_raw()[1]))))
+        self.si4735_i2c.writeto(bytearray((POWER_UP,self.powerUp.get_raw()[0],self.powerUp.get_raw()[1])))
         self.waitToSend()
-        time.sleep(MAX_DELAY_AFTER_POWERUP)
+        time.sleep(MAX_DELAY_AFTER_POWERUP/1_000_000)
         print("Patch power up")
 
     def setSSB(self,usblsb):
