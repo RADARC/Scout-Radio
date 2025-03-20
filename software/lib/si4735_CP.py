@@ -574,24 +574,28 @@ class SI4735:
             if dlcp_debug:
                 print(cl, [hex(x)+'0' if x<16 else hex(x) for x in eb])
 
-        def get_specials(f):
+        def get_specials_consume_header(binf):
             """ get list of line numbers starting with 0x15 """
 
             # first byte in the binary file has this
-            specials_length = int.from_bytes(f.read(1), "big")
+            specials_length = int.from_bytes(binf.read(1), "big")
             specials = []
 
+            #
             # get the sequence of shorts
-            for sidx in range(specials_length):
-                special = int.from_bytes(f.read(2), "big")
+            #
+            sidx = 0
+            while sidx < specials_length:
+                special = int.from_bytes(binf.read(2), "big")
                 specials.append(special)
+                sidx += 1
 
             return specials
 
         with open('patchcomp.bin', mode="rb") as binfile:
 
             # lines with 0x15
-            specials = get_specials(binfile)
+            specials = get_specials_consume_header(binfile)
 
             line_number = 0
 
