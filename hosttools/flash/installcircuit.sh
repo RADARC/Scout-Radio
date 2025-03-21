@@ -14,9 +14,9 @@ checkfile ${IMAGE}
 nuke
 
 echo "Copying circuit python...."
-cp $(thisdir)/${IMAGE} $(mountpoint RPI-RP2)
+copyfile ${IMAGE} $(mountpoint RPI-RP2)
 
 echo "waiting for mountpoint CIRCUITPYTHON"
-await_mount CIRCUITPY
+await_mount CIRCUITPY code.py
 echo "Copying circuit python....done"
 echo "Unplug and replug USB to start using your new system"

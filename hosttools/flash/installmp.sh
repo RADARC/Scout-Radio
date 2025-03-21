@@ -30,8 +30,7 @@ fi
 nuke
 
 echo "Copying micro python...."
-   
-cp $(thisdir)/${IMAGE} $(mountpoint RPI-RP2)
+copyfile ${IMAGE} $(mountpoint RPI-RP2)
 
 echo "Waiting for system to install..."
 while ! lsusb | grep -q "MicroPython Board"; do
