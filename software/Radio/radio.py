@@ -67,12 +67,8 @@ class RADIO:
         self.hw.reset()
         self.just_reset = True
 
-    def set_volume(self, volume):
-
-        # only touch hardware if we need to
-        if volume != self.volume:
-            self.hw.setVolume(volume)
-            self.volume = volume
+    def set_volume(self,volume):
+        self.hw.setVolume(volume)
 
 
     def frequency_increment(self):
