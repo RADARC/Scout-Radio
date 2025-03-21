@@ -1,12 +1,17 @@
 #!/usr/bin/env sh
 
+# bomb on error
+set -e
+
 # helper shell script to install micro python
 
 IMAGE=RPI_PICO_W-20241129-v1.24.1.uf2
 
-. ./nuke.sh
+. $(dirname $0)/nuke.sh
 
-nuke_disclaimer
+checkfile ${IMAGE}
+
+nuke
 
 #
 # initial banner/health warning
@@ -26,7 +31,7 @@ nuke
 
 echo "Copying micro python...."
    
-cp ${IMAGE} $(mountpoint RPI-RP2)
+cp $(thisdir)/${IMAGE} $(mountpoint RPI-RP2)
 
 echo "Waiting for system to install..."
 while ! lsusb | grep -q "MicroPython Board"; do
