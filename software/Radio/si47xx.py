@@ -680,7 +680,7 @@ class SI4735:
         print(self.ssbMode.get_raw())
         barray = bytearray((SET_PROPERTY, 0, Property.raw['byteHigh'], Property.raw['byteLow'], self.ssbMode.get_raw()[1], self.ssbMode.get_raw()[0]))
         print(barray)
-        print(self.si4735_i2c.writeto(barray))
+        self.si4735_i2c.writeto(barray)
         self.waitToSend()
         time.sleep(MAX_DELAY_AFTER_POWERUP)
         print("send SSB Mode")
