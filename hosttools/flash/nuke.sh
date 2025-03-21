@@ -19,16 +19,29 @@ mountpoint()
     mount | grep $1 | awk '{print $3}'
 }
 
-await_mount()
+get_mount()
 {
-    while [ "$(mountpoint $1)" = "" ]; do
+    mount_dir=$1
+    expected_file=$2
+    
+    #
+    # loop till we find expected mount dir mounted in our filesystem
+    #
+    MP=$(mountpoint ${mount_dir})
+
+    while [ "${MP}" = "" ]; do
+        sleep 0.1
+        MP=$(mountpoint ${mount_dir})
+    done
+
+    #
+    # now wait for specified expected file specified showing up in mountpoint
+    #
+    while [ ! -s "${MP}/${expected_file}" ]; do
         sleep 0.1
     done
 
-    # wait for file specified showing up in mountpoint
-    while [ ! -s "$(mountpoint $1)/$2" ]; do
-        sleep 0.1
-    done
+    echo ${MP}
 }
 
 checkfile()
@@ -39,38 +52,41 @@ checkfile()
     fi
 }
 
-nuke_disclaimer()
+copyfile()
 {
+    sourcefile=$1
+    mount_dir=$2
+
+    echo "Copying ${sourcefile} to ${mount_dir}..."
+    cp $(thisdir)/${sourcefile} ${mount_dir}
+
+    # automated stuff will happen - wait for it
+    sleep 2
+
+    echo "Copying ${sourcefile} to ${mount_dir}...done"
+}
+
+get_install_mount()
+{
+    get_mount RPI-RP2 INDEX.HTM
+}
+
+install_os()
+{
+    image=$1
+
     checkfile ${NUKEFILE}
     echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD"
     echo "CTRL-C now to exit"
-}
-
-copyfile()
-{
-    SF=$1
-    MP=$2
-
-    while [ ! -d ${MP} ]; do
-        echo "waiting for ${MP}..."
-        sleep 0.1
-    done
-
-    cp $(thisdir)/${SF} ${MP}
-}
-
-nuke()
-{
+    echo
     echo "Plug in USB with bootsel pressed until this progam continues..."
-    echo "Ignore any mount windows opening - or dismiss them"
-    await_mount RPI-RP2 INDEX.HTM
-    echo "Copying flashnuke...."
+    echo "Dismiss any mount windows opening if possible"
 
-    copyfile ${NUKEFILE} $(mountpoint RPI-RP2)
+    copyfile ${NUKEFILE} $(get_install_mount)
 
-    sleep 1
+    echo "Awaiting filesystem after system reset...."
+    get_install_mount > /dev/null
+    echo "Awaiting filesystem after system reset....done"
 
-    echo "Waiting for mountpoint RPI-RP2..."
-    await_mount RPI-RP2 INDEX.HTM
-    echo "system wiped"
+    copyfile ${image} $(get_mount RPI-RP2 INDEX.HTM)
 }
