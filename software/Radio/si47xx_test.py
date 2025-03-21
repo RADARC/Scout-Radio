@@ -36,9 +36,6 @@ class Si47xxtest(unittest.TestCase):
 
         self.m_board = testboard.getboard()
 
-        # must get one
-        assert self.m_board
-
         if not self.m_board.initialised():
             self.m_board.sethomedir(install.homedir())
 

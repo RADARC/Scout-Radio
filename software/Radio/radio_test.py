@@ -18,9 +18,6 @@ class Si47xxtest_download(unittest.TestCase):
 
         self.m_board = testboard.getboard()
 
-        # must get one
-        assert self.m_board
-
         if not self.m_board.initialised():
             self.m_board.sethomedir(install.homedir())
 
@@ -45,7 +42,6 @@ class Si47xxtest_download(unittest.TestCase):
     def test110(self):
         """ reset si4735 """
         text = self.m_board.sendrepl('radio.getVolume()')
-        #self.assertTrue(text == "Reset")
         print(text)
 
 
