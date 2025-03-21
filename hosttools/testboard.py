@@ -70,22 +70,38 @@ class TestBoard:
         #
         # serial port scaffold stuff
         #
-        self.m_ser = serial.Serial()
-        self.m_ser.baudrate = 115200
-        self.m_ser.port = serialport
+        self.m_ser = None
+        self.m_serialportname = serialport
+
+        #
+        # record whether we have been initialised
+        #
+        self.m_initialised = False
+
+    def serialportname(self):
+        """ return serial port name """
+
+        return self.m_serialportname
 
     def open_serial(self):
-        """ open the serial device """
-        try:
-            self.m_ser.open()
-            self.m_ser.reset_input_buffer()
+        """ open the serial device if necessary """
 
-        except serial.SerialException as excep:
-            sys.exit(f"{excep}")
+        if not self.m_ser:
+            self.m_ser = serial.Serial()
+            self.m_ser.baudrate = 115200
+            self.m_ser.port = self.m_serialportname
+
+            try:
+                self.m_ser.open()
+                self.m_ser.reset_input_buffer()
+
+            except serial.SerialException as excep:
+                sys.exit(f"{excep}")
 
     def close_serial(self):
         """ close the serial device """
         self.m_ser.close()
+        self.m_ser = None
 
     def create_pexpect_child(self, send_cr=True):
         """ create a pexpect child object with python repl """
@@ -317,6 +333,11 @@ class TestBoard:
         self.reboot()
         self.copy_files_to_target()
 
+        #
+        # a bit arbitrary
+        #
+        self.m_initialised = True
+
         # odd case for code.py
         if not expect_repl:
             return
@@ -326,6 +347,12 @@ class TestBoard:
             self.sendrepl("import os")
             target_homedirname = os.path.basename(self.m_homedir)
             self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
+
+
+    def initialised(self):
+        """ return whether we have been initialised """
+
+        return self.m_initialised
 
 
     def revsync(self):
@@ -596,12 +623,12 @@ def getboard( serialport="/dev/ttyACM0" ):
 
 
 if __name__ == "__main__":
-    SERIALPORT = "/dev/ttyACM0"
-    myboard = getboard(SERIALPORT)
+    myboard = getboard()
 
     if not myboard:
         print("No MicroPython/CircuitPython test boards found")
     else:
         myboard.initialise()
         myboard.identify()
-        print(f"repl available on serial port {SERIALPORT}")
+        serialportname = myboard.serialportname()
+        print(f"repl available on serial port {serialportname}")
