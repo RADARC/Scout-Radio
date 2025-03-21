@@ -3,14 +3,16 @@
  run with
    time python si47xx_testpatchdownload.py [--install]
 """
-import unittest
+
 import sys
+from datetime import datetime
+import unittest
 import testboard
 import install
 
 DO_INSTALL = False
 
-class Si47xxtest_download(unittest.TestCase):
+class Si47xxtestdownload(unittest.TestCase):
     """ Si47xxtest_download object """
 
     def setUp(self):
@@ -56,7 +58,17 @@ class Si47xxtest_download(unittest.TestCase):
 
     def test130(self):
         """ downloadPatch """
+
+        start_time = datetime.timestamp(datetime.now())
         text = self.m_board.sendrepl("si4735.download_compressed_patch()")
+        end_time = datetime.timestamp(datetime.now())
+        elapsed = end_time - start_time
+        print(f"Download took {elapsed:.4f} seconds")
+
+        #
+        # expect to complete in less than 1.5 seconds
+        #
+        self.assertTrue(elapsed < 1.5)
         self.assertTrue(text == "Download compressed patch")
 
     def test140(self):
