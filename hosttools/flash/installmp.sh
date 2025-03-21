@@ -35,4 +35,3 @@ while ! lsusb | grep -q "MicroPython Board"; do
     sleep 0.1
 done
 echo "Waiting for system to install...done"
-echo "Unplug and replug USB to start using your new system."

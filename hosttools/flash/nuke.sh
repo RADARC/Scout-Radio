@@ -5,10 +5,14 @@ NUKEFILE=flash_nuke.uf2
 
 mountpoint()
 {
+    #
+    # get filesystem mount of directory specified, if it's there
+    # otherwise empty string
+    #
     mount | grep $1 | awk '{print $3}'
 }
 
-get_mount()
+await_mount()
 {
     mount_dir=$1
     expected_file=$2
@@ -50,14 +54,14 @@ copyfile()
     cp $(dirname $0)/${sourcefile} ${mount_dir}
 
     # automated stuff will happen - wait for it
-    sleep 2
+    sleep 1
 
     echo "Copying ${sourcefile} to ${mount_dir}...done"
 }
 
-get_install_mount()
+await_install_mount()
 {
-    get_mount RPI-RP2 INDEX.HTM
+    await_mount RPI-RP2 INDEX.HTM
 }
 
 install_os()
@@ -71,11 +75,11 @@ install_os()
     echo "Plug in USB with bootsel pressed until this progam continues..."
     echo "Dismiss any mount windows opening if possible"
 
-    copyfile ${NUKEFILE} $(get_install_mount)
+    copyfile ${NUKEFILE} $(await_install_mount)
 
     echo "Awaiting filesystem after system reset...."
-    get_install_mount > /dev/null
+    await_install_mount > /dev/null
     echo "Awaiting filesystem after system reset....done"
 
-    copyfile ${image} $(get_mount RPI-RP2 INDEX.HTM)
+    copyfile ${image} $(await_mount RPI-RP2 INDEX.HTM)
 }

@@ -16,7 +16,10 @@ checkfile ${IMAGE}
 
 install_os ${IMAGE}
 
-get_mount CIRCUITPY code.py
+#
+# Wait for mount CIRCUITPY showing up with code.py in it
+# to detect we're done.
+#
+await_mount CIRCUITPY code.py
 
 echo "Copying circuit python....done"
-echo "Unplug and replug USB to start using your new system"
