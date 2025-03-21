@@ -481,6 +481,7 @@ class TestBoardMP(TestBoard):
 
         #
         # work around odd initial condition with serial
+        # BEWARE this costs about 0.5s but worth it for consisent behaviour
         #
         self.create_pexpect_rshell_child()
         self.exit_rshell()
