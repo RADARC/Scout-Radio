@@ -3,17 +3,6 @@ set -e
 
 NUKEFILE=flash_nuke.uf2
 
-thisdir()
-{
-    thisdir=$(dirname $0)
-
-    if [ -z "${thisdir}" ]; then
-        thisdir="."
-    fi
-
-    echo ${thisdir}
-}
-
 mountpoint()
 {
     mount | grep $1 | awk '{print $3}'
@@ -46,8 +35,8 @@ get_mount()
 
 checkfile()
 {
-    if [ ! -s $(thisdir)/$1 ]; then
-        echo "$0: $(thisdir)/$1 not found"
+    if [ ! -s $(dirname $0)/$1 ]; then
+        echo "$0: $(dirname $0)/$1 not found"
         exit 1 
     fi
 }
@@ -58,7 +47,7 @@ copyfile()
     mount_dir=$2
 
     echo "Copying ${sourcefile} to ${mount_dir}..."
-    cp $(thisdir)/${sourcefile} ${mount_dir}
+    cp $(dirname $0)/${sourcefile} ${mount_dir}
 
     # automated stuff will happen - wait for it
     sleep 2
