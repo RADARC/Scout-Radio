@@ -10,18 +10,23 @@ await_mount()
     done
 }
 
+nuke_disclaimer()
+{
+    echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD"
+    echo "CTRL-C now to exit"
+}
+
 nuke()
 {
-    echo "waiting for mountpoint - plug in USB with bootsel pressed until this continues"
-    echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD"
+    echo "Plug in USB with bootsel pressed until this progam continues..."
     echo "Ignore any mount windows opening - or dismiss them"
     await_mount RPI-RP2
     echo "Copying flashnuke...."
     cp flash_nuke.uf2 $(mountpoint RPI-RP2)
 
-    echo "sleeping briefly...."
-    sleep 5
+    sleep 1
 
-    echo "waiting for mountpoint RPI-RP2"
+    echo "Waiting for mountpoint RPI-RP2..."
     await_mount RPI-RP2
+    echo "system wiped"
 }
