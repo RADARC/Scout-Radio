@@ -42,6 +42,11 @@ class Si47xxtest_download(unittest.TestCase):
         text = self.m_board.sendrepl('radio.reset()')
         self.assertTrue(text == "Reset")
 
+    def test110(self):
+        """ reset si4735 """
+        text = self.m_board.sendrepl('radio.getVolume()')
+        #self.assertTrue(text == "Reset")
+        print(text)
 
 
 if __name__=="__main__":
