@@ -462,15 +462,32 @@ class TestBoardCP(TestBoard):
 class TestBoardMP(TestBoard):
     """ A MicroPython scout radio test board """
 
+    def exit_rshell(self):
+        #
+        # get out of rshell:
+        # back to linux/windows shell with control-D
+        #
+        self.m_rshell_child.sendline("\x04\r\n")
+
+        #
+        # done with the rshell expect session
+        #
+        del self.m_rshell_child
+
+
     def __init__(self, serialport):
         """ Create a MicroPython scout radio test board """
+
+        #
+        # work around odd initial condition with serial
+        #
+        self.create_pexpect_rshell_child()
+        self.exit_rshell()
 
         #
         # come up with a python expect session
         #
         self.m_expect_session_type = "python"
-
-        self.m_rshell_child = None
 
         #
         # Set serial port, mountpoint, fileops object member variables
@@ -530,17 +547,7 @@ class TestBoardMP(TestBoard):
             #
             # switching from rshell app to python repl on serial port
             #
-
-            #
-            # get out of rshell:
-            # back to linux/windows shell with control-D
-            #
-            self.m_rshell_child.sendline("\x04\r\n")
-
-            #
-            # done with the rshell expect session
-            #
-            del self.m_rshell_child
+            self.exit_rshell()
 
             #
             # Create expect session on serial port for python again.
