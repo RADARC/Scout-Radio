@@ -93,10 +93,12 @@ class TestBoard:
 
             try:
                 self.m_ser.open()
-                self.m_ser.reset_input_buffer()
 
             except serial.SerialException as excep:
                 sys.exit(f"{excep}")
+
+        self.m_ser.reset_input_buffer()
+
 
     def close_serial(self):
         """ close the serial device """
