@@ -16,17 +16,7 @@ thisdir()
 
 mountpoint()
 {
-    mp=$(mount | grep $1 | awk '{print $3}')
-
-    rw=""
-
-    if [ -n "${mp}" ]; then
-        rw=$(mount | grep $1 | awk '{print $6}')
-    fi
-
-    if $(echo ${rw} | grep -q rw); then
-        echo ${mp}
-    fi
+    mount | grep $1 | awk '{print $3}'
 }
 
 await_mount()
@@ -35,7 +25,8 @@ await_mount()
         sleep 0.1
     done
 
-    while [ ! -s $(mountpoint $1)/$2 ]; do
+    # wait for file specified showing up in mountpoint
+    while [ ! -s "$(mountpoint $1)/$2" ]; do
         sleep 0.1
     done
 }
