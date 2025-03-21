@@ -463,6 +463,7 @@ class TestBoardMP(TestBoard):
     """ A MicroPython scout radio test board """
 
     def exit_rshell(self):
+        """ kill rshell session - must be there """
         #
         # get out of rshell:
         # back to linux/windows shell with control-D
