@@ -30,8 +30,8 @@ fi
 
 install_os ${IMAGE}
 
-echo "Waiting for system to install..."
+echo "Waiting for MicroPython system to install..."
 while ! lsusb | grep -q "MicroPython Board"; do
     sleep 0.1
 done
-echo "Waiting for system to install...done"
+echo "Waiting for MicroPython system to install...done"

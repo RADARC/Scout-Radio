@@ -55,8 +55,6 @@ copyfile()
 
     # automated stuff will happen - wait for it
     sleep 1
-
-    echo "Copying ${sourcefile} to ${mount_dir}...done"
 }
 
 await_install_mount()
@@ -69,17 +67,16 @@ install_os()
     image=$1
 
     checkfile ${NUKEFILE}
-    echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD"
-    echo "CTRL-C now to exit"
+    echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD."
+    echo "CTRL-C now to exit."
     echo
     echo "Plug in USB with bootsel pressed until this progam continues..."
-    echo "Dismiss any mount windows opening if possible"
+    echo "Dismiss any mount windows opening if possible."
 
     copyfile ${NUKEFILE} $(await_install_mount)
 
     echo "Awaiting filesystem after system reset...."
     await_install_mount > /dev/null
-    echo "Awaiting filesystem after system reset....done"
 
     copyfile ${image} $(await_mount RPI-RP2 INDEX.HTM)
 }

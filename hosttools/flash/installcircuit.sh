@@ -20,6 +20,6 @@ install_os ${IMAGE}
 # Wait for mount CIRCUITPY showing up with code.py in it
 # to detect we're done.
 #
+echo "Waiting for CircuitPython system to install..."
 await_mount CIRCUITPY code.py
-
-echo "Copying circuit python....done"
+echo "Waiting for CircuitPython system to install...done"
