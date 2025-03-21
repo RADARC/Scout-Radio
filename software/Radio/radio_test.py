@@ -1,7 +1,7 @@
 """
- Investigate tardy i2c patch loading
+ Test radio object
  run with
-   time python si47xx_testpatchdownload.py [--install]
+   time python radio_test.py [--install]
 """
 import unittest
 import sys
@@ -34,36 +34,14 @@ class Si47xxtest_download(unittest.TestCase):
             # grab a si47xx device as our first job
             #
             self.m_board.sendrepl('import harness')
-            self.m_board.sendrepl('si4735 = harness.getsi4735()')
+            self.m_board.sendrepl('radio = harness.getradio()')
 
 
     def test100(self):
         """ reset si4735 """
-        text = self.m_board.sendrepl('si4735.reset()')
+        text = self.m_board.sendrepl('radio.reset()')
         self.assertTrue(text == "Reset")
 
-    def test110(self):
-        """ test report firmware """
-        text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
-        # split off embedded CR/LF
-        actual_hex = text.split('{', maxsplit=1)[0][:-2]
-        expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
-        self.assertTrue(expected_hex == actual_hex)
-
-    def test120(self):
-        """ patchPowerUp """
-        self.m_board.sendrepl("si4735.patchPowerUp()")
-
-    def test130(self):
-        """ downloadPatch """
-        text = self.m_board.sendrepl("si4735.download_compressed_patch()")
-        self.assertTrue(text == "Download compressed patch")
-
-    def test140(self):
-        """ test report firmware """
-        text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
-        expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
-        self.assertTrue(text == expected)
 
 
 if __name__=="__main__":

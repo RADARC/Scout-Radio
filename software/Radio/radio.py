@@ -64,9 +64,6 @@ class RADIO:
         return self.hw.getCurrentReceivedSignalQuality(0)
 
     def reset(self):
-        #addr = self.hw.get_device_i2c_address()
-        #if addr == 0:
-        #    sys.exit()
         self.hw.reset()
         self.just_reset = True
 

@@ -49,18 +49,18 @@ class Si47xxtest(unittest.TestCase):
             self.m_board.initialise()
 
             #
-            # grab a singleton si47xx device as our first job
+            # grab a si47xx device as our first job
             #
             self.m_board.sendrepl('import harness')
             self.m_board.sendrepl('si4735 = harness.getsi4735()')
 
 
-    def test01(self):
+    def test100(self):
         """ reset si4735 """
         text = self.m_board.sendrepl('si4735.reset()')
         self.assertTrue(text == "Reset")
 
-    def test03(self):
+    def test110(self):
         """ test report firmware """
         text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
         formatoutput(text)
@@ -68,24 +68,24 @@ class Si47xxtest(unittest.TestCase):
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
         self.assertTrue(expected_hex == actual_hex)
 
-    def test04(self):
+    def test120(self):
         """ patchPowerUp """
         text = self.m_board.sendrepl("si4735.patchPowerUp()")
         formatoutput(text)
 
-    def test05(self):
+    def test130(self):
         """ downloadPatch """
         text = self.m_board.sendrepl("si4735.download_compressed_patch()")
         self.assertTrue(text == "Download compressed patch")
 
-    def test06(self):
+    def test140(self):
         """ test report firmware """
         text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
         expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
         self.assertTrue(text == expected)
 
 
-    def test07(self):
+    def test150(self):
         """ tune an FM station """
         #
         # FIXME: improve quality by switching to radio 4
@@ -93,22 +93,22 @@ class Si47xxtest(unittest.TestCase):
         text = self.m_board.sendrepl("harness.testfm(si4735, 10440)")
         formatoutput(text)
 
-    def test08(self):
+    def test160(self):
         """ report RSSI """
         text = self.m_board.sendrepl('si4735.getCurrentReceivedSignalQuality(0)["rssi"]')
         formatoutput(text)
 
-    def test09(self):
+    def test170(self):
         """ report RSSI and RDS """
         text = self.m_board.sendrepl('harness.sigrssi(si4735)')
         formatoutput(text)
 
-    def test10(self):
+    def test180(self):
         """ set volume low-ish """
         text = self.m_board.sendrepl('si4735.setVolume(32)')
         formatoutput(text)
 
-    def test11(self):
+    def test190(self):
         """ test ssb stuff """
         #
         # NOTE time.sleep's can be done either on host or target.
@@ -157,14 +157,14 @@ class Si47xxtest(unittest.TestCase):
     #
     # back to FM to finish with
     #
-    def test12(self):
-        self.test01()
-        self.test03()
+    def test200(self):
+        self.test100()
+        self.test150()
 
-    def test13(self):
-        self.test09()
+    def test210(self):
+        self.test180()
 
-    def test14(self):
+    def test220(self):
         # Test SSB Sideband switching
         text = self.m_board.sendrepl('si4735.reset()')
         formatoutput(text)

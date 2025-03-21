@@ -6,6 +6,7 @@ Runs on CircuitPython or MicroPython
 
 import time
 import si47xx
+import radio
 from radarcplatform import circuitpython, micropython
 
 if circuitpython():
