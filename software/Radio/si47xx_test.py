@@ -14,11 +14,6 @@ import install
 # hack - should be able to run unit tests in any order eventually
 #unittest.TestLoader.sortTestMethodsUsing = None
 
-SERIALPORT = "/dev/ttyACM0"
-
-# singleton board
-BOARD = None
-
 DO_INSTALL = False
 
 #
@@ -37,39 +32,37 @@ class Si47xxtest(unittest.TestCase):
     """ Si47xxtest object """
 
     def setUp(self):
-        """ copy test files to target; grab a radio in the repl for testing """
+        """ copy test files to target; grab a si4735 in the repl for testing """
 
-        global BOARD
+        self.m_board = testboard.getboard()
 
-        if not BOARD:
-            BOARD = testboard.getboard(SERIALPORT)
+        # must get one
+        assert self.m_board
 
-            # must get one
-            assert BOARD
-
-            BOARD.sethomedir(install.homedir())
+        if not self.m_board.initialised():
+            self.m_board.sethomedir(install.homedir())
 
             # optionally install files
             if DO_INSTALL:
-                BOARD.setfiles(install.files() + install.supportfiles())
+                self.m_board.setfiles(install.files() + install.supportfiles())
 
-            BOARD.initialise()
+            self.m_board.initialise()
 
             #
             # grab a singleton si47xx device as our first job
             #
-            BOARD.sendrepl('import harness')
-            text = BOARD.sendrepl('radio = harness.getradio()')
-            formatoutput(text)
+            self.m_board.sendrepl('import harness')
+            self.m_board.sendrepl('si4735 = harness.getsi4735()')
+
 
     def test01(self):
-        """ reset radio """
-        text = BOARD.sendrepl('radio.reset()')
+        """ reset si4735 """
+        text = self.m_board.sendrepl('si4735.reset()')
         self.assertTrue(text == "Reset")
 
     def test03(self):
         """ test report firmware """
-        text = BOARD.sendrepl("harness.reportfirmware(radio)")
+        text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
         formatoutput(text)
         actual_hex = text.split('{', maxsplit=1)[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
@@ -77,17 +70,17 @@ class Si47xxtest(unittest.TestCase):
 
     def test04(self):
         """ patchPowerUp """
-        text = BOARD.sendrepl("radio.patchPowerUp()")
+        text = self.m_board.sendrepl("si4735.patchPowerUp()")
         formatoutput(text)
 
     def test05(self):
         """ downloadPatch """
-        text = BOARD.sendrepl("radio.download_compressed_patch()")
+        text = self.m_board.sendrepl("si4735.download_compressed_patch()")
         self.assertTrue(text == "Download compressed patch")
 
     def test06(self):
         """ test report firmware """
-        text = BOARD.sendrepl("harness.reportfirmware(radio)")
+        text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
         expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
         self.assertTrue(text == expected)
 
@@ -97,22 +90,22 @@ class Si47xxtest(unittest.TestCase):
         #
         # FIXME: improve quality by switching to radio 4
         #
-        text = BOARD.sendrepl("harness.testfm(radio, 10440)")
+        text = self.m_board.sendrepl("harness.testfm(si4735, 10440)")
         formatoutput(text)
 
     def test08(self):
         """ report RSSI """
-        text = BOARD.sendrepl('radio.getCurrentReceivedSignalQuality(0)["rssi"]')
+        text = self.m_board.sendrepl('si4735.getCurrentReceivedSignalQuality(0)["rssi"]')
         formatoutput(text)
 
     def test09(self):
         """ report RSSI and RDS """
-        text = BOARD.sendrepl('harness.sigrssi(radio)')
+        text = self.m_board.sendrepl('harness.sigrssi(si4735)')
         formatoutput(text)
 
     def test10(self):
         """ set volume low-ish """
-        text = BOARD.sendrepl('radio.setVolume(32)')
+        text = self.m_board.sendrepl('si4735.setVolume(32)')
         formatoutput(text)
 
     def test11(self):
@@ -121,42 +114,42 @@ class Si47xxtest(unittest.TestCase):
         # NOTE time.sleep's can be done either on host or target.
         # probably host makes more sense?
         #
-        text = BOARD.sendrepl('radio.reset()')
+        text = self.m_board.sendrepl('si4735.reset()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.patchPowerUp()')
+        text = self.m_board.sendrepl('si4735.patchPowerUp()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.download_compressed_patch()')
+        text = self.m_board.sendrepl('si4735.download_compressed_patch()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.setSSB(2)')
+        text = self.m_board.sendrepl('si4735.setSSB(2)')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.setFrequency(14000)')
+        text = self.m_board.sendrepl('si4735.setFrequency(14000)')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.setSSBConfig(1, 0, 0, 1, 0, 1)')
+        text = self.m_board.sendrepl('si4735.setSSBConfig(1, 0, 0, 1, 0, 1)')
         formatoutput(text)
 
         time.sleep(2)
-        text = BOARD.sendrepl('radio.setSSBBandwidth(2)')
+        text = self.m_board.sendrepl('si4735.setSSBBandwidth(2)')
         formatoutput(text)
 
         print("bandwidth 2")
         time.sleep(2)
-        text = BOARD.sendrepl('radio.setSSBBandwidth(3)')
+        text = self.m_board.sendrepl('si4735.setSSBBandwidth(3)')
         formatoutput(text)
 
         print("bandwidth 3")
         time.sleep(2)
 
-        text = BOARD.sendrepl('radio.setSSBBandwidth(4)')
+        text = self.m_board.sendrepl('si4735.setSSBBandwidth(4)')
         formatoutput(text)
         print("bandwidth 4")
         time.sleep(2)
 
-        text = BOARD.sendrepl('radio.setSSBBandwidth(1)')
+        text = self.m_board.sendrepl('si4735.setSSBBandwidth(1)')
         formatoutput(text)
         print("bandwidth 1")
         time.sleep(2)
@@ -173,29 +166,27 @@ class Si47xxtest(unittest.TestCase):
 
     def test14(self):
         # Test SSB Sideband switching
-        text = BOARD.sendrepl('radio.reset()')
+        text = self.m_board.sendrepl('si4735.reset()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.patchPowerUp()')
+        text = self.m_board.sendrepl('si4735.patchPowerUp()')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.download_compressed_patch()')
+        text = self.m_board.sendrepl('si4735.download_compressed_patch()')
         formatoutput(text)
 
         # Set LSB
-        text = BOARD.sendrepl('radio.setSSB(1)')
+        text = self.m_board.sendrepl('si4735.setSSB(1)')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.setFrequency(14000)')
+        text = self.m_board.sendrepl('si4735.setFrequency(14000)')
         formatoutput(text)
-
-        time.sleep(10)
 
          # Set USB
-        text = BOARD.sendrepl('radio.setSSB(2)')
+        text = self.m_board.sendrepl('si4735.setSSB(2)')
         formatoutput(text)
 
-        text = BOARD.sendrepl('radio.setFrequency(14000)')
+        text = self.m_board.sendrepl('si4735.setFrequency(14000)')
         formatoutput(text)
 
 

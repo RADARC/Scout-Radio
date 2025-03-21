@@ -1,59 +1,50 @@
 """
  Investigate tardy i2c patch loading
  run with
-   time python testpatchdownload.py [--install]
+   time python si47xx_testpatchdownload.py [--install]
 """
 import unittest
 import sys
 import testboard
 import install
 
-# hack - should be able to run unit tests in any order eventually
-#unittest.TestLoader.sortTestMethodsUsing = None
-
-SERIALPORT = "/dev/ttyACM0"
-
-# singleton board
-BOARD = None
-
 DO_INSTALL = False
 
-class Si47xxtest(unittest.TestCase):
-    """ Si47xxtest object """
+class Si47xxtest_download(unittest.TestCase):
+    """ Si47xxtest_download object """
 
     def setUp(self):
         """ copy test files to target; grab a radio in the repl for testing """
 
-        global BOARD
+        self.m_board = testboard.getboard()
 
-        if not BOARD:
-            BOARD = testboard.getboard(SERIALPORT)
+        # must get one
+        assert self.m_board
 
-            # must get one
-            assert BOARD
-
-            BOARD.sethomedir(install.homedir())
+        if not self.m_board.initialised():
+            self.m_board.sethomedir(install.homedir())
 
             # optionally install files
             if DO_INSTALL:
-                BOARD.setfiles(install.files() + install.supportfiles())
+                self.m_board.setfiles(install.files() + install.supportfiles())
 
-            BOARD.initialise()
+            self.m_board.initialise()
 
             #
             # grab a singleton si47xx device as our first job
             #
-            BOARD.sendrepl('import harness')
-            BOARD.sendrepl('radio = harness.getradio()')
+            self.m_board.sendrepl('import harness')
+            self.m_board.sendrepl('si4735 = harness.getsi4735()')
+
 
     def test01(self):
-        """ reset radio """
-        text = BOARD.sendrepl('radio.reset()')
+        """ reset si4735 """
+        text = self.m_board.sendrepl('si4735.reset()')
         self.assertTrue(text == "Reset")
 
     def test03(self):
         """ test report firmware """
-        text = BOARD.sendrepl("harness.reportfirmware(radio)")
+        text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
         # split off embedded CR/LF
         actual_hex = text.split('{', maxsplit=1)[0][:-2]
         expected_hex = "0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10"
@@ -61,18 +52,16 @@ class Si47xxtest(unittest.TestCase):
 
     def test04(self):
         """ patchPowerUp """
-        BOARD.sendrepl("radio.patchPowerUp()")
+        self.m_board.sendrepl("si4735.patchPowerUp()")
 
     def test05(self):
         """ downloadPatch """
-        #text = BOARD.sendrepl("radio.downloadPatch()")
-        #self.assertTrue(text == "Download patch")
-        text = BOARD.sendrepl("radio.download_compressed_patch()")
+        text = self.m_board.sendrepl("si4735.download_compressed_patch()")
         self.assertTrue(text == "Download compressed patch")
 
     def test06(self):
         """ test report firmware """
-        text = BOARD.sendrepl("harness.reportfirmware(radio)")
+        text = self.m_board.sendrepl("harness.reportfirmware(si4735)")
         expected = "0x80, 0x20, 0x31, 0x30, 0x9d, 0x29, 0x36, 0x30, 0x41\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}\r\n{'partnumber': '0x20', 'patchid': '0x9d29', 'firmware': '1.0', 'component': '6.0', 'chiprevision': 'A'}"
         self.assertTrue(text == expected)
 

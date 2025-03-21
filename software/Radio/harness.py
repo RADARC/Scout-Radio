@@ -22,14 +22,14 @@ elif micropython():
     from machine import Pin, I2C
 
 
-G_RADIO = None
+G_SI4735 = None
 
-# grab a singleton radio
-def getradio():
+# grab a singleton si4735
+def getsi4735():
     """ return a singleton si47xx device """
-    global G_RADIO
+    global G_SI4735
 
-    if not G_RADIO:
+    if not G_SI4735:
         if circuitpython():
             reset_pin = DigitalInOut(board.GP17)
             reset_pin.direction = Direction.OUTPUT
@@ -51,88 +51,91 @@ def getradio():
             i2c = I2C(0, scl=Pin(5), sda=Pin(4), freq=1000000)
             i2c_address = 0x11
 
-        G_RADIO = si47xx.SI4735(i2c, i2c_address, reset_pin)
+        G_SI4735 = si47xx.SI4735(i2c, i2c_address, reset_pin)
 
-    return G_RADIO
+    return G_SI4735
 
-def testfm(radio, freq):
-#    radio.reset()
-    radio.setFM()
-    #radio.getFirmware()
+def getradio():
+    return radio.RADIO(getsi4735())
 
-    radio.setRDSConfig(1,3,3,3,3)
-    radio.setFrequency(freq)
+def testfm(si4735, freq):
+#    si4735.reset()
+    si4735.setFM()
+    #si4735.getFirmware()
 
-def test(radio, freq):
-    testfm(radio, freq)
+    si4735.setRDSConfig(1,3,3,3,3)
+    si4735.setFrequency(freq)
+
+def test(si4735, freq):
+    testfm(si4735, freq)
 
 def test2():
-    radio = getradio()
+    si4735 = getsi4735()
 
     #freq = 9391
-    radio.reset()
+    si4735.reset()
 
-    addr = radio.get_device_i2c_address()
+    addr = si4735.get_device_i2c_address()
 
     assert addr
 
     print("Address is ",addr)
-    radio.patchPowerUp()
-    radio.download_compressed_patch()
+    si4735.patchPowerUp()
+    si4735.download_compressed_patch()
 
-    radio.setSSB(2)
-    radio.setFrequency(14000)
+    si4735.setSSB(2)
+    si4735.setFrequency(14000)
 
-    radio.setSSBConfig(1, 0, 0, 1, 0, 1)
+    si4735.setSSBConfig(1, 0, 0, 1, 0, 1)
 
     time.sleep(2)
-    radio.setSSBBandwidth(2)
+    si4735.setSSBBandwidth(2)
     print("bandwidth 2")
     time.sleep(2)
-    radio.setSSBBandwidth(3)
+    si4735.setSSBBandwidth(3)
     print("bandwidth 3")
     time.sleep(2)
-    radio.setSSBBandwidth(4)
+    si4735.setSSBBandwidth(4)
     print("bandwidth 4")
     time.sleep(2)
-    radio.setSSBBandwidth(1)
+    si4735.setSSBBandwidth(1)
     print("bandwidth 1")
     time.sleep(2)
 
-    radio.setAM()
-    radio.setFrequency(198)
+    si4735.setAM()
+    si4735.setFrequency(198)
     time.sleep(2)
 
-    radio.setFM()
-    fwrev = radio.getFirmware()
+    si4735.setFM()
+    fwrev = si4735.getFirmware()
     print(fwrev)
 
-    radio.setRDSConfig(1,3,3,3,3)
-    radio.setFrequency(10420)
+    si4735.setRDSConfig(1,3,3,3,3)
+    si4735.setFrequency(10420)
 
-def sigrssi(radio):
+def sigrssi(si4735):
 
-    print(radio.getCurrentReceivedSignalQuality(0)["rssi"])
+    print(si4735.getCurrentReceivedSignalQuality(0)["rssi"])
 
-    radio.getRDSStatus(0,0,0)
-    print(radio.station_name)
-    print(radio.station_text)
+    si4735.getRDSStatus(0,0,0)
+    print(si4735.station_name)
+    print(si4735.station_text)
 
-def contrssi(radio):
+def contrssi(si4735):
     while True:
-        sigrssi(radio)
+        sigrssi(si4735)
         time.sleep(1)
 
-def reportfirmware(radio):
-    fwrev = radio.getFirmware()
+def reportfirmware(si4735):
+    fwrev = si4735.getFirmware()
     print(fwrev)
 
-# radio = getradio()
-# radio.reset()
-# fwrev = radio.getFirmware()
-# radio.patchPowerUp()
-# radio.downloadPatch()
+# si4735 = getsi4735()
+# si4735.reset()
+# fwrev = si4735.getFirmware()
+# si4735.patchPowerUp()
+# si4735.downloadPatch()
 # freq=9700
-# radio.setRDSConfig(1,3,3,3,3)
-# test(radio, freq)
-# contrssi(getradio())
+# si4735.setRDSConfig(1,3,3,3,3)
+# test(si4735, freq)
+# contrssi(getsi4735())
