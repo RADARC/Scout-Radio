@@ -70,7 +70,7 @@ install_os()
     echo "BEWARE ALL FILES WILL BE DELETED ON THE MICROPYTHON BOARD."
     echo "CTRL-C now to exit."
     echo
-    echo "Plug in USB with bootsel pressed until this progam continues..."
+    echo "Plug in USB with bootsel pressed until this progam continues."
     echo "Dismiss any mount windows opening if possible."
 
     copyfile ${NUKEFILE} $(await_install_mount)

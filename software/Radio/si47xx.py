@@ -428,7 +428,6 @@ class SI4735:
 
 
     def reset(self):
-        print("Reset")
         pin_level_delay = 0.010
 
         time.sleep(pin_level_delay)
@@ -438,7 +437,10 @@ class SI4735:
         setpin(self.reset_pin, 1)
 
         time.sleep(pin_level_delay)
-    
+
+        print("Reset")
+
+
     def get_device_i2c_address(self):
         return self.device_address
 
