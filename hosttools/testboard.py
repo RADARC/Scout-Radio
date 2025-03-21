@@ -429,10 +429,12 @@ class TestBoardCP(TestBoard):
         if not mountpoint:
             sys.exit("Error: Circuit python filesystem mount not found")
 
+        autorunfile_name = "code.py"
+
         #
         # A bit rude, but we want access. This may help.
         #
-        autorunfile = os.path.join(mountpoint, "code.py")
+        autorunfile = os.path.join(mountpoint, autorunfile_name)
 
         if os.path.exists(autorunfile):
             os.unlink(autorunfile)
@@ -446,7 +448,7 @@ class TestBoardCP(TestBoard):
         super().__init__(serialport,
                          mountpoint,
                          fileops.FileOPsCP(),
-                         "code.py")
+                         autorunfile_name)
 
 
     def sendrepl(self, cmd, expect_repl=True):
