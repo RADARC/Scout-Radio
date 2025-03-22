@@ -1203,7 +1203,7 @@ if __name__ == "__main__":
 
     #
     # create a binary file:
-    # -- number of "specials"
+    # -- number of "specials" as a byte
     # -- specials as 16 bit quantities
     # -- seven byte arrays consecutively as the body
     #
