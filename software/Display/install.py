@@ -8,7 +8,7 @@ import installib
 def files():
     """ source files """
     return [
-        "Splash.py", "st7789bmp.py"
+        "Splash.py", "st7789bmp.py", "st7789test.py", "st7789testbl.py"
       ]
 
 def homedir():
