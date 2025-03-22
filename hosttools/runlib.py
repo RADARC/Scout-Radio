@@ -33,6 +33,11 @@ def norun_help():
     """ --norun help text """
     return "get python repl, don't run any app, scrape serial port (non-interactive)"
 
+def noboot_help():
+    """ --noboot help text """
+    return "dont' reboot the board during initialisation"
+
+
 def runapp(appname_p, homedir, installfiles):
     """ run specified application """
 
@@ -52,6 +57,7 @@ def runapp(appname_p, homedir, installfiles):
     parser.add_argument("--run",  help=run_help(appname), type=str)
     parser.add_argument("--norun",  help=norun_help(), action="store_true")
     parser.add_argument("--repl",  help=repl_help(), action="store_true")
+    parser.add_argument("--noboot",  help=noboot_help(), action="store_true")
 
     args = parser.parse_args()
 
@@ -78,7 +84,12 @@ def runapp(appname_p, homedir, installfiles):
     # bring up the board
     # copy files to target if any are specified in setfiles method
     #
-    board.initialise()
+    if args.noboot:
+        reboot = False
+    else:
+        reboot = True
+
+    board.initialise(do_reboot=reboot)
 
     if args.run:
         app_to_run = os.path.splitext(args.run)[0]

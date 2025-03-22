@@ -327,12 +327,13 @@ class TestBoard:
             self.ctrlc()
 
 
-    def initialise(self, expect_repl=True):
+    def initialise(self, expect_repl=True, do_reboot=True):
         """ get the test board ready for use using the python repl
             on the (USB) serial port """
         self.create_pexpect_child()
         self.get_control()
-        self.reboot()
+        if do_reboot:
+            self.reboot()
         self.copy_files_to_target()
 
         #
