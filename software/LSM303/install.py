@@ -3,7 +3,7 @@
 # Environment: host python3
 
 import sys
-import installer
+import installib
 
 def files():
     """ source files """
@@ -18,4 +18,4 @@ def homedir():
     return "LSM303"
 
 if __name__=="__main__":
-    installer.installfiles(sys.argv, homedir(), files())
+    installib.installfiles(sys.argv, homedir(), files())

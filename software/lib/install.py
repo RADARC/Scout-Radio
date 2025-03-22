@@ -3,7 +3,7 @@
 # Environment: host python3
 
 import sys
-import installer
+import installib
 
 def homedir():
     """ source directory """
@@ -18,4 +18,4 @@ def files():
             "adafruit_display_text"]
 
 if __name__=="__main__":
-    installer.installfiles(sys.argv, homedir(), files())
+    installib.installfiles(sys.argv, homedir(), files())

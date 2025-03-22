@@ -4,7 +4,7 @@
 
 import sys
 import os
-import installer
+import installib
 
 SIBINPATCH="patchcomp.bin"
 
@@ -35,5 +35,5 @@ if __name__=="__main__":
         print(f"{SIBINPATCH} does not exist. Please generate by running csg2bin.py")
         sys.exit(1)
 
-    installer.installfiles(sys.argv, homedir(), files() + supportfiles())
-    #installer.installfiles(sys.argv, homedir(), files())
+    installib.installfiles(sys.argv, homedir(), files() + supportfiles())
+    #installib.installfiles(sys.argv, homedir(), files())
