@@ -3,7 +3,7 @@
 #
 class bitfield():
     def __init__(self, bytes):
-        self.bits = bytearray(bytes)
+        self.m_val = bytes
         self.m_bitnames = {}
 
     def fielddef(self, bitname, bitpos, bitlen=1, bitdefval=0):
@@ -29,7 +29,7 @@ class bitfield():
     def __getitem__(self, n):
         (bpos, fieldlen, _bitdefval) = self.transitem(n)
 
-        startval = self.bits[0] >> bpos
+        startval = self.m_val >> bpos
 
         acc = 0
         for i in range(fieldlen):
@@ -45,9 +45,9 @@ class bitfield():
             v = vv & (1 << i)
 
             if v:
-                self.bits[0] |= v << bpos
+                self.m_val |= v << bpos
             else:
-                self.bits[0] &= ~(v << bpos)
+                self.m_val &= ~(v << bpos)
 
 
 if __name__ == "__main__":
