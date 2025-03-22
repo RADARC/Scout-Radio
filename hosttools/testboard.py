@@ -394,6 +394,14 @@ class TestBoard:
                 self.m_fileops.copyfile(startupfile.name, tgtmain)
 
 
+    def minicomserial(self):
+        """ interact with serial port using minicom """
+        del self.m_child
+        self.close_serial()
+
+        # TODO better transfer of control to minicom, minirc etc.
+        os.system("minicom ACM0")
+
     def readserial(self):
         """ very crude serial port monitor """
         # kill expect, release the serial port and reopen for our use
