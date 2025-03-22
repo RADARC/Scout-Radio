@@ -27,7 +27,7 @@ def run_help(app):
 
 def repl_help():
     """ --repl help text """
-    return "get python repl, don't run any app, implies --minicom"
+    return "get python repl, don't run any app, same as --norun --minicom"
 
 def norun_help():
     """ --norun help text """
