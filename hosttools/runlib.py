@@ -21,10 +21,13 @@ def app_help(app):
 def minicom_help(app):
     """ --minicom help text """
     return f"interact with {app} using minicom rather than plain serial port dump"
-
 def run_help(app):
     """ --run help text """
     return f"run the app specified rather than {app}"
+
+def repl_help():
+    """ --repl help text """
+    return "get python repl, don't run any app, implies --minicom"
 
 def runapp(appname_p, homedir, installfiles):
     """ run specified application """
@@ -43,6 +46,7 @@ def runapp(appname_p, homedir, installfiles):
     parser.add_argument("--app",     help=app_help(appname), action="store_true")
     parser.add_argument("--minicom",  help=minicom_help(appname), action="store_true")
     parser.add_argument("--run",  help=run_help(appname), type=str)
+    parser.add_argument("--repl",  help=repl_help(), action="store_true")
 
     args = parser.parse_args()
 
@@ -92,10 +96,11 @@ def runapp(appname_p, homedir, installfiles):
     # default case
     # start the app, we won't get a >>> back
     #
-    board.sendrepl(f"import {app_to_run}", expect_repl=False)
+    if not args.repl:
+        board.sendrepl(f"import {app_to_run}", expect_repl=False)
 
     # runs until user interrupt
-    if args.minicom:
+    if args.minicom or args.repl:
         board.minicomserial()
     else:
         board.readserial()
