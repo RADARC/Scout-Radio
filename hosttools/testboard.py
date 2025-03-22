@@ -492,7 +492,7 @@ class TestBoardMP(TestBoard):
         del self.m_rshell_child
 
 
-    def __init__(self, serialport):
+    def __init__(self, serialport, force=True):
         """ Create a MicroPython scout radio test board """
 
         #
@@ -501,6 +501,18 @@ class TestBoardMP(TestBoard):
         #
         self.create_pexpect_rshell_child()
         self.__exit_rshell()
+
+        autorun_filename = "main.py"
+        mount = "/pyboard"
+
+        if force:
+            #
+            # come up with rshell expect session and delete main.py
+            #
+            self.m_expect_session_type = "rshell"
+            self.create_pexpect_rshell_child()
+            autorunfile = os.path.join(mount, autorun_filename)
+            self.sendrshellcmd(f"rm {autorunfile}")
 
         #
         # come up with a python expect session
@@ -514,9 +526,9 @@ class TestBoardMP(TestBoard):
         # pylint seems to prefer this.
         #
         super().__init__(serialport,
-                         "/pyboard",
+                         mount,
                          fileops.FileOPsMP(self),
-                         "main.py")
+                         autorun_filename)
 
 
     def create_pexpect_rshell_child(self):
@@ -628,7 +640,7 @@ class TestBoardMP(TestBoard):
 # capitals keeps pylint happy
 G_BOARD = None
 
-def getboard( serialport="/dev/ttyACM0" ):
+def getboard(serialport="/dev/ttyACM0", force=False):
     """ return a singleton test board, instantiating it if required """
     global G_BOARD
 
@@ -643,7 +655,7 @@ def getboard( serialport="/dev/ttyACM0" ):
                 #
                 # Create a MicroPython board
                 #
-                G_BOARD = TestBoardMP(serialport)
+                G_BOARD = TestBoardMP(serialport, force)
 
     if not G_BOARD:
         sys.exit("Error: board not found")

@@ -37,6 +37,10 @@ def noboot_help():
     """ --noboot help text """
     return "don't reboot the board during initialisation"
 
+def force_help():
+    """ --force help text """
+    return """Forcibly remove main.py for Micro Python boards.
+            code.py is always removed for Circuit Python boards."""
 
 def runapp(appname_p, homedir, installfiles):
     """ run specified application """
@@ -58,10 +62,15 @@ def runapp(appname_p, homedir, installfiles):
     parser.add_argument("--norun",  help=norun_help(), action="store_true")
     parser.add_argument("--repl",  help=repl_help(), action="store_true")
     parser.add_argument("--noboot",  help=noboot_help(), action="store_true")
+    parser.add_argument("--force",  help=force_help(), action="store_true")
 
     args = parser.parse_args()
 
-    board = testboard.getboard(SERIALPORT)
+    force = False
+    if args.force:
+        force = True
+
+    board = testboard.getboard(SERIALPORT, force)
 
     # must get one
     assert board
