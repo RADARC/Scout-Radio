@@ -158,7 +158,7 @@ class TestBoard:
 
         # don't expect repl to come back to us - eg. autorun code.py
         if not expect_repl:
-            return b""
+            return ""
 
         # timeout long enough for download patch etc.
         self.m_child.expect(">>> ", timeout = 8)
