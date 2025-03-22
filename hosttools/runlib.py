@@ -29,6 +29,10 @@ def repl_help():
     """ --repl help text """
     return "get python repl, don't run any app, implies --minicom"
 
+def norun_help():
+    """ --norun help text """
+    return "get python repl, don't run any app, scrape serial port (non-interactive)"
+
 def runapp(appname_p, homedir, installfiles):
     """ run specified application """
 
@@ -46,6 +50,7 @@ def runapp(appname_p, homedir, installfiles):
     parser.add_argument("--app",     help=app_help(appname), action="store_true")
     parser.add_argument("--minicom",  help=minicom_help(appname), action="store_true")
     parser.add_argument("--run",  help=run_help(appname), type=str)
+    parser.add_argument("--norun",  help=norun_help(), action="store_true")
     parser.add_argument("--repl",  help=repl_help(), action="store_true")
 
     args = parser.parse_args()
@@ -96,7 +101,7 @@ def runapp(appname_p, homedir, installfiles):
     # default case
     # start the app, we won't get a >>> back
     #
-    if not args.repl:
+    if not args.repl and not args.norun:
         board.sendrepl(f"import {app_to_run}", expect_repl=False)
 
     # runs until user interrupt
