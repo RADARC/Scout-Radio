@@ -189,7 +189,7 @@ class TestBoard:
         return "\r\n".join(output.split("\r\n")[1:]).strip()
 
 
-    def get_target_fullpath(self, dest):
+    def __get_target_fullpath(self, dest):
         """ helper for copy_files to/from target """
         #
         # deal with relative or absolute paths on target
@@ -218,7 +218,7 @@ class TestBoard:
             if not os.path.exists(source_fullpath):
                 sys.exit(f"Error: {source_fullpath} not found")
 
-            target_fullpath = self.get_target_fullpath(dst)
+            target_fullpath = self.__get_target_fullpath(dst)
 
             #
             # works if target_fullpath is either a file or directory
@@ -260,7 +260,7 @@ class TestBoard:
 
             (source_fullpath, dst) = get_src_dst_from_item(installitem)
 
-            target_fullpath = self.get_target_fullpath(dst)
+            target_fullpath = self.__get_target_fullpath(dst)
 
             if VERBOSE_INSTALL:
                 ftype = "dir" if os.path.isdir(source_fullpath) else "file"
@@ -395,7 +395,7 @@ class TestBoard:
                 self.m_fileops.copyfile(startupfile.name, tgtmain)
 
 
-    def close_expect_serial(self):
+    def __close_expect_serial(self):
         """ kill serial repl expect session, close serial port """
 
         # kill expect, release the serial port
@@ -405,7 +405,7 @@ class TestBoard:
     def minicomserial(self):
         """ interact with serial port using minicom """
 
-        self.close_expect_serial()
+        self.__close_expect_serial()
 
         #
         # start minicom
@@ -416,7 +416,7 @@ class TestBoard:
     def readserial(self):
         """ very crude serial port monitor """
 
-        self.close_expect_serial()
+        self.__close_expect_serial()
 
         self.open_serial()
 
