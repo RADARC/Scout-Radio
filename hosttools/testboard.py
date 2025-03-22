@@ -312,11 +312,6 @@ class TestBoard:
         # If we do, "python testboard.py" with a board
         # present fails the board.identify() invocation.
         #
-        # Aside: If the target is unresponsive due to code.py
-        # or main.py autorun thing in place, testboard.py
-        # can't cope with this anyway as it reboots the
-        # board.
-        #
         # Timeout used below is totally arbitrary to
         # determine whether the prompt is there or not.
         #
@@ -451,7 +446,9 @@ class TestBoardCP(TestBoard):
         autorunfile_name = "code.py"
 
         #
-        # A bit rude, but we want access. This may help.
+        # A bit rude, but we want access.
+        # If it's there, delete the auto run file on target.
+        # This may help getting control.
         #
         autorunfile = os.path.join(mountpoint, autorunfile_name)
 
