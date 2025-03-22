@@ -1,5 +1,6 @@
 """ run an application on target """
 import sys
+import os
 import argparse
 import testboard
 
@@ -21,6 +22,10 @@ def minicom_help(app):
     """ --minicom help text """
     return f"interact with {app} using minicom rather than plain serial port dump"
 
+def run_help(app):
+    """ --run help text """
+    return f"run the app specified rather than {app}"
+
 def runapp(appname, homedir, installfiles):
     """ run specified application """
 
@@ -35,6 +40,7 @@ def runapp(appname, homedir, installfiles):
     parser.add_argument("--revsync", help=revsync_help(appname), action="store_true")
     parser.add_argument("--app",     help=app_help(appname), action="store_true")
     parser.add_argument("--minicom",  help=minicom_help(appname), action="store_true")
+    parser.add_argument("--run",  help=run_help(appname), type=str)
 
     args = parser.parse_args()
 
@@ -63,11 +69,16 @@ def runapp(appname, homedir, installfiles):
     #
     board.initialise()
 
+    if args.run:
+        app_to_run = os.path.splitext(args.run)[0]
+    else:
+        app_to_run = appname
+
     if args.app:
 
-        board.start_app_on_powerup(appname)
+        board.start_app_on_powerup(app_to_run)
 
-        print(f"{appname} set to run on boot")
+        print(f"{app_to_run} set to run on boot")
 
         #
         # pyexpect will most likely time out here as the app will
@@ -79,7 +90,7 @@ def runapp(appname, homedir, installfiles):
     # default case
     # start the app, we won't get a >>> back
     #
-    board.sendrepl(f"import {appname}", expect_repl=False)
+    board.sendrepl(f"import {app_to_run}", expect_repl=False)
 
     # runs until user interrupt
     if args.minicom:
