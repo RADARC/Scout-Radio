@@ -35,7 +35,7 @@ def norun_help():
 
 def noboot_help():
     """ --noboot help text """
-    return "dont' reboot the board during initialisation"
+    return "don't reboot the board during initialisation"
 
 
 def runapp(appname_p, homedir, installfiles):
