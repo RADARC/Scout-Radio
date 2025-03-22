@@ -47,10 +47,10 @@ display.brightness = 0.8
 splash = displayio.Group()
 display.root_group = splash
 
-#odb = displayio.OnDiskBitmap('/RADARC_Logo.bmp')
+#odb = displayio.OnDiskBitmap('/images/RADARC_Logo.bmp')
 #face = displayio.TileGrid(odb, pixel_shader=odb.pixel_shader)
 
-odb = displayio.OnDiskBitmap('/Scout_Logo.bmp')
+odb = displayio.OnDiskBitmap('/images/Scout_Logo.bmp')
 face = displayio.TileGrid(odb, pixel_shader=odb.pixel_shader)
 splash.y = 0
 splash.append(face)

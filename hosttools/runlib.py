@@ -26,8 +26,10 @@ def run_help(app):
     """ --run help text """
     return f"run the app specified rather than {app}"
 
-def runapp(appname, homedir, installfiles):
+def runapp(appname_p, homedir, installfiles):
     """ run specified application """
+
+    appname = os.path.splitext(appname_p)[0]
 
     #
     # arguments:
