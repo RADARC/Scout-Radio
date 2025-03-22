@@ -481,7 +481,7 @@ class TestBoardCP(TestBoard):
 class TestBoardMP(TestBoard):
     """ A MicroPython scout radio test board """
 
-    def exit_rshell(self):
+    def __exit_rshell(self):
         """ kill rshell session - must be there """
         #
         # get out of rshell:
@@ -503,7 +503,7 @@ class TestBoardMP(TestBoard):
         # BEWARE this costs about 0.5s but worth it for consistent behaviour
         #
         self.create_pexpect_rshell_child()
-        self.exit_rshell()
+        self.__exit_rshell()
 
         #
         # come up with a python expect session
@@ -568,7 +568,7 @@ class TestBoardMP(TestBoard):
             #
             # switching from rshell app to python repl on serial port
             #
-            self.exit_rshell()
+            self.__exit_rshell()
 
             #
             # Create expect session on serial port for python again.
