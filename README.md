@@ -136,6 +136,10 @@ The placed component costs can be excluded, so $44.32 for five. With tax and shi
 
 ## PCB Files
 
+## Installing Software
+``` reinstallsys.sh ```
+installs a system from scratch including Circuit Python. Runs on linux only atm.
+
 ## Software Project Plan, 12th March 2025.
 Tasks are either small, medium or large (S/M/L)
 
