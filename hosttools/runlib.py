@@ -30,7 +30,9 @@ def run_help(app):
 
 def repl_help():
     """ --repl help text """
-    return "get python repl, don't run any app, same as --norun --minicom"
+    return """get python repl in minicom, don't run any app,
+              same as --norun --minicom apart from minicom options cannot be
+              specified."""
 
 def norun_help():
     """ --norun help text """
@@ -128,7 +130,12 @@ def runapp(appname_p, homedir, installfiles):
         board.sendrepl(f"import {app_to_run}", expect_repl=False)
 
     # runs until user interrupt
-    if isinstance(args.minicom, list) or args.repl:
+    if isinstance(args.minicom, list):
         board.minicomserial(args.minicom)
+    elif args.repl:
+        #
+        # a bit hacky - no minicom opts possible
+        #
+        board.minicomserial([])
     else:
         board.readserial()

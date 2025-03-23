@@ -75,7 +75,7 @@ class TestBoard:
         self.m_serialportname = serialport
 
         #
-        # TODO hardcoded for now
+        # TODO serial port speed hardcoded to 115200 for now
         #
         self.m_serialspeed = 115200
 
