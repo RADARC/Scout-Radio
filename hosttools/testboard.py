@@ -53,6 +53,7 @@ def get_src_dst_from_item(item):
 
     return (src, dst)
 
+
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
     def __init__(self, serialport, target_mountpoint, file_operations, mainfile):
@@ -74,6 +75,11 @@ class TestBoard:
         self.m_serialportname = serialport
 
         #
+        # TODO hardcoded for now
+        #
+        self.m_serialspeed = 115200
+
+        #
         # record whether we have been initialised
         #
         self.m_initialised = False
@@ -88,7 +94,7 @@ class TestBoard:
 
         if not self.m_ser:
             self.m_ser = serial.Serial()
-            self.m_ser.baudrate = 115200
+            self.m_ser.baudrate = self.m_serialspeed
             self.m_ser.port = self.m_serialportname
 
             try:
@@ -397,16 +403,19 @@ class TestBoard:
         del self.m_child
         self.close_serial()
 
-    def minicomserial(self):
+    def minicomserial(self, opts):
         """ interact with serial port using minicom """
 
         self.__close_expect_serial()
 
+        useropts = "".join(opts)
+
         #
         # start minicom
-        # TODO better transfer of control to minicom, minirc etc.
+        # -o is skip minicom init code - may help
         #
-        os.system("minicom ACM0")
+        minicmdline = f"minicom -o -D {self.m_serialportname} -b {self.m_serialspeed} {useropts}"
+        os.system(minicmdline)
 
     def readserial(self):
         """ very crude serial port monitor """

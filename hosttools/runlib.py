@@ -8,7 +8,7 @@ SERIALPORT = "/dev/ttyACM0"
 
 def install_help(app):
     """ --install help text """
-    return f"install {app} target files then run {app}"
+    return f"install {app} target files then run {app} (by 'import {app}')"
 
 def revsync_help(app):
     """ --revsync help text """
@@ -20,10 +20,13 @@ def app_help(app):
 
 def minicom_help(app):
     """ --minicom help text """
-    return f"interact with {app} using minicom rather than plain serial port dump"
+    return f"""interact with {app} using minicom rather than plain serial
+            port dump. Use --minicom='<minicom-options>' eg.
+            --minicom='-C output' to capture output"""
+
 def run_help(app):
     """ --run help text """
-    return f"run the app specified rather than {app}"
+    return f"run the app specified (by 'import myspecifiedapp') rather than {app}"
 
 def repl_help():
     """ --repl help text """
@@ -57,7 +60,7 @@ def runapp(appname_p, homedir, installfiles):
     parser.add_argument("--install", help=install_help(appname), action="store_true")
     parser.add_argument("--revsync", help=revsync_help(appname), action="store_true")
     parser.add_argument("--app",     help=app_help(appname), action="store_true")
-    parser.add_argument("--minicom",  help=minicom_help(appname), action="store_true")
+    parser.add_argument("--minicom",  help=minicom_help(appname), nargs='*')
     parser.add_argument("--run",  help=run_help(appname), type=str)
     parser.add_argument("--norun",  help=norun_help(), action="store_true")
     parser.add_argument("--repl",  help=repl_help(), action="store_true")
@@ -125,7 +128,7 @@ def runapp(appname_p, homedir, installfiles):
         board.sendrepl(f"import {app_to_run}", expect_repl=False)
 
     # runs until user interrupt
-    if args.minicom or args.repl:
-        board.minicomserial()
+    if isinstance(args.minicom, list) or args.repl:
+        board.minicomserial(args.minicom)
     else:
         board.readserial()
