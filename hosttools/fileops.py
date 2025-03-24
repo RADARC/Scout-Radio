@@ -8,6 +8,11 @@ import filecmp
 class FileOPsCP:
     """ target file/directory operations collection for Circuit Python """
 
+    def __init__(self, mountpoint, mainfile):
+        """ useful to store mountpoint and auto run file in fileops """
+        self.m_mountpoint = mountpoint
+        self.m_auto_run_file = mainfile
+
     def ensuredirs(self, dirpath):
         """ mkdir -p equivalent for Circuit Python """
 
@@ -46,10 +51,12 @@ class FileOPsCP:
 class FileOPsMP:
     """ target file/directory operations collection for MicroPython """
 
-    def __init__(self, board):
+    def __init__(self, board, mountpoint, mainfile):
+        """ useful to store mountpoint and auto run file in fileops """
         self.m_board = board
         self.m_rshell_fileop_timeout = 30
-
+        self.m_mountpoint = mountpoint
+        self.m_auto_run_file = mainfile
 
     def ensure_single_dir(self, dirpath):
         """ mkdir equivalent for Micro Python """

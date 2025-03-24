@@ -39,15 +39,14 @@ def not_implemented(unused):
 
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
-    def __init__(self, serialport, target_mountpoint, file_operations, mainfile):
+    def __init__(self, serialport, file_operations):
         self.m_child = None
         self.m_ostype = None
-        self.m_auto_run_file = mainfile
 
         # set up by sethomedir invocation
         self.m_homedir = None
 
-        self.m_filemanager = filemanager.FileManager(file_operations, target_mountpoint)
+        self.m_filemanager = filemanager.FileManager(file_operations)
 
         #
         # serial port scaffold stuff
@@ -282,10 +281,10 @@ class TestBoard:
                 startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
                 startupfile.write(f"import {appname}\n")
                 startupfile.seek(0)
-                file_manager = self.m_filemanager
-                file_ops = file_manager.m_fileops
-                tgtmountpoint = file_manager.m_mountpoint
-                tgtmain = os.path.join(tgtmountpoint, self.m_auto_run_file)
+                file_ops = self.m_filemanager.m_fileops
+                tgtmountpoint = file_ops.m_mountpoint
+                auto_run_file = file_ops.m_auto_run_file
+                tgtmain = os.path.join(tgtmountpoint, auto_run_file)
                 file_ops.copyfile(startupfile.name, tgtmain)
 
 
@@ -364,9 +363,7 @@ class TestBoardCP(TestBoard):
         # pylint seems to prefer this.
         #
         super().__init__(serialport,
-                         mountpoint,
-                         fileops.FileOPsCP(),
-                         autorunfile_name)
+                         fileops.FileOPsCP(mountpoint, autorunfile_name))
 
 
     def sendrepl(self, cmd, expect_repl=True):
@@ -428,9 +425,7 @@ class TestBoardMP(TestBoard):
         # pylint seems to prefer this.
         #
         super().__init__(serialport,
-                         mount,
-                         fileops.FileOPsMP(self),
-                         autorun_filename)
+                         fileops.FileOPsMP(self, mount, autorun_filename))
 
 
     def create_pexpect_rshell_child(self):

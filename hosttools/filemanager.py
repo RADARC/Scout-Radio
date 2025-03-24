@@ -23,11 +23,11 @@ def get_src_dst_from_item(item):
 
 class FileManager:
     """ manages testboard files """
-    def __init__(self, file_operations, target_mountpoint):
+    def __init__(self, file_operations):
         self.m_fileops = file_operations
         self.m_files = []
         self.m_target_homedir = None
-        self.m_mountpoint = target_mountpoint
+        self.m_mountpoint = file_operations.m_mountpoint
 
 
     def set_target_homedir(self, homedir):
