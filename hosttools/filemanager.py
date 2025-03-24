@@ -30,10 +30,6 @@ class FileManager:
         self.m_mountpoint = target_mountpoint
 
 
-    def target_mountpoint(self):
-        """ target filesystem top level """
-        return self.m_mountpoint
-
     def set_target_homedir(self, homedir):
         """ configure the target home directory for the component """
         self.m_target_homedir = os.path.join(self.m_mountpoint, os.path.basename(homedir))

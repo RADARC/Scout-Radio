@@ -42,7 +42,6 @@ class TestBoard:
     def __init__(self, serialport, target_mountpoint, file_operations, mainfile):
         self.m_child = None
         self.m_ostype = None
-        self.m_fileops = file_operations
         self.m_auto_run_file = mainfile
 
         # set up by sethomedir invocation
@@ -283,9 +282,11 @@ class TestBoard:
                 startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
                 startupfile.write(f"import {appname}\n")
                 startupfile.seek(0)
-                tgtmountpoint = self.m_filemanager.target_mountpoint()
+                file_manager = self.m_filemanager
+                file_ops = file_manager.m_fileops
+                tgtmountpoint = file_manager.m_mountpoint
                 tgtmain = os.path.join(tgtmountpoint, self.m_auto_run_file)
-                self.m_fileops.copyfile(startupfile.name, tgtmain)
+                file_ops.copyfile(startupfile.name, tgtmain)
 
 
     def __close_expect_serial(self):
