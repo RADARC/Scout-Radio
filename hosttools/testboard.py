@@ -396,7 +396,7 @@ class TestBoardMP(TestBoard):
             self.m_expect_session_type = "rshell"
             self.create_pexpect_rshell_child()
             autorunfile = os.path.join(mount, autorun_filename)
-            self.sendrshellcmd(f"rm {autorunfile}")
+            self.__sendrshellcmd(f"rm {autorunfile}")
 
         #
         # come up with a python expect session
@@ -431,7 +431,7 @@ class TestBoardMP(TestBoard):
             sys.exit("Error: rshell: No MicroPython boards connected")
 
 
-    def set_expect_session_type(self, sessiontype):
+    def __set_expect_session_type(self, sessiontype):
         """ switch between rshell and python repl in Micro Python env """
 
         # happy path
@@ -483,7 +483,7 @@ class TestBoardMP(TestBoard):
     def sendrshellcmd(self, cmd, timeout = 10):
         """ send a command to rshell """
 
-        self.set_expect_session_type("rshell")
+        self.__set_expect_session_type("rshell")
 
         if VERBOSE_SEND_RSHELL:
             print(f"rshell: sending {cmd}")
@@ -503,7 +503,7 @@ class TestBoardMP(TestBoard):
     def sendrepl(self, cmd, expect_repl=True):
         """ send a command to MicroPython repl """
 
-        self.set_expect_session_type("python")
+        self.__set_expect_session_type("python")
 
         return self.sendreplbase(cmd + "\r\n", expect_repl)
 
