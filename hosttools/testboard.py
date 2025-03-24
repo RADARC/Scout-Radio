@@ -501,7 +501,7 @@ class TestBoardMP(TestBoard):
         del self.m_rshell_child
 
 
-    def __init__(self, serialport, force=True):
+    def __init__(self, serialport, force=False):
         """ Create a MicroPython scout radio test board """
 
         #
