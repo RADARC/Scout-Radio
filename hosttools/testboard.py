@@ -396,7 +396,7 @@ class TestBoardMP(TestBoard):
             self.m_expect_session_type = "rshell"
             self.create_pexpect_rshell_child()
             autorunfile = os.path.join(mount, autorun_filename)
-            self.__sendrshellcmd(f"rm {autorunfile}")
+            self.sendrshellcmd(f"rm {autorunfile}")
 
         #
         # come up with a python expect session
