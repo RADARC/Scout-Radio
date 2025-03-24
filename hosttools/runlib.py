@@ -36,7 +36,7 @@ def repl_help():
 
 def norun_help():
     """ --norun help text """
-    return "get python repl, don't run any app, scrape serial port (non-interactive)"
+    return "don't run any app, scrape serial port (non-interactive)"
 
 def noboot_help():
     """ --noboot help text """
