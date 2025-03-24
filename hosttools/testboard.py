@@ -9,13 +9,13 @@ import tempfile
 import serial
 import pexpect
 import pexpect.fdpexpect
-import fileops
 import sysdetect
+import filemanager
+import fileops
 
 #
 # beginnings of proper logging
 #
-VERBOSE_INSTALL = True
 VERBOSE_SEND_REPL = False
 VERBOSE_SEND_REPL_RESPONSE = False
 VERBOSE_SEND_RSHELL = False
@@ -37,36 +37,18 @@ def not_implemented(unused):
 
     sys.exit("not implemented")
 
-def get_src_dst_from_item(item):
-    """ helper method to determine src/dst paths from thing to be installed """
-    #
-    # If a single string is specified, this is both the
-    # source and destination filename.
-    #
-    # If a tuple is specified, the first item is the source
-    # and the second the destination.
-    #
-    if isinstance(item, str):
-        src = dst = item
-    else:
-        (src, dst) = item
-
-    return (src, dst)
-
-
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
     def __init__(self, serialport, target_mountpoint, file_operations, mainfile):
-        self.m_files = []
         self.m_child = None
         self.m_ostype = None
-        self.m_mountpoint = target_mountpoint
         self.m_fileops = file_operations
         self.m_auto_run_file = mainfile
 
         # set up by sethomedir invocation
         self.m_homedir = None
-        self.m_target_homedir = None
+
+        self.m_filemanager = filemanager.FileManager(file_operations, target_mountpoint)
 
         #
         # serial port scaffold stuff
@@ -126,12 +108,13 @@ class TestBoard:
     def sethomedir(self, homedir):
         """ configure the home directory for the component """
         self.m_homedir = homedir
-        self.m_target_homedir = os.path.join(self.m_mountpoint, os.path.basename(self.m_homedir))
+        self.m_filemanager.set_target_homedir(homedir)
 
 
     def setfiles(self, targetfiles):
         """ configure the list of host python files to be run on target """
-        self.m_files = targetfiles
+
+        self.m_filemanager.setfiles(targetfiles)
 
     def sendrepl(self, cmd, expect_repl=True):
         """ code not used, here just for pylint """
@@ -195,98 +178,6 @@ class TestBoard:
         return "\r\n".join(output.split("\r\n")[1:]).strip()
 
 
-    def __get_target_fullpath(self, dest):
-        """ helper for copy_files to/from target """
-        #
-        # deal with relative or absolute paths on target
-        #
-        if dest[0] == '/':
-            tgt_fullpath = os.path.join(self.m_mountpoint, dest[1:])
-        else:
-            tgt_fullpath = os.path.join(self.m_target_homedir, dest)
-
-        return tgt_fullpath
-
-
-    def copy_files_to_target(self):
-        """ copy files specified in 'setfiles' method from host to target """
-
-        for installitem in self.m_files:
-            #
-            # We may have no files to copy, legitimately.
-            # Only assert if we are going to install some.
-            #
-            assert self.m_mountpoint
-            assert self.m_target_homedir
-
-            (source_fullpath, dst) = get_src_dst_from_item(installitem)
-
-            if not os.path.exists(source_fullpath):
-                sys.exit(f"Error: {source_fullpath} not found")
-
-            target_fullpath = self.__get_target_fullpath(dst)
-
-            #
-            # works if target_fullpath is either a file or directory
-            #
-            self.m_fileops.ensuredirs(os.path.dirname(target_fullpath))
-
-            if VERBOSE_INSTALL:
-                ftype = "dir" if os.path.isdir(source_fullpath) else "file"
-
-                print(f"{ftype}: {source_fullpath} -> {target_fullpath}")
-
-            if os.path.isdir(source_fullpath):
-                #
-                # copy in source directory tree first deleting any
-                # on target
-                #
-                self.m_fileops.deltree(target_fullpath)
-
-                self.m_fileops.copytree(source_fullpath, target_fullpath)
-            else:
-                #
-                # copy on the single file
-                #
-                self.m_fileops.copyfile(source_fullpath, target_fullpath)
-
-        if self.m_files and VERBOSE_INSTALL:
-            print()
-
-
-    def copy_files_from_target(self):
-        """ copy files specified in 'setfiles' method from target to host """
-
-        # this method is used by install.py --revsync option
-
-        assert self.m_mountpoint
-        assert self.m_target_homedir
-
-        for installitem in self.m_files:
-
-            (source_fullpath, dst) = get_src_dst_from_item(installitem)
-
-            target_fullpath = self.__get_target_fullpath(dst)
-
-            if VERBOSE_INSTALL:
-                ftype = "dir" if os.path.isdir(source_fullpath) else "file"
-
-                print(f"{ftype}: {target_fullpath} -> {source_fullpath}")
-
-            if os.path.isdir(source_fullpath):
-                #
-                # a bit dangerous
-                #
-                self.m_fileops.deltree(source_fullpath)
-
-                self.m_fileops.copytree(target_fullpath, source_fullpath)
-            else:
-                #
-                # copy off the single file
-                #
-                self.m_fileops.copyfile(target_fullpath, source_fullpath)
-
-
     def identify(self):
         """ print the scout radio os/python type """
         self.sendrepl("import sys")
@@ -335,7 +226,7 @@ class TestBoard:
         self.get_control()
         if do_reboot:
             self.reboot()
-        self.copy_files_to_target()
+        self.m_filemanager.copy_files_to_target()
 
         #
         # a bit arbitrary
@@ -362,9 +253,9 @@ class TestBoard:
     def revsync(self):
         """ pull files from target board back to host """
 
-        if self.m_files:
+        if self.m_filemanager.m_files:
             self.create_pexpect_child()
-            self.copy_files_from_target()
+            self.m_filemanager.copy_files_from_target()
 
 
     def reboot(self, expect_repl=True):
@@ -392,7 +283,8 @@ class TestBoard:
                 startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
                 startupfile.write(f"import {appname}\n")
                 startupfile.seek(0)
-                tgtmain = os.path.join(self.m_mountpoint, self.m_auto_run_file)
+                tgtmountpoint = self.m_filemanager.target_mountpoint()
+                tgtmain = os.path.join(tgtmountpoint, self.m_auto_run_file)
                 self.m_fileops.copyfile(startupfile.name, tgtmain)
 
 
