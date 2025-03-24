@@ -5,7 +5,6 @@ for MicroPython and CircuitPython devices
 
 import sys
 import os
-import tempfile
 import serial
 import pexpect
 import pexpect.fdpexpect
@@ -42,9 +41,6 @@ class TestBoard:
     def __init__(self, serialport, file_operations):
         self.m_child = None
         self.m_ostype = None
-
-        # set up by sethomedir invocation
-        self.m_homedir = None
 
         self.m_filemanager = filemanager.FileManager(file_operations)
 
@@ -105,7 +101,6 @@ class TestBoard:
 
     def sethomedir(self, homedir):
         """ configure the home directory for the component """
-        self.m_homedir = homedir
         self.m_filemanager.set_target_homedir(homedir)
 
 
@@ -236,9 +231,9 @@ class TestBoard:
             return
 
         # homedir may necessarily not be set: eg. python testboard.py
-        if self.m_homedir:
+        if self.m_filemanager.m_homedir:
             self.sendrepl("import os")
-            target_homedirname = os.path.basename(self.m_homedir)
+            target_homedirname = os.path.basename(self.m_filemanager.m_homedir)
             self.sendrepl(f"os.chdir(\"/{target_homedirname}\")")
 
 
@@ -275,17 +270,7 @@ class TestBoard:
             session will most likely hang as the target system
             will start the app as soon as the code.py/main.py appears """
 
-        if self.m_homedir:
-            with tempfile.NamedTemporaryFile("w") as startupfile:
-                startupfile.write("import os\n")
-                startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
-                startupfile.write(f"import {appname}\n")
-                startupfile.seek(0)
-                file_ops = self.m_filemanager.m_fileops
-                tgtmountpoint = file_ops.m_mountpoint
-                auto_run_file = file_ops.m_auto_run_file
-                tgtmain = os.path.join(tgtmountpoint, auto_run_file)
-                file_ops.copyfile(startupfile.name, tgtmain)
+        self.m_filemanager.start_app_on_powerup(appname)
 
 
     def __close_expect_serial(self):

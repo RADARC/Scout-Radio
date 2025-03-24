@@ -1,6 +1,7 @@
 """ manages testboard files """
 import sys
 import os
+import tempfile
 
 VERBOSE_INSTALL = True
 
@@ -28,11 +29,29 @@ class FileManager:
         self.m_files = []
         self.m_target_homedir = None
         self.m_mountpoint = file_operations.m_mountpoint
+        self.m_homedir = None
 
+
+    def start_app_on_powerup(self, appname):
+        """ provide a system startup file (eg. code.py etc.) for appname """
+
+        if self.m_homedir:
+            with tempfile.NamedTemporaryFile("w") as startupfile:
+                startupfile.write("import os\n")
+                startupfile.write(f"os.chdir(\"{self.m_homedir}\")\n")
+                startupfile.write(f"import {appname}\n")
+                startupfile.seek(0)
+                file_ops = self.m_fileops
+                tgtmountpoint = file_ops.m_mountpoint
+                auto_run_file = file_ops.m_auto_run_file
+                tgtmain = os.path.join(tgtmountpoint, auto_run_file)
+                file_ops.copyfile(startupfile.name, tgtmain)
 
     def set_target_homedir(self, homedir):
         """ configure the target home directory for the component """
         self.m_target_homedir = os.path.join(self.m_mountpoint, os.path.basename(homedir))
+        self.m_homedir = homedir
+
 
     def setfiles(self, targetfiles):
         """ configure the list of host python files to be run on target """
