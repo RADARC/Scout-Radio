@@ -266,7 +266,7 @@ class TestBoard:
         self.m_filemanager.start_app_on_powerup(appname)
 
 
-    def __close_expect_serial(self):
+    def _close_expect_serial(self):
         """ kill serial repl expect session, close serial port """
 
         # kill expect, release the serial port
@@ -276,7 +276,7 @@ class TestBoard:
     def minicomserial(self, opts):
         """ interact with serial port using minicom """
 
-        self.__close_expect_serial()
+        self._close_expect_serial()
 
         useropts = "".join(opts)
 
@@ -290,7 +290,7 @@ class TestBoard:
     def readserial(self):
         """ very crude serial port monitor """
 
-        self.__close_expect_serial()
+        self._close_expect_serial()
 
         self.open_serial()
 
@@ -335,8 +335,8 @@ class TestBoardCP(TestBoard):
             os.unlink(autorunfile)
 
         #
-        # Set mountpoint and fileops object member variables in base class
-        # by passing them to the base class constructor.
+        # Set fileops object member variable in base class
+        # by passing it to the base class constructor.
         #
         # pylint seems to prefer this.
         #
@@ -397,8 +397,8 @@ class TestBoardMP(TestBoard):
         self.m_expect_session_type = "python"
 
         #
-        # Set serial port, mountpoint, fileops object member variables
-        # in base class by passing them to the base class constructor.
+        # Set fileops object member variable in base class by passing
+        # it to the base class constructor.
         #
         # pylint seems to prefer this.
         #
@@ -437,8 +437,7 @@ class TestBoardMP(TestBoard):
             #
 
             # kill the serial port session with the python interpreter
-            del self.m_child
-            self.close_serial()
+            self._close_expect_serial()
 
             # create the rshell session
             self.create_pexpect_rshell_child()
