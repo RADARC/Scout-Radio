@@ -35,3 +35,4 @@ while ! lsusb | grep -q "MicroPython Board"; do
     sleep 0.1
 done
 echo "Waiting for MicroPython system to install...done"
+echo "FLASH OK"

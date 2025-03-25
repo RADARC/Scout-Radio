@@ -18,3 +18,4 @@ install_os ${IMAGE}
 echo "Waiting for CircuitPython system to install..."
 await_mount CIRCUITPY code.py
 echo "Waiting for CircuitPython system to install...done"
+echo "FLASH OK"
