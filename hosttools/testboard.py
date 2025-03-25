@@ -29,13 +29,6 @@ def formatoutput(output):
         print(line)
 
 
-def not_implemented(unused):
-    """ exit with error status indicating functionality not implemented """
-
-    assert unused # pylint
-
-    sys.exit("not implemented")
-
 class TestBoard:
     """ Base class for MicroPython and CircuitPython scout radio boards """
     def __init__(self, serialport, file_operations):
