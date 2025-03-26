@@ -133,13 +133,17 @@ radio = radio.RADIO(si47xx.SI4735(i2c, 0x63, si4735_reset_pin))
 
 def displayFrequency():
     if radio.get_mode() == radio.FM:
-        text_area.text = "FM " + str(radio.get_frequency()/100)               
-    elif radio.get_mode() == radio.SSB_USB:
+        text_area.text = "FM " + str(radio.get_frequency()/100)   
+    elif radio.get_mode() == radio.SW:
+        text_area.text = "SW " + str(radio.get_frequency()/1000)                 
+    elif radio.get_mode() == radio.SW_SSB_USB:
         text_area.text = "USB " + str(radio.get_frequency()/1000)
-    elif radio.get_mode() == radio.SSB_LSB:
+    elif radio.get_mode() == radio.SW_SSB_LSB:
         text_area.text = "LSB " + str(radio.get_frequency()/1000)
     elif radio.get_mode() == radio.AM:
         text_area.text = "AM " + str(radio.get_frequency())
+    elif radio.get_mode() == radio.LW:
+        text_area.text = "LW " + str(radio.get_frequency())
 
 
 radio.reset()
@@ -171,18 +175,8 @@ while True:
     position = encoder.position
     if last_position is None or position != last_position:
         
-        if switch1.value is False:
-            #Volume     
 
-            if position > last_position:
-                radio.frequency_increment()
-           
-            elif position < last_position:
-                radio.frequency_decrement()
-           
-            displayFrequency()
-
-        elif switch4.value is False:
+        if switch4.value is False:
             #Volume
             if position > last_position:
                 if newvol<59:
@@ -196,13 +190,24 @@ while True:
                 oldvol=newvol
                 radio.set_volume(newvol)
                 print(newvol)   
+
+        else:
+            #Frequency     
+
+            if position > last_position:
+                radio.frequency_increment()
+           
+            elif position < last_position:
+                radio.frequency_decrement()
+           
+            displayFrequency()
             
         last_position = position
     
     if switch1.value is False:
             #Bandwidth, only for SSB
             print("Bandwidth")
-            if radio.get_mode() == radio.SSB_USB or radio.get_mode() == radio.SSB_LSB:
+            if radio.get_mode() == radio.SW_SSB_USB or radio.get_mode() == radio.SW_SSB_LSB:
                 oldBW = radio.get_ssb_bandwidth()
                 
                 if (oldBW == 5):
@@ -222,16 +227,25 @@ while True:
             radio.set_volume(newvol)
 
         elif radio.get_mode() == radio.AM:
-           
+            #go to LW
+            radio.set_mode(radio.LW)
+            radio.set_volume(newvol)
+
+        elif radio.get_mode() == radio.LW:
+            #go to SW
+            radio.set_mode(radio.SW)
+            radio.set_volume(newvol)
+
+        elif radio.get_mode() == radio.SW:
             #Go to SSB USB Mode
             text_status.text = "Please wait..."
-            radio.set_mode(radio.SSB_USB)
+            radio.set_mode(radio.SW_SSB_USB)
             radio.set_volume(newvol)
             text_status.text = ""
             
-        elif radio.get_mode() == radio.SSB_USB:
+        elif radio.get_mode() == radio.SW_SSB_USB:
 
-            radio.set_mode(radio.SSB_LSB)
+            radio.set_mode(radio.SW_SSB_LSB)
             radio.set_volume(newvol)
 
         else:
@@ -240,6 +254,10 @@ while True:
         
 
         displayFrequency()
+
+    #Step button
+    if switch6.value is False:
+        pass
         
    
    

@@ -407,6 +407,9 @@ class SI4735:
         self.frequency = 0.0 #current frequency
         self.volume = 30 #current volume
 
+
+    
+
     def getFrequency(self):
         return self.frequency
 
@@ -425,6 +428,18 @@ class SI4735:
     def setSSBsideband(self,usblsb):
         self.currentSsbStatus = usblsb
         self.setFrequency(self.frequency)
+
+    def getMinMaxFrequencyAM(self):
+        return 520,1710
+    
+    def getMinMaxFrequencyFM(self):
+        return 6400,108000
+    
+    def getMinMaxFrequencySW(self):
+        return 2300,26100
+    
+    def getMinMaxFrequencyLW(self):
+        return 153,279
 
 
     def reset(self):
