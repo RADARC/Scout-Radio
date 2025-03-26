@@ -9,7 +9,7 @@ def revsync_help(app):
     return f"copy {app} target files to host - use with care"
 
 
-def installfiles(argv, homedir, files, expect_repl=True):
+def installfiles(homedir, files, expect_repl=True):
     """ install or revsync files/directories from homedir source (component) """
 
     appname = os.path.splitext(homedir)[0]

@@ -16,4 +16,4 @@ def homedir():
     return "Display"
 
 if __name__=="__main__":
-    installib.installfiles(sys.argv, homedir(), files())
+    installib.installfiles(homedir(), files())

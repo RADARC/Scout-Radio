@@ -35,5 +35,5 @@ if __name__=="__main__":
         print(f"{SIBINPATCH} does not exist. Please generate by running csg2bin.py")
         sys.exit(1)
 
-    installib.installfiles(sys.argv, homedir(), files() + supportfiles())
-    #installib.installfiles(sys.argv, homedir(), files())
+    installib.installfiles(homedir(), files() + supportfiles())
+    #installib.installfiles(homedir(), files())
