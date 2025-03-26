@@ -169,6 +169,7 @@ newvol= 20
 radio.set_volume(newvol)
 t=0
 while True:
+    #switches 1 = Bandwith, 2 = Band, 3 = AGC, 4 = Volume, 5 = Mode, 6 = Step, switch_Enc = push encoder wheel
    
     time.sleep(0.050)
     
