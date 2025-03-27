@@ -21,6 +21,23 @@ def installcomponent(component):
         #
         if return_code != 0:
             sys.exit(f"Install failed on component {component}")
+#
+# usage - not worth using argparse
+#
+if sys.argv and len(sys.argv) > 1:
+    if sys.argv[1] in ["--help", "-h", "-?"]:
+        print(f"{sys.argv[0]}: Install scout radio python software", file=sys.stderr)
+        STR_COMPONENTS = ", ".join(sr_components)
+        print(f"{sys.argv[0]}: \
+The following components will be installed: {STR_COMPONENTS}", file=sys.stderr)
+
+        print(f"{sys.argv[0]}: \
+All this file does is go round individual components and invoke their \
+install.py files", file=sys.stderr)
+
+        print(f"{sys.argv[0]}: usage: python {sys.argv[0]}", file=sys.stderr)
+        # traditional
+        sys.exit(2)
 
 #
 # install components
