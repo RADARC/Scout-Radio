@@ -35,6 +35,12 @@ class TestBoard:
         self.m_child = None
         self.m_ostype = None
 
+        #
+        # Create a generic file manager with board-type specific
+        # file operations (i.e. Micro Python or Circuit Python)
+        # using the file operations object created in the board-type specific
+        # test board constructor.
+        #
         self.m_filemanager = filemanager.FileManager(file_operations)
 
         #
