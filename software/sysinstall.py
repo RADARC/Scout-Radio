@@ -2,6 +2,10 @@
 import sys
 import os
 
+#
+# All this file does is automate the running of install.py in
+# each of the components below, first 'cd' ing to its directory.
+#
 sr_components = ['Display', 'GPS', 'images', 'lib', 'LSM303', 'Morse', 'Radio']
 
 def installcomponent(component):
@@ -11,10 +15,7 @@ def installcomponent(component):
 
     if os.path.exists(os.path.join(component, installfile)):
         print(f"Installing {component}")
-        if component:
-            return_code = os.system(f"cd {component}; python3 {installfile}")
-        else:
-            return_code = os.system(f"python3 {installfile}")
+        return_code = os.system(f"cd {component}; python3 {installfile}")
 
         #
         # propagate failure up
