@@ -8,10 +8,11 @@
 import os
 
 # SSB download patch specials
-cmd_0x15 = (0,   128,  371,  374,  376,  378,  380,  383,  385,  388,  390,  392,  394, 396, 398, 400,
-402,   404,  593,  616,  650,  661,  757,  869,  872,  915,  942,  945,  948, 985, 994,
-999,  1002, 1004, 1007, 1010, 1013, 1015, 1019, 1022, 1040, 1063, 1069, 1074,
-1076, 1078, 1081, 1084, 1088, 1091, 1093, 1097, 1099, 1102, 1104)
+cmd_0x15 = (0, 128, 371, 374, 376, 378, 380, 383, 385, 388, 390, 392, 394, 396,
+            398, 400, 402, 404, 593, 616, 650, 661, 757, 869, 872, 915, 942,
+            945,  948, 985, 994, 999,  1002, 1004, 1007, 1010, 1013, 1015,
+            1019, 1022, 1040, 1063, 1069, 1074, 1076, 1078, 1081, 1084, 1088,
+            1091, 1093, 1097, 1099, 1102, 1104)
 
 # SSB download patch
 sb_patch_content = (
@@ -1143,7 +1144,7 @@ def readcsgfile(csgfilespec):
     specials_hex_15 = []
     line_number = 0
 
-    with open(csgfilespec,"r") as csgfile:
+    with open(csgfilespec, "r", encoding="utf-8") as csgfile:
         for line in csgfile.readlines():
             if line.startswith("#"):
                 continue
@@ -1165,38 +1166,38 @@ def writebinfile(outfilename, specials_hex_15, compressed_body):
     """ write pseudo-compressed binary file """
     header=bytearray([len(specials_hex_15)])
 
-    for d in specials:
+    for special in specials:
         # endian is arbitrary
         #print(d.to_bytes(2, "big"))
-        header.extend(d.to_bytes(2, "big"))
+        header.extend(special.to_bytes(2, "big"))
 
     #print(result)
     finalbytearray = header + compressed_body
 
     # sanity
-    (special_len, specials_list_decoded, decoded_body) = decodecompbin(finalbytearray)
+    (special_len, specials_list_decoded, _decoded_body) = decodecompbin(finalbytearray)
 
     assert special_len == len(specials_hex_15)
     assert specials_hex_15 == specials_list_decoded
 
-    print(special_len, specials)
+    #print(special_len, specials)
 
     with open(outfilename,"wb") as compressed_binpatchfile:
         compressed_binpatchfile.write(finalbytearray)
 
 
 if __name__ == "__main__":
-    infile = "patch.csg"
-    outfile = os.path.splitext(infile)[0]+"comp.bin"
+    INFILE = "patch.csg"
+    outfile = os.path.splitext(INFILE)[0]+"comp.bin"
 
-    use_ssb_patch_here = False
+    USE_SSB_PATCH_HERE = False
 
-    if use_ssb_patch_here:
+    if USE_SSB_PATCH_HERE:
         body = bytearray(sb_patch_content)
         specials = cmd_0x15
     else:
         # internalise patch.csg
-        (body, specials) = readcsgfile(infile)
+        (body, specials) = readcsgfile(INFILE)
 
     assert len(specials) < 256
     #print([hex(x) for x in body])

@@ -6,6 +6,7 @@ import sys
 import os
 import installib
 
+PATCHCREATOR="csg2bin.py"
 SIBINPATCH="patchcomp.bin"
 
 #
@@ -31,9 +32,16 @@ def supportfiles():
       ]
 
 if __name__=="__main__":
-    if not os.path.exists(SIBINPATCH):
+    thisdir = os.path.abspath(os.path.dirname(sys.argv[0]))
+
+    # try creating patch if not found
+    if not os.path.exists(os.path.join(thisdir, SIBINPATCH)):
+        os.system(os.path.join(thisdir, "csg2bin.py"))
+
+    # patch should have been created
+    if not os.path.exists(os.path.join(thisdir, SIBINPATCH)):
         print(f"{SIBINPATCH} does not exist. Please generate by running csg2bin.py")
         sys.exit(1)
 
     installib.installfiles(homedir(), files() + supportfiles())
-    #installib.installfiles(homedir(), files())
+
