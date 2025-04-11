@@ -72,6 +72,8 @@ install_os()
     echo
     echo "Plug in USB with bootsel pressed until this progam continues."
     echo "Dismiss any mount windows opening if possible."
+    echo "PLEASE ENSURE YOUR SCOUT RADIO IS SWITCHED \"OFF\""
+    echo "i.e. powered over USB and not by its internal battery."
 
     copyfile ${NUKEFILE} $(await_install_mount)
 
