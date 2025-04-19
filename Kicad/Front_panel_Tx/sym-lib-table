@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "NFC")(type "KiCad")(uri "C:/Users/Richard Ibbotson/OneDrive/Documents/KiCad/NFC_ESP32/RFID.kicad_sym")(options "")(descr ""))
+)

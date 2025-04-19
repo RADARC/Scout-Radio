@@ -20,10 +20,10 @@ def vector_2_degrees(x, y):
 
 
 def get_heading(_sensor):
-    magnet_x, magnet_y, _ = _sensor.magnetic
+    magnet_x, magnet_y, magnet_z = _sensor.magnetic
     return vector_2_degrees(magnet_x, magnet_y)
 
 
 while True:
     print("heading: {:.2f} degrees".format(get_heading(sensor)))
-    time.sleep(0.2)
+    time.sleep(1)
